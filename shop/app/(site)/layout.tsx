@@ -1,7 +1,9 @@
+import SiteHeader from '@/components/SiteHeader'
+
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <header>🌿 Site Header</header>
+      <SiteHeader />
       {children}
       <footer>Footer</footer>
     </>
