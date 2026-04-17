@@ -1,5 +1,6 @@
 'use client';
 import Link from "next/link";
+import AddToCartButton from "../elements/AddToCartButton";
 import { Product } from "@/types/product";
 
 export default function ProductList({ products }: { products: Product[] }) {
@@ -13,7 +14,7 @@ export default function ProductList({ products }: { products: Product[] }) {
           </Link>
           <span>{product.name}</span>
           <span>{product.regularPrice}</span>
-          <button>Dodaj do koszyka</button>
+          <AddToCartButton product={product} />
         </li>
       ))}
     </ul>
