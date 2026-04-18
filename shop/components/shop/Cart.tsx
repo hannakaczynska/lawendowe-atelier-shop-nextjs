@@ -1,6 +1,7 @@
 "use client";
 
-import { useCart } from "@/store/cart";
+import { useCart, useCartTotal } from "@/store/cart";
+import { formatPrice } from "@/lib/utils/formatPrice";
 
 export default function Cart() {
   const items = useCart((state) => state.items);
@@ -18,6 +19,8 @@ export default function Cart() {
           <li key={item.product.id}>
             <p>{item.product.name}</p>
             <p>Ilość: {item.quantity}</p>
+            <p>Cena za sztukę: {formatPrice(item.product.price)}</p>
+            <p>Cena: {formatPrice(item.product.price * item.quantity)}</p>
             <div className="flex gap-12">
             <button onClick={() => increaseQuantity(item.product.id)}>+</button>
             <button onClick={() => decreaseQuantity(item.product.id)}>-</button>
@@ -28,6 +31,7 @@ export default function Cart() {
           </li>
         ))}
       </ul>
+      <p>Łączna kwota: {formatPrice(useCartTotal())}</p>
       <button onClick={() => clearCart()}>Wyczyść koszyk</button>
     </div>
   );

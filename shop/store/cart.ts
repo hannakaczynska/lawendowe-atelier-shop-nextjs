@@ -46,7 +46,17 @@ export const useCart = create<CartStore>()(
       clearCart: () => set({ items: [] }),
     }),
     {
-      name: "cart-storage", // klucz w localStorage
+      name: "cart-storage", // localStorage key
     },
   ),
 );
+
+
+export const useCartTotal = () =>
+  useCart((state) =>
+    state.items.reduce(
+      (total, item) =>
+        total + item.product.price * item.quantity,
+      0
+    )
+  );
