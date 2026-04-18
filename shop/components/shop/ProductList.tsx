@@ -1,7 +1,8 @@
 'use client';
 import Link from "next/link";
 import AddToCartButton from "../elements/AddToCartButton";
-import { Product } from "@/types/product";
+import type { Product } from "@/types/product";
+import { formatPrice } from "@/lib/utils/formatPrice";
 
 export default function ProductList({ products }: { products: Product[] }) {
 
@@ -13,7 +14,7 @@ export default function ProductList({ products }: { products: Product[] }) {
             <img src={product.mainImage.src} alt={product.mainImage.alt} width={200} height={200} />
           </Link>
           <span>{product.name}</span>
-          <span>{product.regularPrice}</span>
+          <span>{formatPrice(product.regularPrice)}</span>
           <AddToCartButton product={product} />
         </li>
       ))}
