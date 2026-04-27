@@ -14,6 +14,7 @@ export async function getProducts(): Promise<Product[]> {
     }
 
     const data: WooStoreProduct[] = await res.json();
+
     
     return data.map(mapProduct);
   } catch (error) {
@@ -34,7 +35,7 @@ export async function getProduct(slug: string): Promise<Product> {
     }
 
     const data: WooStoreProduct = await res.json();
-
+console.log("Fetched product data:", data);
     return mapProduct(data);
   } catch (error) {
     console.error("Error fetching product:", error);

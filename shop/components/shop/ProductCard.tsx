@@ -1,5 +1,4 @@
 import AddToCartButton from "../elements/AddToCartButton";
-import Cart from "@/components/shop/Cart";
 import type { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
@@ -15,7 +14,6 @@ export default function ProductCard({ product }: { product: Product }) {
       />
       <p>{formatPrice(product.regularPrice)}</p>
       <AddToCartButton product={product} />
-      <Cart />
     </div>
   );
 }
