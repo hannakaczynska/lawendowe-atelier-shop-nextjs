@@ -1,12 +1,13 @@
+import Link from "next/link";
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <header>
         🛍️ Shop Navbar
         <nav>
-          <a href="/">Home</a>
-          <a href="/shop">Shop</a>
-          <a href="/shop/cart">Cart</a>
+          <Link href="/">Home</Link>
+          <Link href="/shop">Shop</Link>
+          <Link href="/shop/cart">Cart</Link>
         </nav>
       </header>
 

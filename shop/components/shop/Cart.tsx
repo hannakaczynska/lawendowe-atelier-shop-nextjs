@@ -2,6 +2,7 @@
 
 import { useCart, useCartTotal } from "@/store/cart";
 import { formatPrice } from "@/lib/utils/formatPrice";
+import Link from "next/link";
 
 export default function Cart() {
   const items = useCart((state) => state.items);
@@ -22,17 +23,22 @@ export default function Cart() {
             <p>Cena za sztukę: {formatPrice(item.product.price)}</p>
             <p>Cena: {formatPrice(item.product.price * item.quantity)}</p>
             <div className="flex gap-12">
-            <button onClick={() => increaseQuantity(item.product.id)}>+</button>
-            <button onClick={() => decreaseQuantity(item.product.id)}>-</button>
-            <button onClick={() => removeFromCart(item.product.id)}>
-              Usuń
-            </button>
+              <button onClick={() => increaseQuantity(item.product.id)}>
+                +
+              </button>
+              <button onClick={() => decreaseQuantity(item.product.id)}>
+                -
+              </button>
+              <button onClick={() => removeFromCart(item.product.id)}>
+                Usuń
+              </button>
             </div>
           </li>
         ))}
       </ul>
       <p>Łączna kwota: {formatPrice(useCartTotal())}</p>
       <button onClick={() => clearCart()}>Wyczyść koszyk</button>
+      <Link href="/shop/checkout">Przejdź do zamówienia</Link>
     </div>
   );
 }
