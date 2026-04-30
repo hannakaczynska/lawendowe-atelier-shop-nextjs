@@ -1,12 +1,6 @@
 const BASE_URL = "http://lawendowe-atelier-backend.local/wp-json/wc/store";
 
-export type CategoryNode = {
-  id: number;
-  slug: string;
-  name: string;
-  children: CategoryNode[];
-  parent: number;
-};
+import type { CategoryNode } from "@/types/category";
 
 let categoryMap: Record<string, number> | null = null;
 let categoryTree: CategoryNode[] | null = null;

@@ -1,5 +1,5 @@
 import ProductList from "@/components/shop/ProductList";
-import SidePanel from "@/components/shop/SidePanel";
+import SidePanel from "@/components/shop/SidePanel/SidePanel";
 import CategoryPanel from "@/components/shop/CategoryPanel";
 import { getProductsByCategorySlugs } from "@/lib/woo";
 import { getCategoryMap } from "@/lib/wooCategoryMapper";
