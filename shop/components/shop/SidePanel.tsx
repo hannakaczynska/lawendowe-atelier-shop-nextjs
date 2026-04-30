@@ -26,11 +26,8 @@ export default function SidePanel({ categoryTree }: { categoryTree: CategoryNode
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">Kategorie</h2>
+      <h3 className="text-2xl font-bold mb-4">Kategorie</h3>
       {renderCategories(categoryTree)}
     </div>
   );
 }
-
-// checked={selectedCategory === cat.slug}
-// onChange={() => setSelectedCategory(cat.slug)}

@@ -47,7 +47,7 @@ export default function ShopHeader() {
                 alt="User"
               />
             </Link>
-            <Link href="/cart">
+            <Link href="/shop/cart">
               <img className="h-[32px]" src="/grey-cart.svg" alt="Cart" />
             </Link>
           </nav>
