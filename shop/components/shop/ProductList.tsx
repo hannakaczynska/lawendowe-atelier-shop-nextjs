@@ -10,7 +10,7 @@ export default function ProductList({ products }: { products: Product[] }) {
     <ul className="flex flex-row wrap gap-8">
       {products.map((product) => (
         <li className="flex flex-col" key={product.id}>
-          <Link href={`/shop/${product.slug}`} className="cursor-pointer">
+          <Link href={`/shop/${product.categories[0].slug}/${product.slug}`} className="cursor-pointer">
             <img src={product.mainImage.src} alt={product.mainImage.alt} width={200} height={200} />
           </Link>
           <span>{product.name}</span>

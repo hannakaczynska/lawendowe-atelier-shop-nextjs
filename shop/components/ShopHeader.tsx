@@ -10,7 +10,7 @@ export default function ShopHeader() {
       <div className="w-full text-sm py-2 text-center bg-[var(--third-color)]">
         Zamówienia tylko z odbiorem osobistym
       </div>
-      <div className="w-full max-w-[1400px] mx-auto px-4 flex  items-center justify-between">
+      <div className="w-full max-w-[1500px] mx-auto px-4 flex  items-center justify-between">
         <img className="w-[100px] h-auto" src="/logo.svg" alt="Logo" />
         <nav className="hidden lg:flex gap-6">
           <Link
