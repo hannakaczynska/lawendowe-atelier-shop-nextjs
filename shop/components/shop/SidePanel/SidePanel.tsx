@@ -3,6 +3,7 @@ import styles from "./SidePanel.module.css";
 import type { CategoryNode } from "@/types/category";
 import { useCategoryStore } from "@/store/category";
 import CheckboxTree from "react-checkbox-tree";
+import { PiCheckCircleFill, PiMinusCircleFill, PiCircle } from "react-icons/pi";
 import { convertToCheckboxTreeNodes } from "@/lib/utils/createCheckboxTreeNodes";
 
 export default function SidePanel({
@@ -24,6 +25,18 @@ export default function SidePanel({
           expanded={nodes.map((node) => node.value)}
           onCheck={setSelectedCategories}
           onExpand={() => {}}
+          icons={{
+            check: <PiCheckCircleFill color="var(--third-color)" />,
+            uncheck: <PiCircle color="var(--third-color)" />,
+            halfCheck: <PiMinusCircleFill color="var(--third-color)" />,
+            expandClose: <></>,
+            expandOpen: <></>,
+            expandAll: <></>,
+            collapseAll: <></>,
+            parentClose: <></>,
+            parentOpen: <></>,
+            leaf: <></>,
+          }}
         />
       </div>
     </>
