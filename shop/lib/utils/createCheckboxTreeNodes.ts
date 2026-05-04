@@ -6,7 +6,7 @@ type CheckboxNode = {
   label: string;
 };
 
-type CheckboxTreeNode = CheckboxNode & {
+export type CheckboxTreeNode = CheckboxNode & {
   children?: CheckboxTreeNode[];
 };
 

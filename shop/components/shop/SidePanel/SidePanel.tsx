@@ -1,6 +1,8 @@
 "use client";
 import styles from "./SidePanel.module.css";
+import { useRouter } from "next/navigation";
 import type { CategoryNode } from "@/types/category";
+import type { CheckboxTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
 import { useCategoryStore } from "@/store/category";
 import CheckboxTree from "react-checkbox-tree";
 import { PiCheckCircleFill, PiMinusCircleFill, PiCircle } from "react-icons/pi";
@@ -12,32 +14,25 @@ export default function SidePanel({
   categoryTree: CategoryNode[];
 }) {
   const { selectedCategories, setSelectedCategories } = useCategoryStore();
-  console.log("Selected categories in SidePanel:", selectedCategories);
+  const router = useRouter();
+
   // Get nodes with 'All' node at root
   const nodes = convertToCheckboxTreeNodes(categoryTree, true);
-
-  // Helper to get all category values (excluding 'all')
-  function getAllCategoryValues(nodes: any[]): string[] {
-    return nodes.flatMap(node =>
-      node.value === "all"
-        ? node.children ? getAllCategoryValues(node.children) : []
-        : [node.value, ...(node.children ? getAllCategoryValues(node.children) : [])]
-    );
-  }
-  const allCategoryValues = getAllCategoryValues(nodes);
+  console.log("Checkbox tree nodes:", nodes);
 
   // Custom onCheck handler for select-all logic
   function handleCheck(checked: string[]) {
-    if (checked.includes("all")) {
-      setSelectedCategories(["all", ...allCategoryValues]);
-    } else {
-      setSelectedCategories(checked.filter(v => v !== "all"));
-    }
+    setSelectedCategories(checked);
+    const newPath = checked.length > 0 ? `/shop/${checked.join(",")}` : "/shop";
+    router.push(newPath);
   }
 
   // Expand all nodes by default
-  function getAllValuesForExpand(nodes: any[]): string[] {
-    return nodes.flatMap(node => [node.value, ...(node.children ? getAllValuesForExpand(node.children) : [])]);
+  function getAllValuesForExpand(nodes: CheckboxTreeNode[]): string[] {
+    return nodes.flatMap((node) => [
+      node.value,
+      ...(node.children ? getAllValuesForExpand(node.children) : []),
+    ]);
   }
   const expanded = getAllValuesForExpand(nodes);
 
