@@ -10,10 +10,18 @@ type CheckboxTreeNode = CheckboxNode & {
   children?: CheckboxTreeNode[];
 };
 
-export function convertToCheckboxTreeNodes(categories: CategoryNode[]): CheckboxTreeNode[] {
-  return categories.map(cat => ({
+export function convertToCheckboxTreeNodes(categories: CategoryNode[], withAllNode = false): CheckboxTreeNode[] {
+  const nodes = categories.map(cat => ({
     value: cat.slug,
     label: cat.name,
     children: convertToCheckboxTreeNodes(cat.children || [])
   }));
+  if (withAllNode) {
+    return [{
+      value: "all",
+      label: "Wszystkie",
+      children: nodes
+    }];
+  }
+  return nodes;
 }

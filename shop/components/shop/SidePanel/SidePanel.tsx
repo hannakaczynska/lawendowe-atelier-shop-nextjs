@@ -13,7 +13,33 @@ export default function SidePanel({
 }) {
   const { selectedCategories, setSelectedCategories } = useCategoryStore();
   console.log("Selected categories in SidePanel:", selectedCategories);
-  const nodes = convertToCheckboxTreeNodes(categoryTree);
+  // Get nodes with 'All' node at root
+  const nodes = convertToCheckboxTreeNodes(categoryTree, true);
+
+  // Helper to get all category values (excluding 'all')
+  function getAllCategoryValues(nodes: any[]): string[] {
+    return nodes.flatMap(node =>
+      node.value === "all"
+        ? node.children ? getAllCategoryValues(node.children) : []
+        : [node.value, ...(node.children ? getAllCategoryValues(node.children) : [])]
+    );
+  }
+  const allCategoryValues = getAllCategoryValues(nodes);
+
+  // Custom onCheck handler for select-all logic
+  function handleCheck(checked: string[]) {
+    if (checked.includes("all")) {
+      setSelectedCategories(["all", ...allCategoryValues]);
+    } else {
+      setSelectedCategories(checked.filter(v => v !== "all"));
+    }
+  }
+
+  // Expand all nodes by default
+  function getAllValuesForExpand(nodes: any[]): string[] {
+    return nodes.flatMap(node => [node.value, ...(node.children ? getAllValuesForExpand(node.children) : [])]);
+  }
+  const expanded = getAllValuesForExpand(nodes);
 
   return (
     <>
@@ -22,8 +48,8 @@ export default function SidePanel({
         <CheckboxTree
           nodes={nodes}
           checked={selectedCategories}
-          expanded={nodes.map((node) => node.value)}
-          onCheck={setSelectedCategories}
+          expanded={expanded}
+          onCheck={handleCheck}
           onExpand={() => {}}
           icons={{
             check: <PiCheckCircleFill color="var(--third-color)" />,
