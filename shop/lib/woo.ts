@@ -46,6 +46,7 @@ export async function getProduct(slug: string): Promise<Product> {
 
 export async function getProductsByCategorySlugs(slugs: string[]) {
   const {categoryMap: map, categoryTree: tree} = await getCategoryMap();
+
   const ids = slugs.map((slug) => map[slug]).filter(Boolean);
 
   // Fetch products by IDs
@@ -58,5 +59,6 @@ export async function getProductsByCategorySlugs(slugs: string[]) {
   }
 
   const products = await res.json();
+  console.log(`Fetched products for categories [${slugs.join(", ")}]:`, products);
   return products.map(mapProduct);
 }

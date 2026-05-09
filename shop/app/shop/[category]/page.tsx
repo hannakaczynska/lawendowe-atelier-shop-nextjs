@@ -11,7 +11,10 @@ export default async function CategoryPage({
 }) {
   const { categoryTree, firstLevelSlugs } = await getCategoryMap();
   const { category } = await params;
-  const products = await getProductsByCategorySlugs([category]);
+  const decoded = decodeURIComponent(category);
+  const slugs = decoded.split(",").filter(Boolean);
+
+  const products = await getProductsByCategorySlugs(slugs);
   return (
     <div>
       <CategoryPanel />
