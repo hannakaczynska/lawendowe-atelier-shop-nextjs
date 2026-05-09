@@ -6,25 +6,45 @@ import type { CheckboxTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
 import { useCategoryStore } from "@/store/category";
 import CheckboxTree from "react-checkbox-tree";
 import { PiCheckCircleFill, PiMinusCircleFill, PiCircle } from "react-icons/pi";
-import { convertToCheckboxTreeNodes } from "@/lib/utils/createCheckboxTreeNodes";
+import {
+  convertToCheckboxTreeNodes,
+  normalizeChecked,
+} from "@/lib/utils/createCheckboxTreeNodes";
 
 export default function SidePanel({
   categoryTree,
+  firstLevelSlugs,
 }: {
   categoryTree: CategoryNode[];
+  firstLevelSlugs: string[];
 }) {
-  const { selectedCategories, setSelectedCategories } = useCategoryStore();
+  const { selectedTreeCategories, setSelectedTreeCategories } =
+    useCategoryStore();
+  const { setSelectedCategories } = useCategoryStore();
   const router = useRouter();
 
   // Get nodes with 'All' node at root
   const nodes = convertToCheckboxTreeNodes(categoryTree, true);
-  console.log("Checkbox tree nodes:", nodes);
 
   // Custom onCheck handler for select-all logic
   function handleCheck(checked: string[]) {
-    setSelectedCategories(checked);
-    const newPath = checked.length > 0 ? `/shop/${checked.join(",")}` : "/shop";
-    router.push(newPath);
+    setSelectedTreeCategories(checked);
+    const normalized = normalizeChecked(checked, categoryTree, firstLevelSlugs);
+
+    if (normalized.includes("all")) {
+      setSelectedCategories(normalized);
+      router.push("/shop");
+    } else if (normalized.length === 0) {
+      setSelectedCategories(["all"]);
+      router.push("/shop");
+    } else if (normalized.length > 0) {
+      setSelectedCategories(normalized);
+      const newPath = `/shop/${normalized.join(",")}`;
+      router.push(newPath);
+    } else {
+      setSelectedCategories(["all"]);
+      router.push("/shop");
+    }
   }
 
   // Expand all nodes by default
@@ -42,7 +62,7 @@ export default function SidePanel({
       <div className={styles.checkboxTree}>
         <CheckboxTree
           nodes={nodes}
-          checked={selectedCategories}
+          checked={selectedTreeCategories}
           expanded={expanded}
           onCheck={handleCheck}
           onExpand={() => {}}
