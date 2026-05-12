@@ -19,7 +19,7 @@ export default async function CategoryPage({
     <div>
       <CategoryPanel />
       <div className="flex max-w-[1500px] mx-auto px-4 py-8">
-        <div className="hidden lg:block w-[300px] shrink-0">
+        <div className="hidden md:block md:w-[250px] lg:w-[300px] shrink-0">
           <SidePanel
             categoryTree={categoryTree}
             firstLevelSlugs={firstLevelSlugs}
