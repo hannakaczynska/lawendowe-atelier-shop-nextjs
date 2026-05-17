@@ -6,10 +6,12 @@ export const useCategoryStore = create<CategoryStore>()(
   persist(
     (set) => ({
       selectedTreeCategories: [],
-      selectedCategories: [],
 
-      setSelectedTreeCategories: (cats: string[]) => set({ selectedTreeCategories: cats }),
-      setSelectedCategories: (cats: string[]) => set({ selectedCategories: cats }),
+      setSelectedTreeCategories: (cats: string[]) =>
+        set({ selectedTreeCategories: cats })
     }),
-    { name: "selected-categories" }
-));
+    {
+      name: "selected-categories"
+    },
+  ),
+);

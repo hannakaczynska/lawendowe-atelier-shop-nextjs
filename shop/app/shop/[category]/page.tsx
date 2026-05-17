@@ -3,6 +3,7 @@ import SidePanel from "@/components/shop/SidePanel/SidePanel";
 import CategoryPanel from "@/components/shop/CategoryPanel";
 import { getProductsByCategorySlugs } from "@/lib/woo";
 import { getCategoryMap } from "@/lib/wooCategoryMapper";
+import ShopCategoryInitializer from "@/components/shop/ShopCategoryInitializer";
 
 export default async function CategoryPage({
   params,
@@ -17,6 +18,7 @@ export default async function CategoryPage({
   const products = await getProductsByCategorySlugs(slugs);
   return (
     <div>
+      <ShopCategoryInitializer categoryTree={categoryTree} initialSlugs={slugs} />
       <CategoryPanel />
       <div className="flex max-w-[1500px] mx-auto px-4 py-8">
         <div className="hidden md:block md:w-[250px] lg:w-[300px] shrink-0">

@@ -1,8 +1,5 @@
 export type CategoryStore = {
   selectedTreeCategories: string[];
-  selectedCategories: string[];
-
-  setSelectedCategories: (cats: string[]) => void;
   setSelectedTreeCategories: (cats: string[]) => void;
 };
 

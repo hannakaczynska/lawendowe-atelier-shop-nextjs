@@ -20,7 +20,6 @@ export default function SidePanel({
 }) {
   const { selectedTreeCategories, setSelectedTreeCategories } =
     useCategoryStore();
-  const { setSelectedCategories } = useCategoryStore();
   const router = useRouter();
 
   // Get nodes with 'All' node at root
@@ -29,20 +28,17 @@ export default function SidePanel({
   // Custom onCheck handler for select-all logic
   function handleCheck(checked: string[]) {
     setSelectedTreeCategories(checked);
+    console.log("Checked slugs:", checked);
     const normalized = normalizeChecked(checked, categoryTree, firstLevelSlugs);
 
     if (normalized.includes("all")) {
-      setSelectedCategories(normalized);
       router.push("/shop");
     } else if (normalized.length === 0) {
-      setSelectedCategories(["all"]);
       router.push("/shop");
     } else if (normalized.length > 0) {
-      setSelectedCategories(normalized);
       const newPath = `/shop/${normalized.join(",")}`;
       router.push(newPath);
     } else {
-      setSelectedCategories(["all"]);
       router.push("/shop");
     }
   }

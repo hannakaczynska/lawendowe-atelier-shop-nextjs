@@ -64,3 +64,45 @@ export function normalizeChecked(
     normalized.every((slug) => firstLevelSlugs.includes(slug));
   return isAll ? ["all"] : normalized;
 }
+
+
+export function expandCategoriesForTree(
+  selected: string[],
+  tree: CategoryNode[]
+): string[] {
+  const result = new Set<string>();
+
+  function collectLeafSlugs(node: CategoryNode) {
+    if (!node.children.length) {
+      result.add(node.slug);
+      return;
+    }
+
+    node.children.forEach(collectLeafSlugs);
+  }
+
+  function traverse(node: CategoryNode) {
+    // if selected contains this parent
+    if (selected.includes(node.slug)) {
+      collectLeafSlugs(node);
+      return;
+    }
+
+    node.children.forEach(traverse);
+  }
+
+  // special case for all
+  if (selected.includes("all")) {
+    tree.forEach(collectLeafSlugs);
+    return Array.from(result);
+  }
+
+  tree.forEach(traverse);
+
+  // preserve direct leaf selections
+  selected.forEach((slug) => {
+    result.add(slug);
+  });
+
+  return Array.from(result);
+}

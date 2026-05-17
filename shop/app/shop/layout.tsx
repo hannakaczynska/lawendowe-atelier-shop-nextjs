@@ -1,6 +1,10 @@
 import ShopHeader from "@/components/ShopHeader";
+export default function ShopLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
 
-export default function ShopLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ShopHeader />
