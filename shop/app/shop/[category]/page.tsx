@@ -1,9 +1,9 @@
 import ProductList from "@/components/shop/ProductList";
-import SidePanel from "@/components/shop/SidePanel/SidePanel";
+import SidePanel from "@/components/shop/category/SidePanel/SidePanel";
 import CategoryPanel from "@/components/shop/CategoryPanel";
 import { getProductsByCategorySlugs } from "@/lib/woo";
 import { getCategoryMap } from "@/lib/wooCategoryMapper";
-import ShopCategoryInitializer from "@/components/shop/ShopCategoryInitializer";
+import ShopCategoryInitializer from "@/components/shop/category/ShopCategoryInitializer";
 
 export default async function CategoryPage({
   params,

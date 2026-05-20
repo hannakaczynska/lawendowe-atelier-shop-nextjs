@@ -14,6 +14,7 @@ export default function ShopCategoryInitializer({
   const { setSelectedTreeCategories } = useCategoryStore();
 
   useEffect(() => {
+    console.log("ShopCategoryInitializer - categoryTree:", categoryTree);
     if (!categoryTree.length) return;
     const source = initialSlugs?.length ? initialSlugs : ["all"];
     const expanded = expandCategoriesForTree(source, categoryTree);
