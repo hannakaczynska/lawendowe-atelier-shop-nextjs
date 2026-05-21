@@ -1,14 +1,16 @@
 "use client";
 import styles from "./SidePanel.module.css";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import type { CategoryNode } from "@/types/category";
 import type { CheckboxTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
-import { useCategoryStore } from "@/store/category";
 import CheckboxTree from "react-checkbox-tree";
 import { PiCheckCircleFill, PiMinusCircleFill, PiCircle } from "react-icons/pi";
 import {
   convertToCheckboxTreeNodes,
   normalizeChecked,
+  expandCategoriesForTree,
+  slugsFromPathname,
 } from "@/lib/utils/createCheckboxTreeNodes";
 
 export default function SidePanel({
@@ -18,28 +20,28 @@ export default function SidePanel({
   categoryTree: CategoryNode[];
   firstLevelSlugs: string[];
 }) {
-  const { selectedTreeCategories, setSelectedTreeCategories } =
-    useCategoryStore();
   const router = useRouter();
+  const pathname = usePathname();
+
+  const [checked, setChecked] = useState(() =>
+    expandCategoriesForTree(slugsFromPathname(pathname), categoryTree)
+  );
+
+  useEffect(() => {
+    setChecked(expandCategoriesForTree(slugsFromPathname(pathname), categoryTree));
+  }, [pathname, categoryTree]);
 
   // Get nodes with 'All' node at root
   const nodes = convertToCheckboxTreeNodes(categoryTree, true);
 
-  // Custom onCheck handler for select-all logic
-  function handleCheck(checked: string[]) {
-    setSelectedTreeCategories(checked);
-    console.log("Checked slugs:", checked);
-    const normalized = normalizeChecked(checked, categoryTree, firstLevelSlugs);
+  function handleCheck(newChecked: string[]) {
+    setChecked(newChecked);
+    const normalized = normalizeChecked(newChecked, categoryTree, firstLevelSlugs);
 
-    if (normalized.includes("all")) {
+    if (normalized.includes("all") || normalized.length === 0) {
       router.push("/shop");
-    } else if (normalized.length === 0) {
-      router.push("/shop");
-    } else if (normalized.length > 0) {
-      const newPath = `/shop/${normalized.join(",")}`;
-      router.push(newPath);
     } else {
-      router.push("/shop");
+      router.push(`/shop/${normalized.join(",")}`);
     }
   }
 
@@ -58,7 +60,7 @@ export default function SidePanel({
       <div className={styles.checkboxTree}>
         <CheckboxTree
           nodes={nodes}
-          checked={selectedTreeCategories}
+          checked={checked}
           expanded={expanded}
           onCheck={handleCheck}
           onExpand={() => {}}

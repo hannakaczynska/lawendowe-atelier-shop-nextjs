@@ -102,6 +102,12 @@ export function expandCategoriesForTree(
   return Array.from(result);
 }
 
+export function slugsFromPathname(pathname: string): string[] {
+  return pathname.startsWith("/shop/")
+    ? pathname.replace("/shop/", "").split(",")
+    : ["all"];
+}
+
 export function findNodesBySlug(slugs: string[], tree: CategoryNode[]): CategoryNode[] {
   function findOne(slug: string, nodes: CategoryNode[]): CategoryNode | undefined {
     for (const node of nodes) {
