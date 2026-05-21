@@ -36,7 +36,8 @@ export default function ShopHeader() {
         <div className="w-full text-sm py-2 text-center bg-[var(--third-color)]">
           Zamówienia tylko z odbiorem osobistym
         </div>
-        <div className="relative w-full max-w-[1500px] mx-auto px-4 flex items-center justify-between bg-white">
+        <div className="bg-white w-full">
+        <div className="relative max-w-[500px] w-full md:max-w-[1500px] mx-auto px-4 flex items-center justify-between">
           <img className="w-[100px] h-auto" src="/logo.svg" alt="Logo" />
           <nav className="hidden md:flex gap-6">
             <Link
@@ -88,6 +89,7 @@ export default function ShopHeader() {
               />
             </button>
           </div>
+        </div>
         </div>
       </header>
       {mobileMenuOpen && (

@@ -7,7 +7,7 @@ import { formatPrice } from "@/lib/utils/formatPrice";
 export default function ProductList({ products }: { products: Product[] }) {
 
   return (
-    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <ul className="grid grid-cols-[repeat(auto-fill,minmax(250px,350px))] justify-center gap-6">
       {products.map((product) => (
         <li className="flex flex-col gap-2 border border-solid border-[var(--light-grey)] rounded-lg p-6" key={product.id}>
           <Link href={`/shop/${product.categories[0].slug}/${product.slug}`} className="cursor-pointer w-full h-[300px] rounded-lg overflow-hidden group">
