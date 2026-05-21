@@ -5,6 +5,7 @@ import MobilePanel from "@/components/shop/category/MobilePanel";
 import { getCategoryMap } from "@/lib/wooCategoryMapper";
 import { getProducts } from "@/lib/woo";
 import ShopCategoryInitializer from "@/components/shop/category/ShopCategoryInitializer";
+import { BiSolidHourglassTop } from "react-icons/bi";
 
 export default async function Shop() {
   const products = await getProducts();
@@ -20,7 +21,7 @@ export default async function Shop() {
         <div className="absolute inset-0 bg-black/40" aria-hidden="true"></div>
       </div>
       <MobilePanel />
-      <CategoryNavigation />
+      <CategoryNavigation slugs={["all"]} categoryTree={categoryTree} />
       <div className="flex max-w-[1500px] mx-auto px-4 py-8 mt-6">
         <div className="hidden md:block md:w-[250px] lg:w-[300px] shrink-0">
           <SidePanel

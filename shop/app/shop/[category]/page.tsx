@@ -27,7 +27,7 @@ export default async function CategoryPage({
         <div className="absolute inset-0 bg-black/40" aria-hidden="true"></div>
       </div>
       <MobilePanel />
-      <CategoryNavigation />
+      <CategoryNavigation slugs={slugs} categoryTree={categoryTree}/>
       <div className="flex max-w-[1500px] mx-auto px-4 py-8">
         <div className="hidden md:block md:w-[250px] lg:w-[300px] shrink-0">
           <SidePanel

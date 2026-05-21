@@ -1,18 +1,39 @@
+"use client";
 import Link from "next/link";
+import { useEffect } from "react";
+import type { CategoryNode } from "@/types/category";
+import { findNodesBySlug } from "@/lib/utils/createCheckboxTreeNodes";
 
-export default function CategoryNavigation({
-}) {
+export default function CategoryNavigation({ slugs, categoryTree }: { slugs: string[]; categoryTree: CategoryNode[] }) {
+  const selectedNodes = slugs.length
+    ? findNodesBySlug(slugs, categoryTree)
+    : [];
+
+    useEffect(() => {
+      console.log("selectedNodes in CategoryNavigation:", selectedNodes);
+    }, [selectedNodes]);
+  
+
   return (
-    <div className="block md:hidden w-full h-full">
-      <h2 className="text-lg font-semibold mb-4">Categories</h2>
-            <nav>
-        <ul className="flex gap-4 px-4 py-2 text-sm text-[var(--grey)]">
-          <li>
-            <Link href="/shop">Sklep</Link>
-            <Link href="/shop">Wszystkie Produkty</Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    <nav className="md:hidden w-full px-4 py-3">
+      <ul className="flex flex-col gap-1 text-sm">
+        <li>
+          <Link href="/shop" className="text-[var(--grey)]">
+            Sklep
+          </Link>
+        </li>
+        {selectedNodes.length === 0 ? (
+          <li className="text-[var(--grey)]">Wszystkie kategorie</li>
+        ) : (
+          selectedNodes.map((node) => (
+            <li key={node.slug}>
+              <Link href={`/shop/${node.slug}`} className="text-[var(--grey)]">
+                {node.name}
+              </Link>
+            </li>
+          ))
+        )}
+      </ul>
+    </nav>
   );
 }

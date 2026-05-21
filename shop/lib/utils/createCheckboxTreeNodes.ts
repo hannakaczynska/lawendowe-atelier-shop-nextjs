@@ -99,10 +99,19 @@ export function expandCategoriesForTree(
 
   tree.forEach(traverse);
 
-  // preserve direct leaf selections
-  selected.forEach((slug) => {
-    result.add(slug);
-  });
-
   return Array.from(result);
+}
+
+export function findNodesBySlug(slugs: string[], tree: CategoryNode[]): CategoryNode[] {
+  function findOne(slug: string, nodes: CategoryNode[]): CategoryNode | undefined {
+    for (const node of nodes) {
+      if (node.slug === slug) return node;
+      const found = findOne(slug, node.children);
+      if (found) return found;
+    }
+  }
+
+  return slugs
+    .map((slug) => findOne(slug, tree))
+    .filter((node): node is CategoryNode => node !== undefined);
 }
