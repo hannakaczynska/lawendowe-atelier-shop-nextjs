@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import ShopMobileMenu from "@/components/shop/ShopMobileMenu";
+import ShopMobileMenu from "@/components/MobileMenu";
 import { usePathname } from "next/navigation";
 
 export default function ShopHeader() {
@@ -32,7 +32,7 @@ export default function ShopHeader() {
 
   return (
     <>
-      <header className="w-screen flex flex-col z-60 relative border-b border-[var(--light-grey)] md:border-b-0" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)} >
+      <header className="md:fixed w-screen flex flex-col z-60 relative border-b border-[var(--light-grey)] md:border-b-0" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)} >
         <div className="w-full text-sm py-2 text-center bg-[var(--third-color)]">
           Zamówienia tylko z odbiorem osobistym
         </div>
@@ -100,7 +100,7 @@ export default function ShopHeader() {
             onClick={() => setMobileMenuOpen(false)}
           />
           <div className="fixed top-[100px] right-0 w-1/3 min-w-[250px] z-50 md:hidden">
-            <ShopMobileMenu />
+            <ShopMobileMenu closeMenu={() => setMobileMenuOpen(false)} />
           </div>
         </>
       )}
