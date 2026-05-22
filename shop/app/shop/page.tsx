@@ -17,7 +17,7 @@ export default async function Shop() {
       </div>
       <div className="md:hidden max-w-[500px] mx-auto mt-[110px]">
       <CategoryNavigation slugs={["all"]} categoryTree={categoryTree} />
-      <MobilePanel />
+      <MobilePanel categoryTree={categoryTree} />
       </div>
       <div className="flex max-w-[1500px] mx-auto px-4 py-1 my-6 md:py-8 md:mt-6">
         <div className="hidden md:block md:w-[250px] lg:w-[300px] shrink-0">

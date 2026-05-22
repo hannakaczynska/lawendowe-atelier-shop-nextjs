@@ -33,7 +33,7 @@ export default function SidePanel({
   }, [pathname, categoryTree]);
 
   useStickyElement("sticky-trigger", "sidepanel", 150);
-  
+
   // Get nodes with 'All' node at root
   const nodes = convertToCheckboxTreeNodes(categoryTree, true);
 

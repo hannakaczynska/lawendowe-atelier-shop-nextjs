@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import ShopMobileMenu from "@/components/MobileMenu";
+import MobileMenu from "@/components/MobileMenu";
 import { setupHeaderVisibility } from "@/lib/utils/scrollHelpers";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
@@ -113,7 +113,7 @@ export default function SiteHeader() {
             onClick={() => setMobileMenuOpen(false)}
           />
           <div className="fixed top-[64px] right-0 w-1/3 min-w-[250px] z-50 md:hidden">
-            <ShopMobileMenu closeMenu={() => setMobileMenuOpen(false)} />
+            <MobileMenu closeMenu={() => setMobileMenuOpen(false)} />
           </div>
         </>
       )}
