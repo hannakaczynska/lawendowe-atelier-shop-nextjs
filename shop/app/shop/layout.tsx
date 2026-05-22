@@ -1,3 +1,4 @@
+import ScrollToTopButton from "@/components/elements/ScrollToToButton";
 import ShopHeader from "@/components/ShopHeader";
 export default function ShopLayout({
   children,
@@ -10,6 +11,7 @@ export default function ShopLayout({
       <ShopHeader />
       <div id="sticky-trigger"></div> 
       {children}
+      <ScrollToTopButton />
     </>
   );
 }
