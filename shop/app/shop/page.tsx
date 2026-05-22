@@ -11,8 +11,8 @@ export default async function Shop() {
   const { categoryTree, firstLevelSlugs } = await getCategoryMap();
 
   return (
-    <div>
-      <div className="hidden md:block w-screen h-[100px] bg-[url('/shop-header.jpg')] bg-cover bg-center relative">
+    <>
+      <div className="hidden md:block mt-[100px] w-screen h-[100px] bg-[url('/shop-header.jpg')] bg-cover bg-center relative">
         <div className="absolute inset-0 bg-black/40" aria-hidden="true"></div>
       </div>
       <div className="max-w-[500px] mx-auto">
@@ -30,6 +30,6 @@ export default async function Shop() {
           <ProductList products={products} />
         </div>
       </div>
-    </div>
+    </>
   );
 }

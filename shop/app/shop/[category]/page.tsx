@@ -16,9 +16,10 @@ export default async function CategoryPage({
   const slugs = decoded.split(",").filter(Boolean);
 
   const products = await getProductsByCategorySlugs(slugs);
-  return (
-    <div>
-      <div className="hidden md:block w-screen h-[100px] bg-[url('/shop-header.jpg')] bg-cover bg-center relative">
+
+    return (
+    <>
+      <div className="hidden md:block mt-[100px] w-screen h-[100px] bg-[url('/shop-header.jpg')] bg-cover bg-center relative">
         <div className="absolute inset-0 bg-black/40" aria-hidden="true"></div>
       </div>
       <div className="max-w-[500px] mx-auto">
@@ -36,6 +37,6 @@ export default async function CategoryPage({
           <ProductList products={products} />
         </div>
       </div>
-    </div>
+    </>
   );
 }

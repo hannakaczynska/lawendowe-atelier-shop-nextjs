@@ -32,7 +32,7 @@ export default function ShopHeader() {
 
   return (
     <>
-      <header className="md:fixed w-screen flex flex-col z-60 relative border-b border-[var(--light-grey)] md:border-b-0" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)} >
+      <header className="md:fixed md:top-0 w-screen flex flex-col z-60 relative border-b border-[var(--light-grey)] md:border-b-0" onClick={() => mobileMenuOpen && setMobileMenuOpen(false)} >
         <div className="w-full text-sm py-2 text-center bg-[var(--third-color)]">
           Zamówienia tylko z odbiorem osobistym
         </div>

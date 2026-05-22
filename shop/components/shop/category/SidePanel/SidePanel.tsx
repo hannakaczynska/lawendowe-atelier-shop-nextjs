@@ -12,6 +12,7 @@ import {
   expandCategoriesForTree,
   slugsFromPathname,
 } from "@/lib/utils/createCheckboxTreeNodes";
+import useStickyElement from "@/hooks/useStickyElement";
 
 export default function SidePanel({
   categoryTree,
@@ -31,6 +32,8 @@ export default function SidePanel({
     setChecked(expandCategoriesForTree(slugsFromPathname(pathname), categoryTree));
   }, [pathname, categoryTree]);
 
+  useStickyElement("sticky-trigger", "sidepanel", 150);
+  
   // Get nodes with 'All' node at root
   const nodes = convertToCheckboxTreeNodes(categoryTree, true);
 
@@ -55,7 +58,7 @@ export default function SidePanel({
   const expanded = getAllValuesForExpand(nodes);
 
   return (
-    <>
+    <div id="sidepanel">
       <h3 className="font-bold">Kategorie</h3>
       <div className={styles.checkboxTree}>
         <CheckboxTree
@@ -78,6 +81,6 @@ export default function SidePanel({
           }}
         />
       </div>
-    </>
+    </div>
   );
 }

@@ -8,6 +8,7 @@ export default function ShopLayout({
   return (
     <>
       <ShopHeader />
+      <div id="sticky-trigger"></div> 
       {children}
     </>
   );
