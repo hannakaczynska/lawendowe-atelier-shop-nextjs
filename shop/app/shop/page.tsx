@@ -15,7 +15,7 @@ export default async function Shop() {
       <div className="hidden md:block mt-[100px] w-screen h-[100px] bg-[url('/shop-header.jpg')] bg-cover bg-center relative">
         <div className="absolute inset-0 bg-black/40" aria-hidden="true"></div>
       </div>
-      <div className="max-w-[500px] mx-auto">
+      <div className="md:hidden max-w-[500px] mx-auto mt-[110px]">
       <CategoryNavigation slugs={["all"]} categoryTree={categoryTree} />
       <MobilePanel />
       </div>
