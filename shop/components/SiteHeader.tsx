@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import MobileMenu from "@/components/MobileMenu";
 import { setupHeaderVisibility } from "@/lib/utils/scrollHelpers";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { useDisableScroll } from "@/hooks/useDisableScroll";
 
 export default function SiteHeader() {
   const isMobile = useIsMobile();
@@ -37,17 +38,7 @@ export default function SiteHeader() {
     return () => window.removeEventListener("resize", handleResize);
   }, [mobileMenuOpen]);
 
-  // Lock scroll when mobile menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
+  useDisableScroll(mobileMenuOpen);
 
   return (
     <>
