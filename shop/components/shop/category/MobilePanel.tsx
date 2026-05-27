@@ -23,7 +23,7 @@ export default function MobilePanel({ categoryTree }: { categoryTree: CategoryNo
         Sortuj
       </button>
     </div>
-    {isCategoryChoiceOpen && <MobileCategoryChoice categoryTree={categoryTree} />}
+    {isCategoryChoiceOpen && <MobileCategoryChoice categoryTree={categoryTree} closeCategoryChoice={() => setIsCategoryChoiceOpen(false)}/>}
     </>
   );
 }
