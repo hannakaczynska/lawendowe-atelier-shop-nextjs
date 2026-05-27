@@ -1,13 +1,8 @@
-import { useEffect, useState, useRef } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import type { ButtonTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
-import {
-  convertToButtonTreeNodes,
-  slugsFromPathname,
-  expandCategoriesForTree,
-  normalizeChecked,
-} from "@/lib/utils/createCheckboxTreeNodes";
+import { convertToButtonTreeNodes } from "@/lib/utils/createCheckboxTreeNodes";
 import { useShopCategory } from "@/context/ShopCategoryContext";
+import { useCategoryFilter } from "@/hooks/useCategoryFilter";
 
 function flattenForCategoryButtons(nodes: ButtonTreeNode[]): ButtonTreeNode[] {
   return nodes.flatMap((node) => [
@@ -26,24 +21,10 @@ export default function MobileCategoryChoice({
 }: {
   closeCategoryChoice: () => void;
 }) {
-  const { categoryTree, firstLevelSlugs } = useShopCategory();
-  const router = useRouter();
-  const pathname = usePathname();
-  const [checked, setChecked] = useState(() =>
-    expandCategoriesForTree(slugsFromPathname(pathname), categoryTree),
-  );
-
+  const { categoryTree } = useShopCategory();
+  const { checked, setChecked, hasChanges, handleApply } = useCategoryFilter(closeCategoryChoice);
   const nodes = convertToButtonTreeNodes(categoryTree, true);
   const panelRef = useRef<HTMLDivElement>(null);
-
-  const appliedChecked = expandCategoriesForTree(
-    slugsFromPathname(pathname),
-    categoryTree,
-  );
-  const hasChanges =
-    checked.length > 0 &&
-    (checked.length !== appliedChecked.length ||
-      checked.some((v) => !appliedChecked.includes(v)));
 
   useEffect(() => {
     function handleMouseDown(e: MouseEvent) {
@@ -72,13 +53,7 @@ export default function MobileCategoryChoice({
   }
 
   function setNewCategories() {
-    const normalized = normalizeChecked(checked, categoryTree, firstLevelSlugs);
-    if (normalized.includes("all") || normalized.length === 0) {
-      router.push("/shop");
-    } else {
-      router.push(`/shop/${normalized.join(",")}`);
-    }
-    closeCategoryChoice();
+    handleApply();
   }
 
   return (

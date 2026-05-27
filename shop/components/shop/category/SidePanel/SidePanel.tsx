@@ -1,62 +1,20 @@
 "use client";
 import styles from "./SidePanel.module.css";
-import { useRouter, usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
 import type { CheckboxTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
 import CheckboxTree from "react-checkbox-tree";
 import { PiCheckCircleFill, PiMinusCircleFill, PiCircle } from "react-icons/pi";
-import {
-  convertToCheckboxTreeNodes,
-  normalizeChecked,
-  expandCategoriesForTree,
-  slugsFromPathname,
-} from "@/lib/utils/createCheckboxTreeNodes";
+import { convertToCheckboxTreeNodes } from "@/lib/utils/createCheckboxTreeNodes";
 import { useShopCategory } from "@/context/ShopCategoryContext";
+import { useCategoryFilter } from "@/hooks/useCategoryFilter";
 
 export default function SidePanel() {
-  const { categoryTree, firstLevelSlugs } = useShopCategory();
-  const router = useRouter();
-  const pathname = usePathname();
+  const { categoryTree } = useShopCategory();
+  const { checked, setChecked, hasChanges, handleApply } = useCategoryFilter();
 
-  const [checked, setChecked] = useState(() =>
-    expandCategoriesForTree(slugsFromPathname(pathname), categoryTree),
-  );
-
-  // Update checked state when URL or category tree changes
-  useEffect(() => {
-    setChecked(
-      expandCategoriesForTree(slugsFromPathname(pathname), categoryTree),
-    );
-  }, [pathname, categoryTree]);
-
-  // Get nodes with 'All' node at root
   const nodes = convertToCheckboxTreeNodes(categoryTree, true);
 
-  // Get currently applied checked values from URL
-  const appliedChecked = expandCategoriesForTree(
-    slugsFromPathname(pathname),
-    categoryTree,
-  );
-
-  // Determine if there are changes compared to URL state
-  const hasChanges =
-    checked.length > 0 &&
-    (checked.length !== appliedChecked.length ||
-      checked.some((v) => !appliedChecked.includes(v)));
-
-  //Change state when checkbox is checked/unchecked
   function handleCheck(newChecked: string[]) {
     setChecked(newChecked);
-  }
-
-  // Apply changes and navigate to new URL
-  function handleApply() {
-    const normalized = normalizeChecked(checked, categoryTree, firstLevelSlugs);
-    if (normalized.includes("all") || normalized.length === 0) {
-      router.push("/shop");
-    } else {
-      router.push(`/shop/${normalized.join(",")}`);
-    }
   }
 
   // Expand all nodes by default
