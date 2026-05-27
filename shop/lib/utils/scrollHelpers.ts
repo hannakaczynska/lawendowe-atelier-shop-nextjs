@@ -14,7 +14,7 @@ export function setupHeaderVisibility(
 
         let isHeaderVisible: boolean;
 
-        if (currentScrollY < 100) {
+        if (currentScrollY < 300) {
           isHeaderVisible = true;
         } else if (isScrollingUp) {
           isHeaderVisible = true;
