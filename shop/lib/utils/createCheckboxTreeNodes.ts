@@ -5,9 +5,20 @@ type CheckboxNode = {
   label: string;
 };
 
+type ButtonNode = {
+  value: string;
+  label: string;
+  parent: string | null;
+};
+
 export type CheckboxTreeNode = CheckboxNode & {
   children?: CheckboxTreeNode[];
 };
+
+export type ButtonTreeNode = ButtonNode & {
+  children?: ButtonTreeNode[];
+};
+
 
 export function convertToCheckboxTreeNodes(
   categories: CategoryNode[],
@@ -23,6 +34,31 @@ export function convertToCheckboxTreeNodes(
       {
         value: "all",
         label: "Wszystkie",
+        children: nodes,
+      },
+    ];
+  }
+  return nodes;
+}
+
+
+export function convertToButtonTreeNodes(
+  categories: CategoryNode[],
+  withAllNode = false,
+  parentSlug: string = "all",
+): ButtonTreeNode[] {
+  const nodes = categories.map((cat) => ({
+    value: cat.slug,
+    label: cat.name,
+    parent: parentSlug,
+    children: convertToButtonTreeNodes(cat.children || [], false, cat.slug),
+  }));
+  if (withAllNode) {
+    return [
+      {
+        value: "all",
+        label: "Wszystkie",
+        parent: null,
         children: nodes,
       },
     ];
