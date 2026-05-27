@@ -36,6 +36,15 @@ export default function MobileCategoryChoice({
   const nodes = convertToButtonTreeNodes(categoryTree, true);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  const appliedChecked = expandCategoriesForTree(
+    slugsFromPathname(pathname),
+    categoryTree,
+  );
+  const hasChanges =
+    checked.length > 0 &&
+    (checked.length !== appliedChecked.length ||
+      checked.some((v) => !appliedChecked.includes(v)));
+
   useEffect(() => {
     function handleMouseDown(e: MouseEvent) {
       if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
@@ -64,7 +73,6 @@ export default function MobileCategoryChoice({
 
   function setNewCategories() {
     const normalized = normalizeChecked(checked, categoryTree, firstLevelSlugs);
-    console.log("Normalized categories to set:", normalized);
     if (normalized.includes("all") || normalized.length === 0) {
       router.push("/shop");
     } else {
@@ -104,8 +112,14 @@ export default function MobileCategoryChoice({
           </fieldset>
           <div className="flex justify-end">
             <button
-              className="bg-[var(--primary-color)] font-bold px-4 py-2 rounded-full text-sm"
+              type="button"
+              disabled={!hasChanges}
               onClickCapture={setNewCategories}
+              className={`font-bold px-4 py-2 rounded-full text-sm transition-colors ${
+                hasChanges
+                  ? "bg-[var(--primary-color)] border border-[var(--primary-color)] text-white cursor-pointer"
+                  : "bg-white border border-[var(--light-grey)] text-[var(--light-grey)] font-bold cursor-not-allowed"
+              }`}
             >
               Zastosuj
             </button>
