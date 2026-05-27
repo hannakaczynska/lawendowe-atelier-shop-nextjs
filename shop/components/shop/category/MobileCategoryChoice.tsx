@@ -1,7 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import type { CategoryNode } from "@/types/category";
+import { usePathname } from "next/navigation";
 import type { ButtonTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
-import { convertToButtonTreeNodes } from "@/lib/utils/createCheckboxTreeNodes";
+import {
+  convertToButtonTreeNodes,
+  slugsFromPathname,
+  expandCategoriesForTree,
+} from "@/lib/utils/createCheckboxTreeNodes";
 
 function flattenForCategoryButtons(nodes: ButtonTreeNode[]): ButtonTreeNode[] {
   return nodes.flatMap((node) => [
@@ -22,10 +27,13 @@ export default function MobileCategoryChoice({
   categoryTree: CategoryNode[];
   closeCategoryChoice: () => void;
 }) {
-  const [checked, setChecked] = useState<string[]>([]);
+  const pathname = usePathname();
+  const [checked, setChecked] = useState(() =>
+    expandCategoriesForTree(slugsFromPathname(pathname), categoryTree),
+  );
+
   const nodes = convertToButtonTreeNodes(categoryTree, true);
   const panelRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     function handleMouseDown(e: MouseEvent) {
@@ -37,12 +45,10 @@ export default function MobileCategoryChoice({
     return () => document.removeEventListener("mousedown", handleMouseDown);
   }, [closeCategoryChoice]);
 
-
   function isNodeChecked(node: ButtonTreeNode): boolean {
     const leaves = getLeafSlugs(node);
     return leaves.length > 0 && leaves.every((s) => checked.includes(s));
   }
-
 
   function handleCheck(node: ButtonTreeNode) {
     const leaves = getLeafSlugs(node);
