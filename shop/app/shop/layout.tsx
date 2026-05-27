@@ -1,17 +1,21 @@
 import ScrollToTopButton from "@/components/elements/ScrollToToButton";
 import ShopHeader from "@/components/ShopHeader";
-export default function ShopLayout({
+import { ShopCategoryProvider } from "@/context/ShopCategoryContext";
+import { getCategoryMap } from "@/lib/wooCategoryMapper";
+
+export default async function ShopLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { categoryTree, firstLevelSlugs } = await getCategoryMap();
 
   return (
-    <>
+    <ShopCategoryProvider categoryTree={categoryTree} firstLevelSlugs={firstLevelSlugs}>
       <ShopHeader />
-      <div id="sticky-trigger"></div> 
+      <div id="sticky-trigger"></div>
       {children}
       <ScrollToTopButton />
-    </>
+    </ShopCategoryProvider>
   );
 }

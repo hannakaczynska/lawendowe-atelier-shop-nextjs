@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import type { CategoryNode } from "@/types/category";
 import { useRouter, usePathname } from "next/navigation";
 import type { ButtonTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
 import {
@@ -8,6 +7,7 @@ import {
   expandCategoriesForTree,
   normalizeChecked,
 } from "@/lib/utils/createCheckboxTreeNodes";
+import { useShopCategory } from "@/context/ShopCategoryContext";
 
 function flattenForCategoryButtons(nodes: ButtonTreeNode[]): ButtonTreeNode[] {
   return nodes.flatMap((node) => [
@@ -22,14 +22,11 @@ function getLeafSlugs(node: ButtonTreeNode): string[] {
 }
 
 export default function MobileCategoryChoice({
-  categoryTree,
   closeCategoryChoice,
-  firstLevelSlugs,
 }: {
-  categoryTree: CategoryNode[];
   closeCategoryChoice: () => void;
-  firstLevelSlugs: string[];
 }) {
+  const { categoryTree, firstLevelSlugs } = useShopCategory();
   const router = useRouter();
   const pathname = usePathname();
   const [checked, setChecked] = useState(() =>

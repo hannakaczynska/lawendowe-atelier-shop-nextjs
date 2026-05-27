@@ -1,23 +1,18 @@
 "use client";
 import Link from "next/link";
-import { useEffect } from "react";
 import type { CategoryNode } from "@/types/category";
 import { findNodesBySlug } from "@/lib/utils/createCheckboxTreeNodes";
+import { useShopCategory } from "@/context/ShopCategoryContext";
 
 export default function CategoryNavigation({
   slugs,
-  categoryTree,
 }: {
   slugs: string[];
-  categoryTree: CategoryNode[];
 }) {
+  const { categoryTree } = useShopCategory();
   const selectedNodes = slugs.length
     ? findNodesBySlug(slugs, categoryTree)
     : [];
-
-  useEffect(() => {
-    console.log("selectedNodes in CategoryNavigation:", selectedNodes);
-  }, [selectedNodes]);
 
   return (
     <nav className="md:hidden w-full px-4 py-3">

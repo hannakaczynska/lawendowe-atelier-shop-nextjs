@@ -2,7 +2,6 @@
 import styles from "./SidePanel.module.css";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import type { CategoryNode } from "@/types/category";
 import type { CheckboxTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
 import CheckboxTree from "react-checkbox-tree";
 import { PiCheckCircleFill, PiMinusCircleFill, PiCircle } from "react-icons/pi";
@@ -13,14 +12,10 @@ import {
   slugsFromPathname,
 } from "@/lib/utils/createCheckboxTreeNodes";
 import useStickyElement from "@/hooks/useStickyElement";
+import { useShopCategory } from "@/context/ShopCategoryContext";
 
-export default function SidePanel({
-  categoryTree,
-  firstLevelSlugs,
-}: {
-  categoryTree: CategoryNode[];
-  firstLevelSlugs: string[];
-}) {
+export default function SidePanel() {
+  const { categoryTree, firstLevelSlugs } = useShopCategory();
   const router = useRouter();
   const pathname = usePathname();
 

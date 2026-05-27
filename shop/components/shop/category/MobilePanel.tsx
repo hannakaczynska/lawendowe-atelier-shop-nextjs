@@ -1,16 +1,9 @@
 "use client";
 import { useState } from "react";
 import MobileCategoryChoice from "./MobileCategoryChoice";
-import { CategoryNode } from "@/types/category";
 import { useDisableScroll } from "@/hooks/useDisableScroll";
 
-export default function MobilePanel({
-  categoryTree,
-  firstLevelSlugs,
-}: {
-  categoryTree: CategoryNode[];
-    firstLevelSlugs: string[];
-}) {
+export default function MobilePanel() {
   const [isCategoryChoiceOpen, setIsCategoryChoiceOpen] = useState(false);
 
   useDisableScroll(isCategoryChoiceOpen);
@@ -34,9 +27,7 @@ export default function MobilePanel({
       </div>
       {isCategoryChoiceOpen && (
         <MobileCategoryChoice
-          categoryTree={categoryTree}
           closeCategoryChoice={() => setIsCategoryChoiceOpen(false)}
-          firstLevelSlugs={firstLevelSlugs}
         />
       )}
     </>
