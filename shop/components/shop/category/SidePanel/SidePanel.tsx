@@ -11,7 +11,6 @@ import {
   expandCategoriesForTree,
   slugsFromPathname,
 } from "@/lib/utils/createCheckboxTreeNodes";
-import useStickyElement from "@/hooks/useStickyElement";
 import { useShopCategory } from "@/context/ShopCategoryContext";
 
 export default function SidePanel() {
@@ -20,22 +19,39 @@ export default function SidePanel() {
   const pathname = usePathname();
 
   const [checked, setChecked] = useState(() =>
-    expandCategoriesForTree(slugsFromPathname(pathname), categoryTree)
+    expandCategoriesForTree(slugsFromPathname(pathname), categoryTree),
   );
 
+  // Update checked state when URL or category tree changes
   useEffect(() => {
-    setChecked(expandCategoriesForTree(slugsFromPathname(pathname), categoryTree));
+    setChecked(
+      expandCategoriesForTree(slugsFromPathname(pathname), categoryTree),
+    );
   }, [pathname, categoryTree]);
-
-  useStickyElement("sticky-trigger", "sidepanel", 150);
 
   // Get nodes with 'All' node at root
   const nodes = convertToCheckboxTreeNodes(categoryTree, true);
 
+  // Get currently applied checked values from URL
+  const appliedChecked = expandCategoriesForTree(
+    slugsFromPathname(pathname),
+    categoryTree,
+  );
+
+  // Determine if there are changes compared to URL state
+  const hasChanges =
+    checked.length > 0 &&
+    (checked.length !== appliedChecked.length ||
+      checked.some((v) => !appliedChecked.includes(v)));
+
+  //Change state when checkbox is checked/unchecked
   function handleCheck(newChecked: string[]) {
     setChecked(newChecked);
-    const normalized = normalizeChecked(newChecked, categoryTree, firstLevelSlugs);
+  }
 
+  // Apply changes and navigate to new URL
+  function handleApply() {
+    const normalized = normalizeChecked(checked, categoryTree, firstLevelSlugs);
     if (normalized.includes("all") || normalized.length === 0) {
       router.push("/shop");
     } else {
@@ -53,7 +69,7 @@ export default function SidePanel() {
   const expanded = getAllValuesForExpand(nodes);
 
   return (
-    <div id="sidepanel">
+    <div className="sticky top-[150px]">
       <h3 className="font-bold">Kategorie</h3>
       <div className={styles.checkboxTree}>
         <CheckboxTree
@@ -75,6 +91,20 @@ export default function SidePanel() {
             leaf: <></>,
           }}
         />
+      </div>
+      <div className="mt-10 w-full">
+        <button
+          type="button"
+          onClick={handleApply}
+          disabled={!hasChanges}
+          className={`block mx-auto px-4 py-2 rounded-full border font-bold transition-colors ${
+            hasChanges
+              ? "bg-[var(--third-color)] border-[var(--third-color)] text-white cursor-pointer"
+              : "bg-white border-[var(--grey)] text-[var(--grey)] opacity-40 cursor-not-allowed"
+          }`}
+        >
+          Zastosuj
+        </button>
       </div>
     </div>
   );
