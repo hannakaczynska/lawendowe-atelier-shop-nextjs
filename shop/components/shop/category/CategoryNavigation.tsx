@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import type { CategoryNode } from "@/types/category";
-import { findNodesBySlug } from "@/lib/utils/createCheckboxTreeNodes";
+import { findNodesBySlug } from "@/lib/utils/category/categoryHelpers";
 import { useShopCategory } from "@/context/ShopCategoryContext";
 
 export default function CategoryNavigation({

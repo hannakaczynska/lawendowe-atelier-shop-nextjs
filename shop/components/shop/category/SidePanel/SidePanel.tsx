@@ -1,9 +1,9 @@
 "use client";
 import styles from "./SidePanel.module.css";
-import type { CheckboxTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
+import type { CheckboxTreeNode } from "@/lib/utils/category/checkboxTreeNodes";
 import CheckboxTree from "react-checkbox-tree";
 import { PiCheckCircleFill, PiMinusCircleFill, PiCircle } from "react-icons/pi";
-import { convertToCheckboxTreeNodes } from "@/lib/utils/createCheckboxTreeNodes";
+import { convertToCheckboxTreeNodes } from "@/lib/utils/category/checkboxTreeNodes";
 import { useShopCategory } from "@/context/ShopCategoryContext";
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
 

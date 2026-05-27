@@ -6,7 +6,7 @@ import {
   expandCategoriesForTree,
   normalizeChecked,
   slugsFromPathname,
-} from "@/lib/utils/createCheckboxTreeNodes";
+} from "@/lib/utils/category/categoryHelpers";
 
 export function useCategoryFilter(onApply?: () => void) {
   const { categoryTree, firstLevelSlugs } = useShopCategory();

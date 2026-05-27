@@ -1,20 +1,12 @@
 import { useEffect, useRef } from "react";
-import type { ButtonTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
-import { convertToButtonTreeNodes } from "@/lib/utils/createCheckboxTreeNodes";
+import type { ButtonTreeNode } from "@/lib/utils/category/buttonTreeNodes";
+import {
+  convertToButtonTreeNodes,
+  flattenForCategoryButtons,
+  getLeafSlugs,
+} from "@/lib/utils/category/buttonTreeNodes";
 import { useShopCategory } from "@/context/ShopCategoryContext";
 import { useCategoryFilter } from "@/hooks/useCategoryFilter";
-
-function flattenForCategoryButtons(nodes: ButtonTreeNode[]): ButtonTreeNode[] {
-  return nodes.flatMap((node) => [
-    node,
-    ...flattenForCategoryButtons(node.children ?? []),
-  ]);
-}
-
-function getLeafSlugs(node: ButtonTreeNode): string[] {
-  if (!node.children || node.children.length === 0) return [node.value];
-  return node.children.flatMap(getLeafSlugs);
-}
 
 export default function MobileCategoryChoice({
   closeCategoryChoice,
