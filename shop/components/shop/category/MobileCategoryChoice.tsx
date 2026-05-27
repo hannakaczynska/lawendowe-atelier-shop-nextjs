@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import type { CategoryNode } from "@/types/category";
-import { usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import type { ButtonTreeNode } from "@/lib/utils/createCheckboxTreeNodes";
 import {
   convertToButtonTreeNodes,
   slugsFromPathname,
   expandCategoriesForTree,
+  normalizeChecked,
 } from "@/lib/utils/createCheckboxTreeNodes";
 
 function flattenForCategoryButtons(nodes: ButtonTreeNode[]): ButtonTreeNode[] {
@@ -23,10 +24,13 @@ function getLeafSlugs(node: ButtonTreeNode): string[] {
 export default function MobileCategoryChoice({
   categoryTree,
   closeCategoryChoice,
+  firstLevelSlugs,
 }: {
   categoryTree: CategoryNode[];
   closeCategoryChoice: () => void;
+  firstLevelSlugs: string[];
 }) {
+  const router = useRouter();
   const pathname = usePathname();
   const [checked, setChecked] = useState(() =>
     expandCategoriesForTree(slugsFromPathname(pathname), categoryTree),
@@ -61,9 +65,16 @@ export default function MobileCategoryChoice({
     }
   }
 
-  useEffect(() => {
-    console.log("Checked categories:", checked);
-  }, [checked]);
+  function setNewCategories() {
+    const normalized = normalizeChecked(checked, categoryTree, firstLevelSlugs);
+    console.log("Normalized categories to set:", normalized);
+    if (normalized.includes("all") || normalized.length === 0) {
+      router.push("/shop");
+    } else {
+      router.push(`/shop/${normalized.join(",")}`);
+    }
+    closeCategoryChoice();
+  }
 
   return (
     <>
@@ -97,7 +108,7 @@ export default function MobileCategoryChoice({
           <div className="flex justify-end">
             <button
               className="bg-[var(--primary-color)] font-bold px-4 py-2 rounded-full text-sm"
-              onClick={closeCategoryChoice}
+              onClickCapture={setNewCategories}
             >
               Zastosuj
             </button>

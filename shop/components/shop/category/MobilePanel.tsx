@@ -6,8 +6,10 @@ import { useDisableScroll } from "@/hooks/useDisableScroll";
 
 export default function MobilePanel({
   categoryTree,
+  firstLevelSlugs,
 }: {
   categoryTree: CategoryNode[];
+    firstLevelSlugs: string[];
 }) {
   const [isCategoryChoiceOpen, setIsCategoryChoiceOpen] = useState(false);
 
@@ -34,6 +36,7 @@ export default function MobilePanel({
         <MobileCategoryChoice
           categoryTree={categoryTree}
           closeCategoryChoice={() => setIsCategoryChoiceOpen(false)}
+          firstLevelSlugs={firstLevelSlugs}
         />
       )}
     </>
