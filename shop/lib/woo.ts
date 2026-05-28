@@ -1,7 +1,7 @@
 import { WooStoreProduct } from "@/types/woo";
 import { Product } from "@/types/product";
 import { mapProduct } from "@/lib/wooProductMapper";
-import { getCategoryMap } from "@/lib/wooCategoryMapper";
+import { getCategoryMap } from "@/lib/utils/category/wooCategoryMapper";
 const BASE_URL = "http://lawendowe-atelier-backend.local/wp-json/wc/store";
 
 export async function getProducts(): Promise<Product[]> {

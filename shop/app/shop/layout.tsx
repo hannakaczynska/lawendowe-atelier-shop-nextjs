@@ -1,7 +1,7 @@
 import ScrollToTopButton from "@/components/elements/ScrollToToButton";
 import ShopHeader from "@/components/ShopHeader";
 import { ShopCategoryProvider } from "@/context/ShopCategoryContext";
-import { getCategoryMap } from "@/lib/wooCategoryMapper";
+import { getCategoryMap } from "@/lib/utils/category/wooCategoryMapper";
 
 export default async function ShopLayout({
   children,
