@@ -70,7 +70,7 @@ export default function MobileCategoryChoice({
                   key={node.value}
                   onClick={() => handleCheck(node)}
                   aria-pressed={isNodeChecked(node)}
-                  className={`${isNodeChecked(node) ? "bg-[var(--secondary-color)] border border-[var(--secondary-color)] text-white" : "bg-white border border-[var(--light-grey)]"} px-4 py-2 rounded text-sm`}
+                  className={`${isNodeChecked(node) ? "bg-[var(--secondary-color)] border border-[var(--secondary-color)] text-white" : "bg-white border border-[var(--light-grey)]"} px-4 py-2 rounded text-sm transition-colors duration-300`}
                 >
                   {node.label}
                 </button>
@@ -82,7 +82,7 @@ export default function MobileCategoryChoice({
               type="button"
               disabled={!hasChanges}
               onClickCapture={setNewCategories}
-              className={`font-bold px-4 py-2 rounded-full text-sm transition-colors ${
+              className={`font-bold px-4 py-2 rounded-full text-sm transition-colors duration-300 ${
                 hasChanges
                   ? "bg-[var(--primary-color)] border border-[var(--primary-color)] text-white cursor-pointer"
                   : "bg-white border border-[var(--light-grey)] text-[var(--light-grey)] font-bold cursor-not-allowed"

@@ -55,7 +55,7 @@ export default function SidePanel() {
           type="button"
           onClick={handleApply}
           disabled={!hasChanges}
-          className={`block mx-auto px-4 py-2 rounded-full border font-bold transition-colors ${
+          className={`block mx-auto px-4 py-2 rounded-full border font-bold transition-colors duration-300 ${
             hasChanges
               ? "bg-[var(--third-color)] border-[var(--third-color)] text-white cursor-pointer"
               : "bg-white border-[var(--grey)] text-[var(--grey)] opacity-40 cursor-not-allowed"
