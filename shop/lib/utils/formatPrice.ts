@@ -5,5 +5,5 @@ export function formatPrice(
   return new Intl.NumberFormat("pl-PL", {
     style: "currency",
     currency,
-  }).format(price / 100);
+  }).format(price);
 }

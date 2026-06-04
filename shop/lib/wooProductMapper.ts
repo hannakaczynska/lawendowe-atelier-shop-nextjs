@@ -9,15 +9,11 @@ export function mapProduct(p: WooStoreProduct): Product {
     name: p.name,
     slug: p.slug,
     shortDescription: p.short_description ?? "",
-    description: p.description,
+    description: p.description ?? "",
 
-    price: Number(p.prices.price),
-    regularPrice: Number(p.prices.regular_price),
-    salePrice: p.prices.sale_price
-      ? Number(p.prices.sale_price)
-      : undefined,
-
-    currency: p.prices.currency_symbol,
+    price: Number(p.price),
+    regularPrice: Number(p.regular_price),
+    salePrice: Number(p.sale_price),
 
     mainImage: {
       src: image?.src ?? "/product-placeholder.png",
@@ -29,7 +25,7 @@ export function mapProduct(p: WooStoreProduct): Product {
       alt: img.alt ?? p.name,
     })) ?? [],
 
-    inStock: p.is_in_stock,
+    inStock: p.stock_status,
 
     categories:
       p.categories?.map((c) => ({

@@ -1,4 +1,4 @@
-const BASE_URL = "http://lawendowe-atelier-backend.local/wp-json/wc/store";
+const BASE_URL = "https://api.lawendoweatelier.pl/wp-json/wc/store";
 
 import type { CategoryNode } from "@/types/category";
 

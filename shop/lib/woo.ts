@@ -2,11 +2,12 @@ import { WooStoreProduct } from "@/types/woo";
 import { Product } from "@/types/product";
 import { mapProduct } from "@/lib/wooProductMapper";
 import { getCategoryMap } from "@/lib/utils/category/wooCategoryMapper";
-const BASE_URL = "http://lawendowe-atelier-backend.local/wp-json/wc/store";
+const BASE_URL = "https://api.lawendoweatelier.pl/wp-json/wc/store";
 
 export async function getProducts(): Promise<Product[]> {
+  const appUrl = "http://localhost:3000";
   try {
-    const res = await fetch(`${BASE_URL}/products`, {
+    const res = await fetch(`${appUrl}/api/products`, {
       cache: "no-store",
     });
 
@@ -15,6 +16,8 @@ export async function getProducts(): Promise<Product[]> {
     }
 
     const data: WooStoreProduct[] = await res.json();
+
+    console.log("Fetched products from API route:", data);
 
     return data.map(mapProduct);
   } catch (error) {

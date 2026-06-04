@@ -9,8 +9,6 @@ export type Product = {
   regularPrice: number;
   salePrice?: number;
 
-  currency: string;
-
   mainImage: {
     src: string;
     alt: string;
@@ -21,7 +19,7 @@ export type Product = {
     alt: string;
   }[];
 
-  inStock: boolean;
+  inStock: string;
 
   categories: {
     id: number;

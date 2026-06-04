@@ -7,15 +7,6 @@ export type WooImage = {
   alt?: string | null;
 };
 
-export type WooPrices = {
-  price: string;
-  regular_price: string;
-  sale_price?: string | null;
-  currency_symbol: string;
-  currency_code: string;
-  price_range?: unknown;
-};
-
 export type WooCategory = {
   id: number;
   name: string;
@@ -38,24 +29,20 @@ export type WooStoreProduct = {
 
   type: "simple" | "variable";
 
-  is_in_stock: boolean;
-  is_on_backorder: boolean;
+  stock_status: string;
+  backordered: boolean;
 
   images?: WooImage[];
 
-  prices: WooPrices;
+  price: string;
+  regular_price: string;
+  sale_price: string;
 
   categories?: WooCategory[];
 
   tags?: WooTag[];
 
-  add_to_cart?: {
-    url: string;
-    text: string;
-    description: string;
-  };
-
   on_sale: boolean;
   average_rating: string;
-  review_count: number;
+  rating_count: number;
 };
