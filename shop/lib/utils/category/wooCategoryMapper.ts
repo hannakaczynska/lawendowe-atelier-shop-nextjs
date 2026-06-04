@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.lawendoweatelier.pl/wp-json/wc/store";
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 import type { CategoryNode } from "@/types/category";
 
@@ -14,7 +14,9 @@ export async function getCategoryMap(): Promise<{ categoryMap: Record<string, nu
   }
 
   // Fetch categories from WooCommerce API
-  const res = await fetch(`${BASE_URL}/products/categories?per_page=100`);
+  const res = await fetch(`${APP_URL}/api/categories?per_page=100`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch categories");
@@ -22,17 +24,19 @@ export async function getCategoryMap(): Promise<{ categoryMap: Record<string, nu
 
   const categories = await res.json();
 
+  const filteredCategories = categories.filter((cat: any) => cat.slug !== "bez-kategorii");
+
   categoryMap = {};
   const map: Record<number, CategoryNode> = {};
   categoryTree = [];
 
   // Build the map and tree structure
-  categories.forEach((cat: any) => {
+  filteredCategories.forEach((cat: any) => {
     categoryMap![cat.slug] = cat.id;
     map[cat.id] = { id: cat.id, slug: cat.slug, name: cat.name, parent: cat.parent, children: [] };
   });
 
-  categories.forEach((cat: any) => {
+  filteredCategories.forEach((cat: any) => {
     if (cat.parent && map[cat.parent]) {
       map[cat.parent].children.push(map[cat.id]);
     } else {
