@@ -3,9 +3,9 @@ import { Product } from "@/types/product";
 import { mapProduct } from "@/lib/wooProductMapper";
 import { getCategoryMap } from "@/lib/utils/category/wooCategoryMapper";
 const BASE_URL = "https://api.lawendoweatelier.pl/wp-json/wc/store";
+const appUrl = "http://localhost:3000";
 
 export async function getProducts(): Promise<Product[]> {
-  const appUrl = "http://localhost:3000";
   try {
     const res = await fetch(`${appUrl}/api/products`, {
       cache: "no-store",
@@ -48,13 +48,13 @@ export async function getProduct(slug: string): Promise<Product> {
 
 
 export async function getProductsByCategorySlugs(slugs: string[]) {
-  const {categoryMap: map, categoryTree: tree} = await getCategoryMap();
+  const { categoryMap: map } = await getCategoryMap();
 
   const ids = slugs.map((slug) => map[slug]).filter(Boolean);
 
-  // Fetch products by IDs
   const res = await fetch(
-    `${BASE_URL}/products?category=${ids.join(",")}`,
+    `${appUrl}/api/products/by-category?category=${ids.join(",")}`,
+    { cache: "no-store" },
   );
 
   if (!res.ok) {
