@@ -1,4 +1,4 @@
-import ProductList from "@/components/shop/ProductList";
+import ProductList from "@/components/shop/product/ProductList";
 import SidePanel from "@/components/shop/category/SidePanel/SidePanel";
 import CategoryNavigation from "@/components/shop/category/CategoryNavigation";
 import MobilePanel from "@/components/shop/category/MobilePanel";

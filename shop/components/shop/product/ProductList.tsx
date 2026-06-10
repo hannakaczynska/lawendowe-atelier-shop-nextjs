@@ -1,6 +1,6 @@
 'use client';
 import Link from "next/link";
-import AddToCartButton from "../elements/AddToCartButton";
+import AddToCartButton from "../../elements/AddToCartButton";
 import type { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils/formatPrice";
 
