@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 const BASE_URL = process.env.WOOCOMMERCE_URL;
 const WP_ADMIN_USER = process.env.WP_ADMIN_USER;
 const WP_ADMIN_PASS = process.env.WP_ADMIN_PASSWORD;
-console.log(WP_ADMIN_USER, WP_ADMIN_PASS);
 
 export async function POST(req: Request) {
   try {
