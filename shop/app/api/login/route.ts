@@ -1,12 +1,39 @@
 import { NextResponse } from "next/server";
 
 const BASE_URL = process.env.WOOCOMMERCE_URL;
+const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const res = await fetch(`${BASE_URL}/wp-json/jwt-auth/v1/token`, {
+        if (!body.hcaptcha) {
+      return NextResponse.json(
+        { message: "Brak tokenu hCaptcha" },
+        { status: 400 }
+      );
+    }
+
+    // verify hCaptcha response
+    const verifyRes = await fetch("https://hcaptcha.com/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `secret=${HCAPTCHA_SECRET}&response=${body.hcaptcha}`,
+    });
+
+    const verifyData = await verifyRes.json();
+
+    if (!verifyData.success) {
+      return NextResponse.json(
+        { message: "Niepoprawna weryfikacja hCaptcha" },
+        { status: 400 }
+      );
+    }
+
+    console.log("hCaptcha verification successful");
+
+    //login in wordpress
+    const wpRes = await fetch(`${BASE_URL}/wp-json/jwt-auth/v1/token`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -15,18 +42,18 @@ export async function POST(req: Request) {
       }),
     });
 
-    const data = await res.json();
+    const wpData  = await wpRes.json();
 
-    if (!res.ok || !data.token) {
+    if (!wpRes.ok || !wpData.token) {
       return NextResponse.json(
-        { message: data.message || "Błędne dane logowania" },
+        { message: wpData.message || "Błędne dane logowania" },
         { status: 401 }
       );
     }
 
     const response = NextResponse.json({ success: true });
 
-    response.cookies.set("auth_token", data.token, {
+    response.cookies.set("auth_token", wpData.token, {
       httpOnly: true,
       secure: true,
       sameSite: "strict",
