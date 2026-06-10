@@ -26,6 +26,7 @@ export function mapProduct(p: WooStoreProduct): Product {
     })) ?? [],
 
     inStock: p.stock_status,
+    quantity: p.stock_quantity ?? 0,
 
     categories:
       p.categories?.map((c) => ({
