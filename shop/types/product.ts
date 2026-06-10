@@ -20,6 +20,7 @@ export type Product = {
   }[];
 
   inStock: string;
+  quantity: number;
 
   categories: {
     id: number;

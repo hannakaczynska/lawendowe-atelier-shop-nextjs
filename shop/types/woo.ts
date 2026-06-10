@@ -31,6 +31,7 @@ export type WooStoreProduct = {
 
   stock_status: string;
   backordered: boolean;
+  stock_quantity: number;
 
   images?: WooImage[];
 
