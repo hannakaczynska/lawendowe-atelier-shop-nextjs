@@ -21,7 +21,7 @@ export default function CategoryNavigation({
 
   if (productCard) {
     return (
-      <nav className="w-full px-4 py-3">
+      <nav className="w-full">
         <ul className="flex flex-wrap gap-2 text-sm text-[var(--grey)]">
           <li>
             <Link href="/shop">

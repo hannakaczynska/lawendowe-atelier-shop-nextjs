@@ -36,6 +36,9 @@ const Carousel = ({ images, options }: PropType) => {
     if (!emblaMainApi) return;
     onSelect();
     emblaMainApi.on("select", onSelect).on("reInit", onSelect);
+    return () => {
+      emblaMainApi.off("select", onSelect).off("reInit", onSelect);
+    };
   }, [emblaMainApi, onSelect]);
 
   return (
@@ -44,7 +47,9 @@ const Carousel = ({ images, options }: PropType) => {
         <div className={styles.embla__container}>
           {images.map((image, index) => (
             <div className={styles.embla__slide} key={index}>
-              <img src={image.src} alt={image.alt} className="object-cover w-full h-full" />
+              <div className={styles.embla__slide__inner}>
+                <img src={image.src} alt={image.alt} className="object-cover w-full h-full" />
+              </div>
             </div>
           ))}
         </div>

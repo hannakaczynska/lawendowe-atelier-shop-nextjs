@@ -1,6 +1,7 @@
-import ProductCard from "@/components/shop/ProductCard";
+import ProductCard from "@/components/shop/product/ProductCard";
 import { getProduct } from "@/lib/woo";
 import CategoryNavigation from "@/components/shop/category/CategoryNavigation";
+import BackButton from "@/components/elements/BackButton";
 
 export default async function ProductPage({
   params,
@@ -8,14 +9,17 @@ export default async function ProductPage({
   params: Promise<{ category: string; slug: string }>;
 }) {
   const { category, slug } = await params;
-  console.log("Received params:", { category, slug });
   const product = await getProduct(slug);
+  console.log("Fetched product in page component:", product);
   const decoded = decodeURIComponent(category);
   const slugs = decoded.split(",").filter(Boolean);
 
   return (
-    <div className="max-w-[500px] mx-auto mt-[110px]">
+    <div className="w-100% max-w-[500px] md:max-w-[700px] mx-auto mt-[110px] lg:max-w-[1500px]">
+      <nav className="flex flex-col md:flex-row mb-8 py-4 px-4 gap-4 md:gap-15 ">
+      <BackButton />
       <CategoryNavigation slugs={slugs} productCard={true} productName={product.name} categories={product.categories} />
+      </nav>
       <ProductCard product={product} />
     </div>
   );

@@ -45,7 +45,7 @@ export default function ShopHeader() {
   return (
     <>
       <header
-        className={`${headerVisible ? "translate-y-0" : "-translate-y-full"} fixed top-0 w-screen flex flex-col z-60 border-b border-[var(--light-grey)] md:border-b-0 transition-transform duration-300`}
+        className={`${headerVisible ? "translate-y-0" : "-translate-y-full"} fixed top-0 w-screen flex flex-col z-60 border-b border-[var(--light-grey)]  transition-transform duration-300`}
         onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}
       >
         <div className="w-full text-sm py-2 text-center bg-[var(--third-color)]">

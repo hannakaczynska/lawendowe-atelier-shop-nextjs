@@ -9,6 +9,9 @@
   --third-color: #8cdb8d;
   --grey: #807f7f;
   --light-grey: #ededed;
+  --in-stock: #16a34a;
+  --last-items: #fb923c;
+  --out-of-stock: #ef4444;
 }
 
 @theme inline {
