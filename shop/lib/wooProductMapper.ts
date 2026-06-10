@@ -10,6 +10,7 @@ export function mapProduct(p: WooStoreProduct): Product {
     slug: p.slug,
     shortDescription: p.short_description ?? "",
     description: p.description ?? "",
+    moreInfo: p.acf_fields ?? {},
 
     price: Number(p.price),
     regularPrice: Number(p.regular_price),

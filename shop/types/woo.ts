@@ -20,12 +20,21 @@ export type WooTag = {
   slug: string;
 };
 
+export type ACFProductFields = {
+  description?: string;
+  recipe?: string;
+  usage?: string;
+  ingredients?: string;
+};
+
 export type WooStoreProduct = {
   id: number;
   name: string;
   slug: string;
   description: string;
   short_description?: string;
+
+  acf_fields?: ACFProductFields;
 
   type: "simple" | "variable";
 
