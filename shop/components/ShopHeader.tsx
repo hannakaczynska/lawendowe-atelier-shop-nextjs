@@ -49,7 +49,7 @@ export default function ShopHeader() {
         onClick={() => mobileMenuOpen && setMobileMenuOpen(false)}
       >
         <div className="w-full text-sm py-2 text-center bg-[var(--third-color)]">
-          Zamówienia tylko z odbiorem osobistym
+          Wersja demonstracyjna - sklep w budowie 🔨👷‍♀️
         </div>
         <div className="bg-white w-full">
           <div className="relative max-w-[500px] w-full md:max-w-[1500px] mx-auto px-4 flex items-center justify-between">

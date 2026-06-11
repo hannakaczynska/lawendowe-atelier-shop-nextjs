@@ -5,12 +5,19 @@ const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
 
 export async function POST(req: Request) {
   try {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+      return NextResponse.json(
+        { message: "Wersja demonstracyjna — logowanie jest wyłączone." },
+        { status: 403 },
+      );
+    }
+    
     const body = await req.json();
 
-        if (!body.hcaptcha) {
+    if (!body.hcaptcha) {
       return NextResponse.json(
         { message: "Brak tokenu hCaptcha" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -26,7 +33,7 @@ export async function POST(req: Request) {
     if (!verifyData.success) {
       return NextResponse.json(
         { message: "Niepoprawna weryfikacja hCaptcha" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -42,12 +49,12 @@ export async function POST(req: Request) {
       }),
     });
 
-    const wpData  = await wpRes.json();
+    const wpData = await wpRes.json();
 
     if (!wpRes.ok || !wpData.token) {
       return NextResponse.json(
         { message: wpData.message || "Błędne dane logowania" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -62,11 +69,10 @@ export async function POST(req: Request) {
     });
 
     return response;
-
   } catch (error) {
     return NextResponse.json(
       { error: "Server error", details: String(error) },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
