@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { GiBodyBalance } from "react-icons/gi";
 
 const BASE_URL = process.env.WOOCOMMERCE_URL;
 const WP_ADMIN_USER = process.env.WP_ADMIN_USER;
@@ -33,6 +34,25 @@ export async function POST(req: Request) {
     }
 
     console.log("hCaptcha verification successful");
+
+    // Validate password strength
+    if (!body.password || body.password.length < 8) {
+      return NextResponse.json(
+        { message: "Hasło musi mieć co najmniej 8 znaków" },
+        { status: 400 },
+      );
+    }
+
+    const hasLower = /[a-z]/.test(body.password);
+    const hasUpper = /[A-Z]/.test(body.password);
+    const hasDigit = /[0-9]/.test(body.password);
+
+    if (!hasLower || !hasUpper || !hasDigit) {
+      return NextResponse.json(
+        { message: "Hasło musi zawierać małą literę, dużą literę i cyfrę" },
+        { status: 400 },
+      );
+    }
 
     // fetch token for admin user
     const tokenRes = await fetch(`${BASE_URL}/wp-json/jwt-auth/v1/token`, {

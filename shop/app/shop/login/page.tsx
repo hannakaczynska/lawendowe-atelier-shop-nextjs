@@ -10,7 +10,7 @@ import { useRedirectAfterLogin } from "@/hooks/useRedirectAfterLogin";
 const schema = z.object({
   email: z.string().min(1, "Email jest wymagany").email("Wpisz poprawny email"),
   password: z.string().min(1, "Hasło jest wymagane"),
-  hcaptcha: z.string().min(1, "Potwierdź, że nie jesteś botem"),
+  hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
 });
 
 type FormData = z.infer<typeof schema>;
