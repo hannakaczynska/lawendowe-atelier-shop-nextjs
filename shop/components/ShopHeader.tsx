@@ -82,7 +82,7 @@ export default function ShopHeader() {
             </nav>
             <div className="flex gap-4">
               <nav className="flex gap-4 ml-[20px]">
-                <Link href="/">
+                <Link href="/shop/login">
                   <img
                     className="h-[32px] hidden md:block"
                     src="/user.svg"

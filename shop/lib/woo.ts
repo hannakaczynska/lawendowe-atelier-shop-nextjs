@@ -36,6 +36,7 @@ export async function getProduct(slug: string): Promise<Product> {
     }
 
     const data: WooStoreProduct = await res.json();
+    console.log(`Fetched product for slug "${slug}":`, data);
 
     return mapProduct(data);
   } catch (error) {

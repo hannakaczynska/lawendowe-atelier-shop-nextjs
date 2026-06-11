@@ -2,6 +2,7 @@ import ProductCard from "@/components/shop/product/ProductCard";
 import { getProduct } from "@/lib/woo";
 import CategoryNavigation from "@/components/shop/category/CategoryNavigation";
 import BackButton from "@/components/elements/BackButton";
+import ProductRefferals from "@/components/shop/product/ProductRefferals";
 
 export default async function ProductPage({
   params,
@@ -21,6 +22,7 @@ export default async function ProductPage({
       <CategoryNavigation slugs={slugs} productCard={true} productName={product.name} categories={product.categories} />
       </nav>
       <ProductCard product={product} />
+      <ProductRefferals />
     </div>
   );
 }
