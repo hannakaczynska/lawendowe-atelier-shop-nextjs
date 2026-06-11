@@ -3,17 +3,9 @@
 import { useState, useEffect } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRedirectAfterLogin } from "@/hooks/useRedirectAfterLogin";
-
-const schema = z.object({
-  email: z.string().min(1, "Email jest wymagany").email("Wpisz poprawny email"),
-  password: z.string().min(1, "Hasło jest wymagane"),
-  hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
-});
-
-type FormData = z.infer<typeof schema>;
+import { loginSchema, LoginSchema } from "@/schemas/authSchema";
 
 export default function LoginPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
@@ -24,8 +16,8 @@ export default function LoginPage() {
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -56,7 +48,7 @@ export default function LoginPage() {
   const [success, setSuccess] = useState<string | null>(null);
 
   // form submit
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: LoginSchema) => {
     setServerError(null);
     setSuccess(null);
 

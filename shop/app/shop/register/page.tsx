@@ -3,53 +3,9 @@
 import { useState, useEffect } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRedirectAfterLogin } from "@/hooks/useRedirectAfterLogin";
-
-const schema = z
-  .object({
-    email: z
-      .string()
-      .min(1, "Email jest wymagany")
-      .email("Wpisz poprawny email"),
-    password: z
-      .string()
-      .min(1, "Hasło jest wymagane")
-      .min(8, "Hasło musi mieć co najmniej 8 znaków")
-      .regex(/[a-z]/, "Hasło musi zawierać małą literę")
-      .regex(/[A-Z]/, "Hasło musi zawierać dużą literę")
-      .regex(/[0-9]/, "Hasło musi zawierać cyfrę"),
-    confirmPassword: z.string().min(1, "Potwierdź hasło"),
-    firstName: z
-      .string()
-      .min(2, "Imię musi mieć co najmniej 2 znaki")
-      .max(50, "Imię jest za długie")
-      .regex(/^[A-Za-zÀ-ž\- ]+$/, "Imię może zawierać tylko litery"),
-    lastName: z
-      .string()
-      .min(2, "Nazwisko musi mieć co najmniej 2 znaki")
-      .max(50, "Nazwisko jest za długie")
-      .regex(/^[A-Za-zÀ-ž\- ]+$/, "Nazwisko może zawierać tylko litery"),
-    phone: z
-      .string()
-      .min(1, "Numer telefonu jest wymagany")
-      .regex(/^[0-9 ]+$/, "Numer może zawierać tylko cyfry i spacje")
-      .refine((val) => val.replace(/\s/g, "").length === 9, {
-        message: "Numer telefonu musi mieć 9 cyfr",
-      }),
-    consent_regulations: z.boolean().refine((val) => val === true, {
-      message: "Musisz zaakceptować regulamin",
-    }),
-    consent_marketing: z.boolean().optional(),
-    hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ["confirmPassword"],
-    message: "Hasła muszą być takie same",
-  });
-
-type FormData = z.infer<typeof schema>;
+import { registerSchema, RegisterSchema } from "@/schemas/authSchema";
 
 export default function RegisterPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
@@ -60,8 +16,8 @@ export default function RegisterPage() {
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -79,7 +35,7 @@ export default function RegisterPage() {
   const [success, setSuccess] = useState<string | null>(null);
 
   // Submit
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: RegisterSchema) => {
     setServerError(null);
     setSuccess(null);
 
