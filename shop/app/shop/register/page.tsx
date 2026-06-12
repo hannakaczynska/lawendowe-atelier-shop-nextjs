@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRedirectAfterLogin } from "@/hooks/useRedirectAfterLogin";
 import { registerSchema, RegisterSchema } from "@/schemas/authSchema";
 
 export default function RegisterPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
-  const { redirect } = useRedirectAfterLogin();
+const router = useRouter();
 
   const {
     register,
@@ -37,7 +37,6 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterSchema) => {
     setServerError(null);
     setSuccess(null);
-    console.log("HALOOO!!!");
 
     const res = await fetch("/api/register", {
       method: "POST",
@@ -54,7 +53,8 @@ export default function RegisterPage() {
 
     setSuccess("Konto zostało utworzone!");
 
-    redirect();
+    router.push(`/shop/verify-email?email=${encodeURIComponent(data.email)}`);
+
   };
 
   return (
