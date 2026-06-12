@@ -53,14 +53,18 @@ export default function RegisterPage() {
 
     setSuccess("Konto zostało utworzone!");
 
-    //     await fetch("/api/send-verification-email", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     email: data.email,
-    //     token: json.user.meta.email_verification_token
-    //   }),
-    // });
+    try {
+      await fetch("/api/send-verification-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: data.email,
+          token: json.user.meta.email_verification_token,
+        }),
+      });
+    } catch (e) {
+      console.error("Email sending failed:", e);
+    }
 
     router.push(`/shop/verify-email?email=${encodeURIComponent(data.email)}`);
   };
