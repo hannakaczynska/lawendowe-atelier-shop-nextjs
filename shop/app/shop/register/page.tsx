@@ -9,7 +9,7 @@ import { registerSchema, RegisterSchema } from "@/schemas/authSchema";
 
 export default function RegisterPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
-const router = useRouter();
+  const router = useRouter();
 
   const {
     register,
@@ -53,8 +53,16 @@ const router = useRouter();
 
     setSuccess("Konto zostało utworzone!");
 
-    router.push(`/shop/verify-email?email=${encodeURIComponent(data.email)}`);
+    //     await fetch("/api/send-verification-email", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     email: data.email,
+    //     token: json.user.meta.email_verification_token
+    //   }),
+    // });
 
+    router.push(`/shop/verify-email?email=${encodeURIComponent(data.email)}`);
   };
 
   return (
@@ -228,4 +236,3 @@ const router = useRouter();
     </form>
   );
 }
-

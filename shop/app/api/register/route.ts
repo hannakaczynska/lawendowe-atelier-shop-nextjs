@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import crypto from "crypto";
 
 const BASE_URL = process.env.WOOCOMMERCE_URL;
 const WP_ADMIN_USER = process.env.WP_ADMIN_USER;
@@ -73,6 +74,7 @@ export async function POST(req: Request) {
     }
 
     const adminToken = tokenData.token;
+    const token = crypto.randomUUID();
 
     // create new user with admin token
     const userRes = await fetch(`${BASE_URL}/wp-json/wp/v2/users`, {
@@ -89,6 +91,7 @@ export async function POST(req: Request) {
         last_name: body.lastName,
         meta: {
           email_verified: false,
+          email_verification_token: token,
           consent_regulations: body.consent_regulations,
           consent_marketing: body.consent_marketing,
         },
