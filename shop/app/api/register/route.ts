@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { GiBodyBalance } from "react-icons/gi";
 
 const BASE_URL = process.env.WOOCOMMERCE_URL;
 const WP_ADMIN_USER = process.env.WP_ADMIN_USER;
@@ -86,10 +85,10 @@ export async function POST(req: Request) {
         username: body.email,
         email: body.email,
         password: body.password,
+        first_name: body.firstName,
+        last_name: body.lastName,
         meta: {
-          first_name: body.firstName,
-          last_name: body.lastName,
-          phone: body.phone,
+          email_verified: false,
           consent_regulations: body.consent_regulations,
           consent_marketing: body.consent_marketing,
         },

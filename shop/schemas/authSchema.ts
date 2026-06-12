@@ -33,13 +33,6 @@ export const registerSchema = z.object({
       .min(2, "Nazwisko musi mieć co najmniej 2 znaki")
       .max(50, "Nazwisko jest za długie")
       .regex(/^[A-Za-zÀ-ž\- ]+$/, "Nazwisko może zawierać tylko litery"),
-    phone: z
-      .string()
-      .min(1, "Numer telefonu jest wymagany")
-      .regex(/^[0-9 ]+$/, "Numer może zawierać tylko cyfry i spacje")
-      .refine((val) => val.replace(/\s/g, "").length === 9, {
-        message: "Numer telefonu musi mieć 9 cyfr",
-      }),
     consent_regulations: z.boolean().refine((val) => val === true, {
       message: "Musisz zaakceptować regulamin",
     }),

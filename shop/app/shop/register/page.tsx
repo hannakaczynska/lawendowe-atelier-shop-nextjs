@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,6 @@ export default function RegisterPage() {
       confirmPassword: "",
       firstName: "",
       lastName: "",
-      phone: "",
       consent_regulations: false,
       consent_marketing: false,
       hcaptcha: "",
@@ -38,6 +37,7 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterSchema) => {
     setServerError(null);
     setSuccess(null);
+    console.log("HALOOO!!!");
 
     const res = await fetch("/api/register", {
       method: "POST",
@@ -157,23 +157,6 @@ export default function RegisterPage() {
         {errors.lastName?.message || " "}
       </p>
 
-      {/* Phone */}
-      <label htmlFor="phone" className="sr-only">
-        Telefon
-      </label>
-      <input
-        className="p-2 pl-3 border border-[var(--light-grey)] rounded-md"
-        type="tel"
-        id="phone"
-        placeholder="Telefon (123 456 789) *"
-        {...register("phone")}
-      />
-      <p
-        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.phone ? "opacity-100" : "opacity-0"}`}
-      >
-        {errors.phone?.message || " "}
-      </p>
-
       {/* Regulations */}
       <label className="flex items-center gap-2 text-sm mt-2 cursor-pointer">
         <input
@@ -245,3 +228,4 @@ export default function RegisterPage() {
     </form>
   );
 }
+
