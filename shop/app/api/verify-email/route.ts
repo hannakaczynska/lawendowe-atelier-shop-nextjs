@@ -51,7 +51,6 @@ export async function GET(req: Request) {
 
   const userId = wpData.id;
   const emailFromToken = wpData.email;
-  console.log("wpData", wpData);
 
   // fetch user data with admin token to check if email matches token
   const userRes = await fetch(`${BASE_URL}/wp-json/wp/v2/users/${userId}?context=edit`, {
@@ -70,8 +69,6 @@ export async function GET(req: Request) {
   }
 
   const currentEmail = userData.email;
-  console.log("User data", userData);
-  console.log("Emails", currentEmail, emailFromToken);
 
   // check if email from token matches current email
   if (currentEmail !== emailFromToken) {
