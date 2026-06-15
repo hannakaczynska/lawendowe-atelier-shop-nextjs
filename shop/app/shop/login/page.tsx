@@ -61,7 +61,7 @@ export default function LoginPage() {
     const json = await res.json();
 
     if (!res.ok) {
-      setServerError(json.message || "Email lub hasło są niepoprawne");
+      setServerError(json.message || "Wystąpił błąd podczas logowania");
       return;
     }
 

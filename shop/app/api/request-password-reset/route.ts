@@ -94,7 +94,6 @@ export async function POST(req: Request) {
   });
 
   // send reset email
-
   const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/shop/reset-password?token=${resetToken}`;
 
   await resend.emails.send({

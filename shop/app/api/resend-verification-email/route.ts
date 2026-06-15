@@ -72,7 +72,6 @@ export async function POST(req: Request) {
 
   // do not reveal if email is registered or not, just return success
   if (!Array.isArray(users) || users.length === 0) {
-    console.log("No user found with email:", email);
     return NextResponse.json({ success: true });
   }
 
@@ -80,7 +79,6 @@ export async function POST(req: Request) {
 
   // if email is already verified, do not send another email, just return success
   if (user.meta?.email_verified === true) {
-    console.log("Email already verified for user:", user.id);
     return NextResponse.json({ success: true });
   }
 

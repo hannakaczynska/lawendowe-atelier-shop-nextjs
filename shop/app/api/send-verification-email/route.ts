@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
   const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/shop/verify?token=${token}`;
 
-  const result = await resend.emails.send({
+  await resend.emails.send({
     from: "Sklep <no-reply@mail.lawendoweatelier.pl>",
     to: email,
     subject: "Potwierdź swój adres e‑mail",
@@ -20,7 +20,6 @@ export async function POST(req: Request) {
       <p>Jeśli to nie Ty zakładałaś/eś konto, zignoruj tę wiadomość.</p>
     `,
   });
-   console.log("RESEND RESULT:", result);
 
   return NextResponse.json({ ok: true });
 }

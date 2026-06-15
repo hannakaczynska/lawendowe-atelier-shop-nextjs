@@ -31,8 +31,6 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("hCaptcha verification successful");
-
     //login in wordpress
     const wpRes = await fetch(`${BASE_URL}/wp-json/jwt-auth/v1/token`, {
       method: "POST",
@@ -45,16 +43,14 @@ export async function POST(req: Request) {
 
     const wpData = await wpRes.json();
 
-    console.log("WordPress login response:", wpData);
-
     if (!wpRes.ok || !wpData.token) {
       return NextResponse.json(
-        { message: wpData.message || "Błędne dane logowania" },
+        { message: "Błędne dane logowania" },
         { status: 401 },
       );
     }
 
-    // 2️⃣ Pobierz dane użytkownika, żeby sprawdzić email_verified
+    // fetch user data to check email verification status
     const userRes = await fetch(
       `${BASE_URL}/wp-json/wp/v2/users/me?context=edit`,
       {
@@ -73,12 +69,10 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("Fetched user data:", userData);
-
-    // 3️⃣ Sprawdź email_verified
+    // check if email is verified
     if (!userData.meta?.email_verified) {
       return NextResponse.json(
-        { message: "Adres e-mail nie został potwierdzony" },
+        { message: "Adres e-mail nie został zweryfikowany" },
         { status: 403 },
       );
     }
@@ -96,7 +90,7 @@ export async function POST(req: Request) {
     return response;
   } catch (error) {
     return NextResponse.json(
-      { error: "Server error", details: String(error) },
+      { message: "Wystąpił błąd serwera", details: String(error) },
       { status: 500 },
     );
   }

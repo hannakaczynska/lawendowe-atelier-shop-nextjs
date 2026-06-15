@@ -66,7 +66,7 @@ export async function POST(req: Request) {
 
     if (!tokenRes.ok || !tokenData.token) {
       return NextResponse.json(
-        { message: "Cannot authenticate admin", details: tokenData },
+        { message: "Błąd autoryzacji admina", details: tokenData },
         { status: 500 },
       );
     }
@@ -108,7 +108,7 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     return NextResponse.json(
-      { error: "Server error", details: String(error) },
+      { message: "Wystąpił błąd serwera", details: String(error) },
       { status: 500 },
     );
   }

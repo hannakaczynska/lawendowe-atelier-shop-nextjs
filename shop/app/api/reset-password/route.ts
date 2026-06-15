@@ -43,7 +43,6 @@ export async function POST(req: Request) {
   );
 
   const users = await usersRes.json();
-  console.log("Users found with token:", users);
 
   if (!Array.isArray(users) || users.length === 0) {
     return NextResponse.json(
