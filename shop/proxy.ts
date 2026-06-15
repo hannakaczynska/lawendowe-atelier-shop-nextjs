@@ -11,7 +11,7 @@ export function proxy(req: NextRequest) {
     if (referer && referer.includes(req.nextUrl.origin)) {
       const path = referer.replace(req.nextUrl.origin, "");
 
-      if (path.startsWith("/shop/register") || path.startsWith("/register") || path.startsWith("/shop/verify") || path.startsWith("/shop/verify-email") || path.startsWith("/shop/resend-verification") ) {
+      if (path.startsWith("/shop/register") || path.startsWith("/register") || path.startsWith("/shop/verify") || path.startsWith("/shop/verify-email") || path.startsWith("/shop/resend-verification") || path.startsWith("/shop/reset-password") || path.startsWith("/forgot-password")) {
         res.cookies.set("redirectAfterLogin", "/shop", { path: "/" });
       } else {
         res.cookies.set("redirectAfterLogin", path, { path: "/" });
