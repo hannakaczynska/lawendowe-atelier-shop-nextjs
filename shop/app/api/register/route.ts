@@ -33,8 +33,6 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("hCaptcha verification successful");
-
     // Validate password strength
     if (!body.password || body.password.length < 8) {
       return NextResponse.json(

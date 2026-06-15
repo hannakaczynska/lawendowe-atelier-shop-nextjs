@@ -1,33 +1,46 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+import { resendEmailSchema, ResendEmailSchema } from "@/schemas/authSchema";
 
 export default function ResendVerificationPage() {
-  const [email, setEmail] = useState("");
+  const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
   const [status, setStatus] = useState<"idle" | "sent">("idle");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<ResendEmailSchema>({
+    resolver: zodResolver(resendEmailSchema),
+    defaultValues: {
+      email: "",
+      hcaptcha: "",
+    },
+  });
 
+  const onSubmit = async (data: ResendEmailSchema) => {
+    setStatus("idle");
     await fetch("/api/resend-verification-email", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email: data.email, hcaptcha: data.hcaptcha }),
     });
 
-    setIsSubmitting(false);
     setStatus("sent");
   };
 
   return (
-    <div className="mt-[120px] mx-auto max-w-[310px] md:max-w-[500px] mx-auto  text-center">
+    <div className="mt-[120px] mx-auto max-w-[310px] md:max-w-[500px] mx-auto">
       <form
-        onSubmit={handleSubmit}
-        className="flex flex-col py-4 md:p-10 justify-center min-h-[calc(100vh-120px)] gap-4"
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col py-4 md:p-10 justify-center min-h-[calc(100vh-120px)]"
       >
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="text-2xl font-bold mb-6 md:mb-10">
           Wyślij ponownie link aktywacyjny
         </h1>
         {/* Email */}
@@ -39,10 +52,27 @@ export default function ResendVerificationPage() {
           type="email"
           id="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          {...register("email")}
         />
+        <p
+          className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.email ? "opacity-100" : "opacity-0"}`}
+        >
+          {errors.email?.message || " "}
+        </p>
+
+        {/* Captcha */}
+        <div className="mt-4">
+          <HCaptcha
+            sitekey={siteKey}
+            onVerify={(token) => setValue("hcaptcha", token)}
+          />
+        </div>
+        <p
+          className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] ${errors.hcaptcha ? "opacity-100" : "opacity-0"}`}
+        >
+          {errors.hcaptcha?.message || " "}
+        </p>
+
         {/* Submit */}
         <button
           className={`${

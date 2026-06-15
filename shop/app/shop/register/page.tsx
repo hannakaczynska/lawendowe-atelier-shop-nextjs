@@ -126,7 +126,6 @@ export default function RegisterPage() {
         placeholder="Potwierdź hasło *"
         {...register("confirmPassword")}
       />
-
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${
           errors.confirmPassword ? "opacity-100" : "opacity-0"

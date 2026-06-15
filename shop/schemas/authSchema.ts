@@ -66,3 +66,10 @@ export const forgotPasswordSchema = z.object({
   email: z.string().min(1, "Email jest wymagany").email("Wpisz poprawny email"),
   hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
 });
+
+export type ResendEmailSchema = z.infer<typeof resendEmailSchema>;
+
+export const resendEmailSchema = z.object({
+  email: z.string().min(1, "Email jest wymagany").email("Wpisz poprawny email"),
+  hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
+});
