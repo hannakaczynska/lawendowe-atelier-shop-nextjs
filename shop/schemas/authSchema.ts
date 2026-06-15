@@ -8,22 +8,6 @@ export const loginSchema = z.object({
   hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
 });
 
-export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
-
-export const resetPasswordSchema = z.object({
-  password: z
-    .string()
-    .min(1, "Hasło jest wymagane")
-    .min(8, "Hasło musi mieć co najmniej 8 znaków")
-    .regex(/[a-z]/, "Hasło musi zawierać małą literę")
-    .regex(/[A-Z]/, "Hasło musi zawierać dużą literę")
-    .regex(/[0-9]/, "Hasło musi zawierać cyfrę"),
-  confirmPassword: z.string().min(1, "Potwierdź hasło"),
-}).refine((data) => data.password === data.confirmPassword, {
-  path: ["confirmPassword"],
-  message: "Hasła muszą być takie same",
-});
-
 export type RegisterSchema = z.infer<typeof registerSchema>;
 
 export const registerSchema = z.object({
@@ -59,3 +43,26 @@ export const registerSchema = z.object({
     path: ["confirmPassword"],
     message: "Hasła muszą być takie same",
   });
+
+  export type ResetPasswordSchema = z.infer<typeof resetPasswordSchema>;
+
+export const resetPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(1, "Hasło jest wymagane")
+    .min(8, "Hasło musi mieć co najmniej 8 znaków")
+    .regex(/[a-z]/, "Hasło musi zawierać małą literę")
+    .regex(/[A-Z]/, "Hasło musi zawierać dużą literę")
+    .regex(/[0-9]/, "Hasło musi zawierać cyfrę"),
+  confirmPassword: z.string().min(1, "Potwierdź hasło"),
+}).refine((data) => data.password === data.confirmPassword, {
+  path: ["confirmPassword"],
+  message: "Hasła muszą być takie same",
+});
+
+export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().min(1, "Email jest wymagany").email("Wpisz poprawny email"),
+  hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
+});
