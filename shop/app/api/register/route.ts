@@ -99,7 +99,17 @@ export async function POST(req: Request) {
     const userData = await userRes.json();
 
     if (!userRes.ok) {
-      return NextResponse.json(userData, { status: userRes.status });
+      if (
+        userData.code === "existing_user_email" ||
+        userData.code === "existing_user_login"
+      ) {
+        return NextResponse.json({ success: true });
+      }
+
+      return NextResponse.json(
+        { success: false, message: "Nie udało się utworzyć konta" },
+        { status: 500 },
+      );
     }
 
     return NextResponse.json(
