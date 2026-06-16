@@ -8,6 +8,8 @@ import { resetPasswordSchema, ResetPasswordSchema } from "@/schemas/authSchema";
 export default function ResetPasswordPage() {
   const [token, setToken] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "invalid" | "success">("idle");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Pobierz token z URL
   useEffect(() => {
@@ -92,13 +94,26 @@ export default function ResetPasswordPage() {
       <label htmlFor="password" className="sr-only">
         Nowe hasło
       </label>
-      <input
-        className="p-2 pl-3 border border-[var(--light-grey)] rounded-md"
-        type="password"
-        id="password"
-        placeholder="Nowe hasło *"
-        {...register("password")}
-      />
+      <div className="relative w-full">
+        <input
+          className="p-2 pl-3 pr-10 border border-[var(--light-grey)] rounded-md w-full"
+          type={showPassword ? "text" : "password"}
+          id="password"
+          placeholder="Nowe hasło *"
+          {...register("password")}
+        />
+        <button
+          type="button"
+          className="absolute right-3 top-1/2 -translate-y-1/2"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          <img
+            src={showPassword ? "/eye-closed.svg" : "/eye-open.svg"}
+            alt={showPassword ? "Ukryj hasło" : "Pokaż hasło"}
+            className="w-5 h-5 cursor-pointer"
+          />
+        </button>
+      </div>
 
       <p className="text-xs text-[var(--grey)] mt-1">
         Hasło musi zawierać: min. 8 znaków, małą literę, dużą literę i cyfrę.
@@ -111,16 +126,29 @@ export default function ResetPasswordPage() {
       </p>
 
       {/* Confirm Password */}
-      <label htmlFor="confirmPassword" className="sr-only">
-        Powtórz hasło
-      </label>
-      <input
-        className="p-2 pl-3 border border-[var(--light-grey)] rounded-md"
-        type="password"
-        id="confirmPassword"
-        placeholder="Powtórz hasło *"
-        {...register("confirmPassword")}
-      />
+      <div className="relative w-full">
+        <label htmlFor="confirmPassword" className="sr-only">
+          Powtórz hasło
+        </label>
+        <input
+          className="p-2 pl-3 pr-10 border border-[var(--light-grey)] rounded-md w-full"
+          type={showConfirmPassword ? "text" : "password"}
+          id="confirmPassword"
+          placeholder="Powtórz hasło *"
+          {...register("confirmPassword")}
+        />
+        <button
+          type="button"
+          className="absolute right-3 top-1/2 -translate-y-1/2"
+          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+        >
+          <img
+            src={showConfirmPassword ? "/eye-closed.svg" : "/eye-open.svg"}
+            alt={showConfirmPassword ? "Ukryj hasło" : "Pokaż hasło"}
+            className="w-5 h-5 cursor-pointer"
+          />
+        </button>
+      </div>
 
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${

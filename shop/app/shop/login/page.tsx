@@ -10,6 +10,7 @@ import { loginSchema, LoginSchema } from "@/schemas/authSchema";
 export default function LoginPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
   const { redirect } = useRedirectAfterLogin();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -96,13 +97,26 @@ export default function LoginPage() {
       <label htmlFor="password" className="sr-only">
         Hasło
       </label>
-      <input
-        className="p-2 pl-3 border border-[var(--light-grey)] rounded-md"
-        type="password"
-        id="password"
-        placeholder="Hasło"
-        {...register("password")}
-      />
+      <div className="relative w-full">
+        <input
+          className="p-2 pl-3 pr-10 border border-[var(--light-grey)] rounded-md w-full"
+          type={showPassword ? "text" : "password"}
+          id="password"
+          placeholder="Hasło"
+          {...register("password")}
+        />
+        <button
+          type="button"
+          className="absolute right-3 top-1/2 -translate-y-1/2"
+          onClick={() => setShowPassword(!showPassword)}
+        >
+          <img
+            src={showPassword ? "/eye-closed.svg" : "/eye-open.svg"}
+            alt={showPassword ? "Ukryj hasło" : "Pokaż hasło"}
+            className="w-5 h-5 cursor-pointer"
+          />
+        </button>
+      </div>
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.password ? "opacity-100" : "opacity-0"}`}
       >
