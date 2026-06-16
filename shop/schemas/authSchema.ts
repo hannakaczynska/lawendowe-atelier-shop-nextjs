@@ -15,11 +15,13 @@ export const registerSchema = z
     email: z
       .string()
       .min(1, "Email jest wymagany")
+      .max(254, "Email jest za długi")
       .email("Wpisz poprawny email"),
     password: z
       .string()
       .min(1, "Hasło jest wymagane")
       .min(8, "Hasło musi mieć co najmniej 8 znaków")
+      .max(128, "Hasło jest za długie")
       .regex(/[a-z]/, "Hasło musi zawierać małą literę")
       .regex(/[A-Z]/, "Hasło musi zawierać dużą literę")
       .regex(/[0-9]/, "Hasło musi zawierać cyfrę"),
@@ -53,6 +55,7 @@ export const resetPasswordSchema = z
       .string()
       .min(1, "Hasło jest wymagane")
       .min(8, "Hasło musi mieć co najmniej 8 znaków")
+      .max(128, "Hasło jest za długie")
       .regex(/[a-z]/, "Hasło musi zawierać małą literę")
       .regex(/[A-Z]/, "Hasło musi zawierać dużą literę")
       .regex(/[0-9]/, "Hasło musi zawierać cyfrę"),
@@ -66,13 +69,13 @@ export const resetPasswordSchema = z
 export type ForgotPasswordSchema = z.infer<typeof forgotPasswordSchema>;
 
 export const forgotPasswordSchema = z.object({
-  email: z.string().min(1, "Email jest wymagany").email("Wpisz poprawny email"),
+  email: z.string().min(1, "Email jest wymagany").max(254, "Email jest za długi").email("Wpisz poprawny email"),
   hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
 });
 
 export type ResendEmailSchema = z.infer<typeof resendEmailSchema>;
 
 export const resendEmailSchema = z.object({
-  email: z.string().min(1, "Email jest wymagany").email("Wpisz poprawny email"),
+  email: z.string().min(1, "Email jest wymagany").max(254, "Email jest za długi").email("Wpisz poprawny email"),
   hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
 });
