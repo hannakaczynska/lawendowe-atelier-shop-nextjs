@@ -1,9 +1,28 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function proxy(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const url = req.nextUrl.clone();
 
+  // 1. PROTECTED ROUTES
+  if (url.pathname.startsWith("/shop/account")) {
+    const token = req.cookies.get("auth_token");
+
+    if (!token) {
+      return NextResponse.redirect(new URL("/shop/login", req.url));
+    }
+    const verify = await fetch(`${req.nextUrl.origin}/api/me`, {
+      headers: {
+        Cookie: `auth_token=${token.value}`,
+      },
+    });
+
+    if (!verify.ok) {
+      return NextResponse.redirect(new URL("/shop/login", req.url));
+    }
+  }
+
+  // 2. REDIRECT AFTER LOGIN LOGIC
   if (url.pathname === "/shop/login") {
     const referer = req.headers.get("referer");
     const res = NextResponse.next();
@@ -11,7 +30,15 @@ export function proxy(req: NextRequest) {
     if (referer && referer.includes(req.nextUrl.origin)) {
       const path = referer.replace(req.nextUrl.origin, "");
 
-      if (path.startsWith("/shop/register") || path.startsWith("/register") || path.startsWith("/shop/verify") || path.startsWith("/shop/verify-email") || path.startsWith("/shop/resend-verification") || path.startsWith("/shop/reset-password") || path.startsWith("/forgot-password")) {
+      if (
+        path.startsWith("/shop/register") ||
+        path.startsWith("/register") ||
+        path.startsWith("/shop/verify") ||
+        path.startsWith("/shop/verify-email") ||
+        path.startsWith("/shop/resend-verification") ||
+        path.startsWith("/shop/reset-password") ||
+        path.startsWith("/forgot-password")
+      ) {
         res.cookies.set("redirectAfterLogin", "/shop", { path: "/" });
       } else {
         res.cookies.set("redirectAfterLogin", path, { path: "/" });
@@ -27,5 +54,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/shop/login"],
+  matcher: ["/shop/:path*"],
 };

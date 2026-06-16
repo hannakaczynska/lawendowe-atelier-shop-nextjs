@@ -16,8 +16,6 @@ export async function getProducts(): Promise<Product[]> {
 
     const data: WooStoreProduct[] = await res.json();
 
-    console.log("Fetched products from API route:", data);
-
     return data.map(mapProduct);
   } catch (error) {
     console.error("Error fetching products:", error);
@@ -36,7 +34,6 @@ export async function getProduct(slug: string): Promise<Product> {
     }
 
     const data: WooStoreProduct = await res.json();
-    console.log(`Fetched product for slug "${slug}":`, data);
 
     return mapProduct(data);
   } catch (error) {
@@ -61,6 +58,6 @@ export async function getProductsByCategorySlugs(slugs: string[]) {
   }
 
   const products = await res.json();
-  console.log(`Fetched products for categories [${slugs.join(", ")}]:`, products);
+
   return products.map(mapProduct);
 }
