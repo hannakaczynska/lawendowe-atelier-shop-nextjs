@@ -65,13 +65,11 @@ export default function ResendVerificationPage() {
         </p>
 
         {/* Captcha */}
-        <div className="mt-4">
           <HCaptcha
           ref={captchaRef}
             sitekey={siteKey}
             onVerify={(token) => setValue("hcaptcha", token)}
           />
-        </div>
         <p
           className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] ${errors.hcaptcha ? "opacity-100" : "opacity-0"}`}
         >

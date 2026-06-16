@@ -81,6 +81,13 @@ export async function GET(req: Request) {
     );
   }
 
+  if (Date.now() > userData.meta.email_verification_token_expires) {
+    return NextResponse.json(
+      { success: false, message: "Link aktywacyjny jest nieważny" },
+      { status: 400 },
+    );
+  }
+
   // meta update - set email_verified to true and clear token
   const updateRes = await fetch(`${BASE_URL}/wp-json/wp/v2/users/${userId}`, {
     method: "POST",
@@ -92,6 +99,7 @@ export async function GET(req: Request) {
       meta: {
         email_verified: true,
         email_verification_token: "",
+        email_verification_token_expires: 0,
       },
     }),
   });

@@ -90,6 +90,7 @@ export async function POST(req: Request) {
         meta: {
           email_verified: false,
           email_verification_token: token,
+          email_verification_token_expires: Date.now() + 30 * 60 * 1000, // 30 minutes expiry
           consent_regulations: body.consent_regulations,
           consent_marketing: body.consent_marketing,
         },

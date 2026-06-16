@@ -95,6 +95,7 @@ export async function POST(req: Request) {
     body: JSON.stringify({
       meta: {
         email_verification_token: newToken,
+        email_verification_token_expires: Date.now() + 30 * 60 * 1000, // 30 minutes expiry
       },
     }),
   });
