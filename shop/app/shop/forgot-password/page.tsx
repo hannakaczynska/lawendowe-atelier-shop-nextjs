@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
@@ -13,6 +13,8 @@ export default function ForgotPasswordPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
   const [status, setStatus] = useState<"idle" | "sent">("idle");
   const [error, setError] = useState<string | null>(null);
+
+  const captchaRef = useRef<HCaptcha>(null);
 
   const {
     register,
@@ -39,6 +41,8 @@ export default function ForgotPasswordPage() {
     if (!response.ok) {
       setError("Wystąpił błąd podczas wysyłania żądania resetu hasła.");
     }
+    captchaRef.current?.resetCaptcha();
+    setValue("hcaptcha", "");
     setStatus("sent");
   };
 
@@ -76,6 +80,7 @@ export default function ForgotPasswordPage() {
       {/* Captcha */}
       <div className="mt-4">
         <HCaptcha
+          ref={captchaRef}
           sitekey={siteKey}
           onVerify={(token) => setValue("hcaptcha", token)}
         />

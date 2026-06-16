@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const captchaRef = useRef<HCaptcha>(null);
 
   const {
     register,
@@ -50,6 +52,8 @@ export default function RegisterPage() {
 
     if (!res.ok) {
       setServerError(json.message || "Wystąpił błąd podczas rejestracji");
+      captchaRef.current?.resetCaptcha();
+      setValue("hcaptcha", "");
       return;
     }
 
@@ -227,6 +231,7 @@ export default function RegisterPage() {
       {/* Captcha */}
       <div className="mt-4">
         <HCaptcha
+          ref={captchaRef}
           sitekey={siteKey}
           onVerify={(token) => setValue("hcaptcha", token)}
         />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,8 @@ export default function LoginPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
   const { redirect } = useRedirectAfterLogin();
   const [showPassword, setShowPassword] = useState(false);
+
+  const captchaRef = useRef<HCaptcha>(null);
 
   const {
     register,
@@ -63,6 +65,8 @@ export default function LoginPage() {
 
     if (!res.ok) {
       setServerError(json.message || "Wystąpił błąd podczas logowania");
+      captchaRef.current?.resetCaptcha();
+      setValue("hcaptcha", "");
       return;
     }
 
@@ -123,6 +127,7 @@ export default function LoginPage() {
         {errors.password?.message || " "}
       </p>
       <HCaptcha
+        ref={captchaRef}
         sitekey={siteKey}
         onVerify={(token) => setValue("hcaptcha", token)}
       />

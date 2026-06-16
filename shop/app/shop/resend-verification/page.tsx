@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
@@ -9,6 +9,8 @@ import { resendEmailSchema, ResendEmailSchema } from "@/schemas/authSchema";
 export default function ResendVerificationPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
   const [status, setStatus] = useState<"idle" | "sent">("idle");
+
+  const captchaRef = useRef<HCaptcha>(null);
 
   const {
     register,
@@ -31,6 +33,8 @@ export default function ResendVerificationPage() {
       body: JSON.stringify({ email: data.email, hcaptcha: data.hcaptcha }),
     });
 
+    captchaRef.current?.resetCaptcha();
+    setValue("hcaptcha", "");
     setStatus("sent");
   };
 
@@ -63,6 +67,7 @@ export default function ResendVerificationPage() {
         {/* Captcha */}
         <div className="mt-4">
           <HCaptcha
+          ref={captchaRef}
             sitekey={siteKey}
             onVerify={(token) => setValue("hcaptcha", token)}
           />
