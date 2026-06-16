@@ -51,6 +51,7 @@ export async function POST(req: Request) {
   });
 
   const tokenData = await tokenRes.json();
+
   if (!tokenData.token) {
     return NextResponse.json(
       { success: false, message: "Błąd autoryzacji admina" },
@@ -89,6 +90,7 @@ export async function POST(req: Request) {
     body: JSON.stringify({
       meta: {
         password_reset_token: resetToken,
+        password_reset_token_expires: Date.now() + 15 * 60 * 1000, // 15 minutes expiry
       },
     }),
   });

@@ -37,7 +37,6 @@ export default function ResetPasswordPage() {
 
   const onSubmit = async (data: ResetPasswordSchema) => {
     if (!token) return;
-    console.log("Submitting new password with token:", token, data);
 
     const res = await fetch("/api/reset-password", {
       method: "POST",
@@ -59,6 +58,12 @@ export default function ResetPasswordPage() {
         <p className="text-sm text-[var(--grey)]">
           Link do resetu hasła jest nieprawidłowy lub wygasł.
         </p>
+        <a
+          href="/shop/forgot-password"
+          className="text-[var(--primary-color)] font-semibold"
+        >
+          Wyślij nowy link resetujący
+        </a>
       </div>
     );
   }

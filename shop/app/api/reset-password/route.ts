@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   if (!token || !password) {
     return NextResponse.json(
       { success: false, message: "Brak tokenu lub hasła" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   if (!tokenData.token) {
     return NextResponse.json(
       { success: false, message: "Błąd autoryzacji admina" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     `${BASE_URL}/wp-json/wp/v2/users?meta_key=password_reset_token&meta_value=${token}&context=edit`,
     {
       headers: { Authorization: `Bearer ${adminToken}` },
-    }
+    },
   );
 
   const users = await usersRes.json();
@@ -47,11 +47,25 @@ export async function POST(req: Request) {
   if (!Array.isArray(users) || users.length === 0) {
     return NextResponse.json(
       { success: false, message: "Nieprawidłowy token" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   const user = users[0];
+
+  if (!user.meta || !user.meta.password_reset_token_expires) {
+    return NextResponse.json(
+      { success: false, message: "Token nieważny" },
+      { status: 400 },
+    );
+  }
+
+  if (Date.now() > user.meta.password_reset_token_expires) {
+    return NextResponse.json(
+      { success: false, message: "Token wygasł" },
+      { status: 400 },
+    );
+  }
 
   //fetch update user password
   const updateRes = await fetch(`${BASE_URL}/wp-json/wp/v2/users/${user.id}`, {
@@ -64,6 +78,7 @@ export async function POST(req: Request) {
       password: password,
       meta: {
         password_reset_token: "",
+        password_reset_token_expires: 0,
       },
     }),
   });
@@ -71,7 +86,7 @@ export async function POST(req: Request) {
   if (!updateRes.ok) {
     return NextResponse.json(
       { success: false, message: "Nie udało się ustawić hasła" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
