@@ -1,4 +1,5 @@
 import "./globals.css";
+import {UserProvider} from "@/context/UserContext";
 
 export default function RootLayout({
   children,
@@ -13,7 +14,9 @@ export default function RootLayout({
           rel="stylesheet"
         ></link>
       </head>
-      <body className="min-h-screen">{children}</body>
+      <body className="min-h-screen">
+        <UserProvider>{children}</UserProvider>
+      </body>
     </html>
   );
 }
