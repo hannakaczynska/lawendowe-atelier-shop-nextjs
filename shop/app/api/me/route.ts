@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     if (!token) {
       return NextResponse.json(
         { authenticated: false, user: null },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -25,15 +25,16 @@ export async function GET(req: Request) {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     );
 
     const validateData = await validateRes.json();
+    console.log("Token validation response:", validateData);
 
     if (!validateRes.ok || validateData?.data?.status !== 200) {
       return NextResponse.json(
         { authenticated: false, user: null },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -52,26 +53,18 @@ export async function GET(req: Request) {
     }
 
     const user = await userRes.json();
-    console.log("User info fetched successfully:", user);
 
     return NextResponse.json(
       {
         authenticated: true,
-        user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          meta: user.meta,
-        },
+        userId: user.id,
       },
       { status: 200 }
     );
   } catch (err) {
     return NextResponse.json(
       { authenticated: false, user: null },
-      { status: 401 }
+      { status: 401 },
     );
   }
 }

@@ -1,3 +1,4 @@
+"use client";
 import { createContext, useContext, useState, useEffect } from "react";
 
 interface UserContextType {
@@ -8,29 +9,28 @@ interface UserContextType {
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export function UserProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function UserProvider({ children }: { children: React.ReactNode }) {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
 
   const refreshUser = async () => {
     try {
+      console.log("Refreshing user info...");
       const res = await fetch("/api/me");
 
       if (!res.ok) {
+        console.error("Failed to fetch user info:", res.statusText);
         setAuthenticated(false);
         setUserId(null);
         return;
       }
 
       const data = await res.json();
-
+      console.log("User info response:", data);
       setAuthenticated(data.authenticated);
-      setUserId(data.user?.id ?? null);
+      setUserId(data.userId ?? null);
     } catch (error) {
+      console.error("Error fetching user info:", error);
       setAuthenticated(false);
       setUserId(null);
     }

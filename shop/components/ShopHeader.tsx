@@ -6,10 +6,11 @@ import { setupHeaderVisibility } from "@/lib/utils/scrollHelpers";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDisableScroll } from "@/hooks/useDisableScroll";
 import { usePathname } from "next/navigation";
+import { useUser } from "@/context/UserContext";
 
 export default function ShopHeader() {
   const pathname = usePathname();
-
+  const { authenticated } = useUser();
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
@@ -28,7 +29,6 @@ export default function ShopHeader() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile]);
-
 
   // Close mobile menu when resizing to md and up
   useEffect(() => {
@@ -82,13 +82,23 @@ export default function ShopHeader() {
             </nav>
             <div className="flex gap-4">
               <nav className="flex gap-4 ml-[20px]">
-                <Link href="/shop/login">
-                  <img
-                    className="h-[32px] hidden md:block"
-                    src="/user.svg"
-                    alt="User"
-                  />
-                </Link>
+                {authenticated ? (
+                  <Link href="/shop/account">
+                    <img
+                      className="h-[32px] hidden md:block"
+                      src="/user.svg"
+                      alt="User"
+                    />
+                  </Link>
+                ) : (
+                  <Link href="/shop/login">
+                    <img
+                      className="h-[32px] hidden md:block"
+                      src="/sign-in.svg"
+                      alt="Sign In"
+                    />
+                  </Link>
+                )}
                 <Link href="/shop/cart">
                   <img className="h-[32px]" src="/grey-cart.svg" alt="Cart" />
                 </Link>

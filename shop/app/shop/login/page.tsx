@@ -6,10 +6,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRedirectAfterLogin } from "@/hooks/useRedirectAfterLogin";
 import { loginSchema, LoginSchema } from "@/schemas/authSchema";
+import { useUser } from "@/context/UserContext";
 
 export default function LoginPage() {
   const siteKey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
   const { redirect } = useRedirectAfterLogin();
+  const { refreshUser } = useUser();
   const [showPassword, setShowPassword] = useState(false);
 
   const captchaRef = useRef<HCaptcha>(null);
@@ -70,8 +72,9 @@ export default function LoginPage() {
       return;
     }
 
-    setSuccess("Zalogowano pomyślnie!");
+    await refreshUser();
 
+    setSuccess("Zalogowano pomyślnie!");
     redirect();
   };
 

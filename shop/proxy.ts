@@ -21,9 +21,14 @@ export async function proxy(req: NextRequest) {
       return NextResponse.redirect(new URL("/shop/login", req.url));
     }
   }
-
+  
   // 2. REDIRECT AFTER LOGIN LOGIC
   if (url.pathname === "/shop/login") {
+
+    if (req.cookies.has("auth_token")) {
+      return NextResponse.redirect(new URL("/shop/account", req.url));
+    }
+
     const referer = req.headers.get("referer");
     const res = NextResponse.next();
 
@@ -50,6 +55,12 @@ export async function proxy(req: NextRequest) {
     return res;
   }
 
+  if (url.pathname === "/shop/register") {
+    if (req.cookies.has("auth_token")) {
+      return NextResponse.redirect(new URL("/shop/account", req.url));
+    }
+  }
+    
   return NextResponse.next();
 }
 

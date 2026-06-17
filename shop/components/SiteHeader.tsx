@@ -6,12 +6,14 @@ import MobileMenu from "@/components/MobileMenu";
 import { setupHeaderVisibility } from "@/lib/utils/scrollHelpers";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDisableScroll } from "@/hooks/useDisableScroll";
+import { useUser } from "@/context/UserContext";
 
 export default function SiteHeader() {
   const isMobile = useIsMobile();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
+  const { authenticated } = useUser();
 
   // Setup scroll listener for header visibility — re-runs when isMobile changes
   useEffect(() => {
@@ -76,13 +78,23 @@ export default function SiteHeader() {
               </Link>
             </nav>
             <div className="flex gap-4 md:ml-[68px]">
-              <Link href="/" title="Konto">
-                <img
-                  className="h-[32px] hidden md:block"
-                  src="/user.svg"
-                  alt="User"
-                />
-              </Link>
+                {authenticated ? (
+                  <Link href="/shop/account">
+                    <img
+                      className="h-[32px] hidden md:block"
+                      src="/user.svg"
+                      alt="User"
+                    />
+                  </Link>
+                ) : (
+                  <Link href="/shop/login">
+                    <img
+                      className="h-[32px] hidden md:block"
+                      src="/sign-in.svg"
+                      alt="Sign In"
+                    />
+                  </Link>
+                )}
               <button
                 className="md:hidden h-[32px] pt-[1px]"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
