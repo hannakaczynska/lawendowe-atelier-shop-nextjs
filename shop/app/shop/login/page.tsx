@@ -31,6 +31,11 @@ export default function LoginPage() {
   });
 
   useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
+  
+
+  useEffect(() => {
     setTimeout(() => {
       const emailInput = document.getElementById(
         "email",
