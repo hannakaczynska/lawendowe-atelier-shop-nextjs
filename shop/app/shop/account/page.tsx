@@ -1,16 +1,13 @@
-import AccountSidePanel from "@/components/shop/account/AccountSidePanel";
+export default function AccountPage() {
+  return (
+    <div className="w-full">
+      <h1 className="text-2xl font-semibold tracking-tight mb-4">
+        Account page
+      </h1>
 
-export default async function Account() {
-    return (
-    <>
-      <div className="flex min-h-[calc(100vh-100px)] max-w-[1500px] mx-auto px-4 md:mt-[100px]">
-        <div className="hidden md:block md:w-[250px] lg:w-[300px] shrink-0">
-          <AccountSidePanel />
-        </div>
-        <div className="flex-1">
-
-        </div>
-      </div>
-    </>
+      <p className="text-gray-600">
+        Tu pojawią się Twoje dane i ustawienia konta.
+      </p>
+    </div>
   );
 }
