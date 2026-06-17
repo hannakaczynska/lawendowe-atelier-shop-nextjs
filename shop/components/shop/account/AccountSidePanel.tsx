@@ -35,7 +35,7 @@ export default function AccountSideNav() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed top-[100px] w-64 h-full shrink-0 border-r border-[var(--light-grey)] py-8 pt-10 px-4 hidden md:block">
+    <aside className="fixed top-[100px] md:w-[250px] lg:w-[350px] h-full shrink-0 border-r border-[var(--light-grey)] py-8 pt-10 px-4 hidden md:block">
       <nav className="flex flex-col gap-1">
         {navItems.map((item) => {
           const active = pathname === item.href;
