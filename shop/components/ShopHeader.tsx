@@ -82,7 +82,10 @@ export default function ShopHeader() {
             </nav>
             <div className="flex gap-4">
               <nav className="flex gap-4 ml-[20px]">
-                {authenticated ? (
+                {authenticated === null && (
+                  <div className="h-[32px] w-[32px]" />
+                )}
+                {authenticated === true && (
                   <Link href="/shop/account">
                     <img
                       className="h-[32px] hidden md:block"
@@ -90,7 +93,8 @@ export default function ShopHeader() {
                       alt="User"
                     />
                   </Link>
-                ) : (
+                )}
+                {authenticated === false && (
                   <Link href="/shop/login">
                     <img
                       className="h-[32px] hidden md:block"

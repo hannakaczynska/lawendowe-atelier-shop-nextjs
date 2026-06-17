@@ -78,23 +78,25 @@ export default function SiteHeader() {
               </Link>
             </nav>
             <div className="flex gap-4 md:ml-[68px]">
-                {authenticated ? (
-                  <Link href="/shop/account">
-                    <img
-                      className="h-[32px] hidden md:block"
-                      src="/user.svg"
-                      alt="User"
-                    />
-                  </Link>
-                ) : (
-                  <Link href="/shop/login">
-                    <img
-                      className="h-[32px] hidden md:block"
-                      src="/sign-in.svg"
-                      alt="Sign In"
-                    />
-                  </Link>
-                )}
+              {authenticated === null && <div className="h-[32px] w-[32px]" />}
+              {authenticated === true && (
+                <Link href="/shop/account">
+                  <img
+                    className="h-[32px] hidden md:block"
+                    src="/user.svg"
+                    alt="User"
+                  />
+                </Link>
+              )}
+              {authenticated === false && (
+                <Link href="/shop/login">
+                  <img
+                    className="h-[32px] hidden md:block"
+                    src="/sign-in.svg"
+                    alt="Sign In"
+                  />
+                </Link>
+              )}
               <button
                 className="md:hidden h-[32px] pt-[1px]"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
