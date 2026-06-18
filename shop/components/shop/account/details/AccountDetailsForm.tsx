@@ -121,7 +121,7 @@ export default function AccountPage() {
       <button
         type="submit"
         disabled={!hasChanges}
-        className={`mt-6 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl transition-colors duration-300
+        className={`w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl transition-colors duration-300
           ${
             hasChanges
               ? "cursor-pointer bg-[var(--secondary-color)] hover:text-white hover:bg-[var(--primary-color)]"
