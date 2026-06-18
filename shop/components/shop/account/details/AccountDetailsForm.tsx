@@ -24,6 +24,8 @@ export default function AccountPage() {
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
   const [initialData, setInitialData] = useState<AccountFormData | null>(null);
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const {
     register,
@@ -31,7 +33,7 @@ export default function AccountPage() {
     setValue,
     handleSubmit,
     reset,
-    formState: { errors, dirtyFields },
+    formState: { errors, isSubmitting },
   } = useForm<AccountFormData>({
     resolver: zodResolver(accountSchema),
     defaultValues: createDefaultValues(),
@@ -74,8 +76,6 @@ export default function AccountPage() {
 
         const data = await res.json();
 
-        console.log("Dane użytkownika:", data);
-
         const formData = mapWooToForm(data);
 
         reset(formData);
@@ -87,12 +87,31 @@ export default function AccountPage() {
         setLoading(false);
       }
     }
-
     loadUser();
   }, []);
 
-  const onSubmit = (data) => {
-    console.log("Wysyłamy dane:", data);
+  // Clear success message after 3 seconds
+  useEffect(() => {
+    if (!success) return;
+    const t = setTimeout(() => setSuccess(null), 3000);
+    return () => clearTimeout(t);
+  }, [success]);
+
+  const onSubmit = async (data: AccountFormData) => {
+    const res = await authFetch("/api/account/update", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      setServerError("Wystąpił błąd podczas aktualizacji danych");
+      setSuccess(null);
+      return;
+    }
+
+    setServerError(null);
+    setInitialData(data);
+    setSuccess("Dane zostały zaktualizowane pomyślnie!");
   };
 
   if (loading) {
@@ -120,8 +139,8 @@ export default function AccountPage() {
 
       <button
         type="submit"
-        disabled={!hasChanges}
-        className={`w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl transition-colors duration-300
+        disabled={!hasChanges || isSubmitting}
+        className={`${isSubmitting ? "cursor-not-allowed" : "cursor-pointer"} w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl transition-colors duration-300
           ${
             hasChanges
               ? "cursor-pointer bg-[var(--secondary-color)] hover:text-white hover:bg-[var(--primary-color)]"
@@ -129,8 +148,13 @@ export default function AccountPage() {
           }
         `}
       >
-        Zaktualizuj dane
+        {isSubmitting ? "Aktualizacja..." : "Zaktualizuj dane"}
       </button>
+      <p
+        className={`text-sm ${serverError ? "text-[var(--out-of-stock)]" : "text-[var(--in-stock)]"} h-[18px] text-center md:h-[20px] my-1 md:mb-2 ${serverError || success ? "opacity-100" : "opacity-0"}`}
+      >
+        {serverError || success}
+      </p>
     </form>
   );
 }
