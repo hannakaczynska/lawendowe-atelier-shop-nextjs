@@ -11,11 +11,14 @@ import { AccountPersonalData } from "@/components/shop/account/details/AccountPe
 import { AccountBillingAddress } from "@/components/shop/account/details/AccountBilingAddress";
 import { AccountShippingAddress } from "@/components/shop/account/details/AccountShippingAdress";
 
+import { createDefaultValues, copyBillingToShipping, clearShipping } from "@/lib/utils/accountHelpers";
+import { AccountFormData } from "@/types/account";
+
 export default function AccountPage() {
   const authFetch = useAuthFetch();
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
-  const [initialData, setInitialData] = useState(null);
+  const [initialData, setInitialData] = useState<AccountFormData | null>(null);
 
   const {
     register,
@@ -24,30 +27,9 @@ export default function AccountPage() {
     handleSubmit,
     reset,
     formState: { errors, dirtyFields },
-  } = useForm({
+  } = useForm<AccountFormData>({
     resolver: zodResolver(accountSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-
-      billingFirstName: "",
-      billingLastName: "",
-      billingPhone: "",
-      billingStreet: "",
-      billingFlat: "",
-      billingCity: "",
-      billingPostcode: "",
-
-      shippingSameAsBilling: false,
-      shippingFirstName: "",
-      shippingLastName: "",
-      shippingPhone: "",
-      shippingStreet: "",
-      shippingFlat: "",
-      shippingCity: "",
-      shippingPostcode: "",
-    },
+    defaultValues: createDefaultValues(),
   });
 
   const watched = watch();
@@ -59,13 +41,7 @@ export default function AccountPage() {
     if (initialLoad) return;
     if (!watched.shippingSameAsBilling) return;
 
-    setValue("shippingFirstName", watched.billingFirstName);
-    setValue("shippingLastName", watched.billingLastName);
-    setValue("shippingPhone", watched.billingPhone);
-    setValue("shippingStreet", watched.billingStreet);
-    setValue("shippingFlat", watched.billingFlat);
-    setValue("shippingCity", watched.billingCity);
-    setValue("shippingPostcode", watched.billingPostcode);
+    copyBillingToShipping(watched, setValue);
   }, [
     watched.shippingSameAsBilling,
     watched.billingFirstName,
@@ -81,13 +57,8 @@ export default function AccountPage() {
     if (initialLoad) return;
     if (watched.shippingSameAsBilling) return;
 
-    setValue("shippingFirstName", "");
-    setValue("shippingLastName", "");
-    setValue("shippingPhone", "");
-    setValue("shippingStreet", "");
-    setValue("shippingFlat", "");
-    setValue("shippingCity", "");
-    setValue("shippingPostcode", "");
+    clearShipping(setValue);
+
   }, [watched.shippingSameAsBilling]);
 
   useEffect(() => {
@@ -98,7 +69,6 @@ export default function AccountPage() {
         if (!res.ok) return;
 
         const data = await res.json();
-        console.log("Dane użytkownika:", data);
 
         const formData = {
           // Dane konta
