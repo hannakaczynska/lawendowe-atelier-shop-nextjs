@@ -6,9 +6,13 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
     <section className="mb-10">
       <h2 className="text-xl font-semibold mb-4">Adres kupującego</h2>
 
+      <label
+        htmlFor="billingFirstName"
+        className="text-[var(--grey)] block mb-1"
+      >Imię *</label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        placeholder="Imię *"
+        id="billingFirstName"
         {...register("billingFirstName")}
       />
       <p
@@ -17,9 +21,13 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingFirstName?.message || " "}
       </p>
 
+      <label
+        htmlFor="billingLastName"
+        className="text-[var(--grey)] block mb-1"
+      >Nazwisko *</label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        placeholder="Nazwisko *"
+        id="billingLastName"
         {...register("billingLastName")}
       />
       <p
@@ -28,9 +36,14 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingLastName?.message || " "}
       </p>
 
+      <label
+        htmlFor="billingPhone"
+        className="text-[var(--grey)] block mb-1"
+      >Telefon *</label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        placeholder="Telefon (123 456 789) *"
+        id="billingPhone"
+        placeholder="123 456 789"
         {...register("billingPhone")}
       />
       <p
@@ -39,9 +52,13 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingPhone?.message || " "}
       </p>
 
+      <label
+        htmlFor="billingStreet"
+        className="text-[var(--grey)] block mb-1"
+      >Ulica i/lub numer *</label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        placeholder="Ulica i/lub numer *"
+        id="billingStreet"
         {...register("billingStreet")}
       />
       <p
@@ -50,9 +67,13 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingStreet?.message || " "}
       </p>
 
+      <label
+        htmlFor="billingFlat"
+        className="text-[var(--grey)] block mb-1"
+      >Mieszkanie / Apartament</label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        placeholder="Mieszkanie / Apartament"
+        id="billingFlat"
         {...register("billingFlat")}
       />
       <p
@@ -61,9 +82,13 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingFlat?.message || " "}
       </p>
 
+      <label
+        htmlFor="billingCity"
+        className="text-[var(--grey)] block mb-1"
+      >Miasto *</label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        placeholder="Miasto *"
+        id="billingCity"
         {...register("billingCity")}
       />
       <p
@@ -72,9 +97,14 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingCity?.message || " "}
       </p>
 
+      <label
+        htmlFor="billingPostcode"
+        className="text-[var(--grey)] block mb-1"
+      >Kod pocztowy *</label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        placeholder="Kod pocztowy (00-000) *"
+        id="billingPostcode"
+        placeholder="00-000"
         {...register("billingPostcode")}
       />
       <p

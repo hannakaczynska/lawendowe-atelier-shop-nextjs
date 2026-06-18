@@ -23,11 +23,17 @@ export function AccountShippingAddress({
         <span className="text-sm">Taki sam jak kupującego</span>
       </label>
 
+      <label
+        htmlFor="shippingFirstName"
+        className="text-[var(--grey)] block mb-1"
+      >
+        Imię *
+      </label>
       <input
         className={`p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md ${
           shippingDisabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        placeholder="Imię *"
+        id="shippingFirstName"
         disabled={shippingDisabled}
         {...register("shippingFirstName")}
       />
@@ -37,11 +43,17 @@ export function AccountShippingAddress({
         {errors.shippingFirstName?.message || " "}
       </p>
 
+      <label
+        htmlFor="shippingLastName"
+        className="text-[var(--grey)] block mb-1"
+      >
+        Nazwisko *
+      </label>
       <input
         className={`p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md ${
           shippingDisabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        placeholder="Nazwisko *"
+        id="shippingLastName"
         disabled={shippingDisabled}
         {...register("shippingLastName")}
       />
@@ -51,11 +63,15 @@ export function AccountShippingAddress({
         {errors.shippingLastName?.message || " "}
       </p>
 
+      <label htmlFor="shippingPhone" className="text-[var(--grey)] block mb-1">
+        Telefon *
+      </label>
       <input
         className={`p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md ${
           shippingDisabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        placeholder="Telefon (123 456 789) *"
+        id="shippingPhone"
+        placeholder="123 456 789"
         disabled={shippingDisabled}
         {...register("shippingPhone")}
       />
@@ -65,11 +81,14 @@ export function AccountShippingAddress({
         {errors.shippingPhone?.message || " "}
       </p>
 
+      <label htmlFor="shippingStreet" className="text-[var(--grey)] block mb-1">
+        Ulica i/lub numer *
+      </label>
       <input
         className={`p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md ${
           shippingDisabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        placeholder="Ulica i/lub numer *"
+        id="shippingStreet"
         disabled={shippingDisabled}
         {...register("shippingStreet")}
       />
@@ -79,11 +98,14 @@ export function AccountShippingAddress({
         {errors.shippingStreet?.message || " "}
       </p>
 
+      <label htmlFor="shippingFlat" className="text-[var(--grey)] block mb-1">
+        Mieszkanie / Apartament
+      </label>
       <input
         className={`p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md ${
           shippingDisabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        placeholder="Mieszkanie / Apartament"
+        id="shippingFlat"
         disabled={shippingDisabled}
         {...register("shippingFlat")}
       />
@@ -93,11 +115,14 @@ export function AccountShippingAddress({
         {errors.shippingFlat?.message || " "}
       </p>
 
+      <label htmlFor="shippingCity" className="text-[var(--grey)] block mb-1">
+        Miasto *
+      </label>
       <input
         className={`p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md ${
           shippingDisabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        placeholder="Miasto *"
+        id="shippingCity"
         disabled={shippingDisabled}
         {...register("shippingCity")}
       />
@@ -107,11 +132,18 @@ export function AccountShippingAddress({
         {errors.shippingCity?.message || " "}
       </p>
 
+      <label
+        htmlFor="shippingPostcode"
+        className="text-[var(--grey)] block mb-1"
+      >
+        Kod pocztowy *
+      </label>
       <input
         className={`p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md ${
           shippingDisabled ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        placeholder="Kod pocztowy (00-000) *"
+        id="shippingPostcode"
+        placeholder="00-000"
         disabled={shippingDisabled}
         {...register("shippingPostcode")}
       />
