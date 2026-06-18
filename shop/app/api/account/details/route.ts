@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import {verifyUserToken} from "@/app/api/_utils/auth/verifyUser";
 
 const BASE_URL = process.env.WOOCOMMERCE_URL;
 const WC_KEY = process.env.WOOCOMMERCE_CONSUMER_KEY;
@@ -6,28 +7,9 @@ const WC_SECRET = process.env.WOOCOMMERCE_CONSUMER_SECRET;
 
 export async function GET(req: Request) {
   try {
-    const cookieHeader = req.headers.get("cookie");
-    const token = cookieHeader
-      ?.split("; ")
-      .find((c) => c.startsWith("auth_token="))
-      ?.split("=")[1];
-
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // 1. Validate token
-    const validateRes = await fetch(
-      `${BASE_URL}/wp-json/jwt-auth/v1/token/validate`,
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-
-    const validateData = await validateRes.json();
-
-    if (!validateRes.ok || validateData?.data?.status !== 200) {
+    const { ok, token } = await verifyUserToken(req);
+  
+    if (!ok || !token) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
