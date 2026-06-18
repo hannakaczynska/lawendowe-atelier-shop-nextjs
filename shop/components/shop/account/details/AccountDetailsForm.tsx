@@ -15,6 +15,7 @@ export default function AccountPage() {
   const authFetch = useAuthFetch();
   const [loading, setLoading] = useState(true);
   const [initialLoad, setInitialLoad] = useState(true);
+  const [initialData, setInitialData] = useState(null);
 
   const {
     register,
@@ -51,7 +52,8 @@ export default function AccountPage() {
 
   const watched = watch();
   const shippingDisabled = watched.shippingSameAsBilling;
-  const hasChanges = Object.keys(dirtyFields).length > 0;
+  const hasChanges =
+    initialData && JSON.stringify(watched) !== JSON.stringify(initialData);
 
   useEffect(() => {
     if (initialLoad) return;
@@ -98,7 +100,7 @@ export default function AccountPage() {
         const data = await res.json();
         console.log("Dane użytkownika:", data);
 
-        reset({
+        const formData = {
           // Dane konta
           firstName: data.firstName || "",
           lastName: data.lastName || "",
@@ -123,7 +125,9 @@ export default function AccountPage() {
           shippingFlat: data.shipping?.address_2 || "",
           shippingCity: data.shipping?.city || "",
           shippingPostcode: data.shipping?.postcode || "",
-        });
+        };
+        reset(formData);
+        setInitialData(formData);
         setInitialLoad(false);
       } catch (err) {
         console.error("Błąd:", err);
