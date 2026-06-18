@@ -11,7 +11,12 @@ import { AccountPersonalData } from "@/components/shop/account/details/AccountPe
 import { AccountBillingAddress } from "@/components/shop/account/details/AccountBilingAddress";
 import { AccountShippingAddress } from "@/components/shop/account/details/AccountShippingAdress";
 
-import { createDefaultValues, copyBillingToShipping, clearShipping } from "@/lib/utils/accountHelpers";
+import {
+  createDefaultValues,
+  copyBillingToShipping,
+  clearShipping,
+} from "@/lib/utils/accountHelpers";
+import { mapWooToForm } from "@/lib/wooAccountMapper";
 import { AccountFormData } from "@/types/account";
 
 export default function AccountPage() {
@@ -58,7 +63,6 @@ export default function AccountPage() {
     if (watched.shippingSameAsBilling) return;
 
     clearShipping(setValue);
-
   }, [watched.shippingSameAsBilling]);
 
   useEffect(() => {
@@ -70,32 +74,10 @@ export default function AccountPage() {
 
         const data = await res.json();
 
-        const formData = {
-          // Dane konta
-          firstName: data.firstName || "",
-          lastName: data.lastName || "",
-          email: data.email || "",
+        console.log("Dane użytkownika:", data);
 
-          // Billing
-          billingFirstName: data.billing?.first_name || "",
-          billingLastName: data.billing?.last_name || "",
-          billingPhone: data.billing?.phone || "",
-          billingStreet: data.billing?.address_1 || "",
-          billingFlat: data.billing?.address_2 || "",
-          billingCity: data.billing?.city || "",
-          billingPostcode: data.billing?.postcode || "",
+        const formData = mapWooToForm(data);
 
-          // Shipping
-          shippingSameAsBilling: data.shippingSameAsBilling ?? true,
-
-          shippingFirstName: data.shipping?.first_name || "",
-          shippingLastName: data.shipping?.last_name || "",
-          shippingPhone: data.shipping?.phone || "",
-          shippingStreet: data.shipping?.address_1 || "",
-          shippingFlat: data.shipping?.address_2 || "",
-          shippingCity: data.shipping?.city || "",
-          shippingPostcode: data.shipping?.postcode || "",
-        };
         reset(formData);
         setInitialData(formData);
         setInitialLoad(false);

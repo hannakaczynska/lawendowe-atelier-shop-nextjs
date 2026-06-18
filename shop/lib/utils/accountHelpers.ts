@@ -1,8 +1,6 @@
 import type {AccountFormData, ShippingFields} from "@/types/account";
 import { shippingFields, allFields, FieldName } from "@/config/accountFields";
 import { billingToShippingMap } from "@/config/accountFields";
-import {WooAccountDetails} from "@/types/woo";
-
 
 export function createDefaultValues(): AccountFormData {
   const defaults: Record<FieldName, any> = {} as Record<FieldName, any>;
@@ -12,32 +10,6 @@ export function createDefaultValues(): AccountFormData {
   });
 
   return defaults as AccountFormData;
-}
-
-export function mapWooToForm(data: WooAccountDetails): AccountFormData {
-  return {
-    firstName: data.firstName ?? "",
-    lastName: data.lastName ?? "" as string,
-    email: data.email ?? "" as string,
-
-    billingFirstName: data.billing?.first_name ?? "",
-    billingLastName: data.billing?.last_name ?? "",
-    billingPhone: data.billing?.phone ?? "",
-    billingStreet: data.billing?.address_1 ?? "",
-    billingFlat: data.billing?.address_2 ?? "", 
-    billingCity: data.billing?.city ?? "",
-    billingPostcode: data.billing?.postcode ?? "",
-
-    shippingSameAsBilling: data.shippingSameAsBilling ?? true,
-
-    shippingFirstName: data.shipping?.first_name ?? "",
-    shippingLastName: data.shipping?.last_name ?? "",
-    shippingPhone: data.shipping?.phone ?? "",
-    shippingStreet: data.shipping?.address_1 ?? "",
-    shippingFlat: data.shipping?.address_2 ?? "",
-    shippingCity: data.shipping?.city ?? "",
-    shippingPostcode: data.shipping?.postcode ?? "",
-  };
 }
 
 export function copyBillingToShipping(
@@ -54,3 +26,4 @@ export function copyBillingToShipping(
 export function clearShipping(setValue: (field: keyof ShippingFields, value: string) => void): void {
   shippingFields.forEach((field) => setValue(field, ""));
 }
+
