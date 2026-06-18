@@ -56,3 +56,31 @@ export type WooStoreProduct = {
   average_rating: string;
   rating_count: number;
 };
+
+export type WooAccountDetails = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+
+  billing?: {
+    first_name?: string;
+    last_name?: string;
+    phone?: string;
+    address_1?: string;
+    address_2?: string;
+    city?: string;
+    postcode?: string;
+  };
+
+  shippingSameAsBilling?: boolean;
+
+  shipping?: {
+    first_name?: string;
+    last_name?: string;
+    phone?: string;
+    address_1?: string;
+    address_2?: string;
+    city?: string;
+    postcode?: string;
+  };
+};

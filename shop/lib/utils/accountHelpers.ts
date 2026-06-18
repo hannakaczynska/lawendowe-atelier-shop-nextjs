@@ -1,6 +1,7 @@
-import type {AccountFormData, BillingFields, ShippingFields} from "@/types/account";
+import type {AccountFormData, ShippingFields} from "@/types/account";
 import { shippingFields, allFields, FieldName } from "@/config/accountFields";
 import { billingToShippingMap } from "@/config/accountFields";
+import {WooAccountDetails} from "@/types/woo";
 
 
 export function createDefaultValues(): AccountFormData {
@@ -13,7 +14,7 @@ export function createDefaultValues(): AccountFormData {
   return defaults as AccountFormData;
 }
 
-export function mapWooToForm(data): AccountFormData {
+export function mapWooToForm(data: WooAccountDetails): AccountFormData {
   return {
     firstName: data.firstName ?? "",
     lastName: data.lastName ?? "" as string,
