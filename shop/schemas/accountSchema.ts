@@ -41,6 +41,7 @@ export const accountSchema = z.object({
     .string()
     .regex(/^[0-9]{9}$/, "Numer telefonu musi mieć 9 cyfr"),
   billingStreet: z.string().min(1, "Ulica lub numer jest wymagana"),
+  billingFlat: z.string().optional(),
   billingCity: z
     .string()
     .min(2, "Miasto jest wymagane")
@@ -65,6 +66,7 @@ export const accountSchema = z.object({
     .string()
     .regex(/^[0-9]{9}$/, "Numer telefonu musi mieć 9 cyfr"),
   shippingStreet: z.string().min(1, "Ulica lub numer jest wymagana"),
+  shippingFlat: z.string().optional(),
   shippingCity: z
     .string()
     .min(2, "Miasto jest wymagane")
@@ -73,3 +75,4 @@ export const accountSchema = z.object({
     .string()
     .regex(/^\d{2}-\d{3}$/, "Kod pocztowy musi być w formacie 00-000"),
 });
+

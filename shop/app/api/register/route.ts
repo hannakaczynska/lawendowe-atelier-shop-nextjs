@@ -93,6 +93,7 @@ export async function POST(req: Request) {
           email_verification_token_expires: Date.now() + 30 * 60 * 1000, // 30 minutes expiry
           consent_regulations: body.consent_regulations,
           consent_marketing: body.consent_marketing,
+          shipping_same_as_billing: true,
         },
       }),
     });

@@ -1,7 +1,6 @@
 "use client";
 import { AccountProps } from "@/schemas/accountSchema";
 
-
 export function AccountBillingAddress({ register, errors }: AccountProps) {
   return (
     <section className="mb-10">
@@ -23,7 +22,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         placeholder="Nazwisko *"
         {...register("billingLastName")}
       />
-      <p className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingLastName ? "opacity-100" : "opacity-0"}`}>
+      <p
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingLastName ? "opacity-100" : "opacity-0"}`}
+      >
         {errors.billingLastName?.message || " "}
       </p>
 
@@ -32,7 +33,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         placeholder="Telefon (123 456 789) *"
         {...register("billingPhone")}
       />
-      <p className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingPhone ? "opacity-100" : "opacity-0"}`}>
+      <p
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingPhone ? "opacity-100" : "opacity-0"}`}
+      >
         {errors.billingPhone?.message || " "}
       </p>
 
@@ -41,8 +44,21 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         placeholder="Ulica i/lub numer *"
         {...register("billingStreet")}
       />
-      <p className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingStreet ? "opacity-100" : "opacity-0"}`}>
+      <p
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingStreet ? "opacity-100" : "opacity-0"}`}
+      >
         {errors.billingStreet?.message || " "}
+      </p>
+
+      <input
+        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
+        placeholder="Mieszkanie / Apartament"
+        {...register("billingFlat")}
+      />
+      <p
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingFlat ? "opacity-100" : "opacity-0"}`}
+      >
+        {errors.billingFlat?.message || " "}
       </p>
 
       <input
@@ -50,7 +66,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         placeholder="Miasto *"
         {...register("billingCity")}
       />
-      <p className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingCity ? "opacity-100" : "opacity-0"}`}>
+      <p
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingCity ? "opacity-100" : "opacity-0"}`}
+      >
         {errors.billingCity?.message || " "}
       </p>
 
@@ -59,7 +77,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         placeholder="Kod pocztowy (00-000) *"
         {...register("billingPostcode")}
       />
-      <p className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingPostcode ? "opacity-100" : "opacity-0"}`}>
+      <p
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingPostcode ? "opacity-100" : "opacity-0"}`}
+      >
         {errors.billingPostcode?.message || " "}
       </p>
     </section>

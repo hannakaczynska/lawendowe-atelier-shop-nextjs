@@ -58,6 +58,7 @@ export async function GET(req: Request) {
         email: wpUser.email,
         firstName: wpUser.first_name,
         lastName: wpUser.last_name,
+        shippingSameAsBilling: wpUser.meta.shipping_same_as_billing,
 
         billing: wcUser.billing,
         shipping: wcUser.shipping,

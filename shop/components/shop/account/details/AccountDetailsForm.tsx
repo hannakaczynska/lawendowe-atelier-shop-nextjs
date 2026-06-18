@@ -14,10 +14,12 @@ import { AccountShippingAddress } from "@/components/shop/account/details/Accoun
 export default function AccountPage() {
   const authFetch = useAuthFetch();
   const [loading, setLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const {
     register,
     watch,
+    setValue,
     handleSubmit,
     reset,
     formState: { errors, dirtyFields },
@@ -32,14 +34,16 @@ export default function AccountPage() {
       billingLastName: "",
       billingPhone: "",
       billingStreet: "",
+      billingFlat: "",
       billingCity: "",
       billingPostcode: "",
 
-      shippingSameAsBilling: true,
+      shippingSameAsBilling: false,
       shippingFirstName: "",
       shippingLastName: "",
       shippingPhone: "",
       shippingStreet: "",
+      shippingFlat: "",
       shippingCity: "",
       shippingPostcode: "",
     },
@@ -50,6 +54,41 @@ export default function AccountPage() {
   const hasChanges = Object.keys(dirtyFields).length > 0;
 
   useEffect(() => {
+    if (initialLoad) return;
+    if (!watched.shippingSameAsBilling) return;
+
+    setValue("shippingFirstName", watched.billingFirstName);
+    setValue("shippingLastName", watched.billingLastName);
+    setValue("shippingPhone", watched.billingPhone);
+    setValue("shippingStreet", watched.billingStreet);
+    setValue("shippingFlat", watched.billingFlat);
+    setValue("shippingCity", watched.billingCity);
+    setValue("shippingPostcode", watched.billingPostcode);
+  }, [
+    watched.shippingSameAsBilling,
+    watched.billingFirstName,
+    watched.billingLastName,
+    watched.billingPhone,
+    watched.billingStreet,
+    watched.billingFlat,
+    watched.billingCity,
+    watched.billingPostcode,
+  ]);
+
+  useEffect(() => {
+    if (initialLoad) return;
+    if (watched.shippingSameAsBilling) return;
+
+    setValue("shippingFirstName", "");
+    setValue("shippingLastName", "");
+    setValue("shippingPhone", "");
+    setValue("shippingStreet", "");
+    setValue("shippingFlat", "");
+    setValue("shippingCity", "");
+    setValue("shippingPostcode", "");
+  }, [watched.shippingSameAsBilling]);
+
+  useEffect(() => {
     async function loadUser() {
       try {
         const res = await authFetch("/api/account/details");
@@ -57,6 +96,7 @@ export default function AccountPage() {
         if (!res.ok) return;
 
         const data = await res.json();
+        console.log("Dane użytkownika:", data);
 
         reset({
           // Dane konta
@@ -69,20 +109,22 @@ export default function AccountPage() {
           billingLastName: data.billing?.last_name || "",
           billingPhone: data.billing?.phone || "",
           billingStreet: data.billing?.address_1 || "",
+          billingFlat: data.billing?.address_2 || "",
           billingCity: data.billing?.city || "",
           billingPostcode: data.billing?.postcode || "",
 
           // Shipping
-          shippingSameAsBilling:
-            JSON.stringify(data.billing) === JSON.stringify(data.shipping),
+          shippingSameAsBilling: data.shippingSameAsBilling ?? true,
 
           shippingFirstName: data.shipping?.first_name || "",
           shippingLastName: data.shipping?.last_name || "",
           shippingPhone: data.shipping?.phone || "",
           shippingStreet: data.shipping?.address_1 || "",
+          shippingFlat: data.shipping?.address_2 || "",
           shippingCity: data.shipping?.city || "",
           shippingPostcode: data.shipping?.postcode || "",
         });
+        setInitialLoad(false);
       } catch (err) {
         console.error("Błąd:", err);
       } finally {
@@ -93,20 +135,22 @@ export default function AccountPage() {
     loadUser();
   }, []);
 
-  if (loading) {
-    return <div className="p-10 animate-pulse">Loading...</div>;
-  }
-
   const onSubmit = (data) => {
     console.log("Wysyłamy dane:", data);
   };
+
+  if (loading) {
+    return <div className="p-10 animate-pulse">Loading...</div>;
+  }
 
   return (
     <form
       className="flex flex-col py-4 md:p-10 mx-auto max-w-[500px] justify-start"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center">Moje konto</h1>
+      <h1 className="text-2xl md:text-3xl font-bold mb-8 text-center">
+        Moje konto
+      </h1>
 
       <AccountPersonalData register={register} errors={errors} />
 
