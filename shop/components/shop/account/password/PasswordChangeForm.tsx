@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordSchema, PasswordFormData } from "@/schemas/passwordSchema";
 import { useState, useEffect } from "react";
+import { useAuthFetch } from "@/hooks/useAuthFetch";
 
 export default function PasswordChangeForm() {
+  const authFetch = useAuthFetch();
   const {
     register,
     handleSubmit,
@@ -22,15 +24,15 @@ export default function PasswordChangeForm() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Clear success message after 3 seconds
+  // Clear success message after 6 seconds
   useEffect(() => {
     if (!success) return;
-    const t = setTimeout(() => setSuccess(null), 3000);
+    const t = setTimeout(() => setSuccess(null), 6000);
     return () => clearTimeout(t);
   }, [success]);
 
   async function onSubmit(data: PasswordFormData) {
-    const res = await fetch("/api/account/change-password", {
+    const res = await authFetch("/api/account/change-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -39,7 +41,7 @@ export default function PasswordChangeForm() {
     const json = await res.json();
 
     if (!res.ok) {
-      setServerError(json.error || "Nie udało się zmienić hasła.");
+      setServerError(json.message || "Nie udało się zmienić hasła.");
       setSuccess(null);
       return;
     }
@@ -47,6 +49,9 @@ export default function PasswordChangeForm() {
     setSuccess("Hasło zostało zmienione.");
     setServerError(null);
     reset();
+    setShowOldPassword(false);
+    setShowNewPassword(false);
+    setShowConfirmPassword(false);
   }
 
   return (
