@@ -11,5 +11,13 @@ export async function POST() {
     maxAge: 0,
   });
 
+  response.cookies.set("redirectAfterLogin", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+    maxAge: 0,
+  });
+
   return response;
 }

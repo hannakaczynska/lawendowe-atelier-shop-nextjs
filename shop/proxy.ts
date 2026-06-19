@@ -42,7 +42,8 @@ export async function proxy(req: NextRequest) {
         path.startsWith("/shop/verify-email") ||
         path.startsWith("/shop/resend-verification") ||
         path.startsWith("/shop/reset-password") ||
-        path.startsWith("/forgot-password")
+        path.startsWith("/shop/forgot-password") ||
+        path.startsWith("/shop/account")
       ) {
         res.cookies.set("redirectAfterLogin", "/shop", { path: "/" });
       } else {
