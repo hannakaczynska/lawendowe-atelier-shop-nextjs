@@ -1,7 +1,5 @@
-export default async function PasswordPage() {
-    return (
-    <>
-    <p>PASSWORD PAGE</p>
-    </>
-    )
+import PasswordChangeForm from "@/components/shop/account/password/PasswordChangeForm";
+
+export default function PasswordChangePage() {
+  return <PasswordChangeForm />;
 }
