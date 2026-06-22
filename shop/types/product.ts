@@ -32,6 +32,7 @@ export type Product = {
   mainImage: {
     src: string;
     alt: string;
+    thumbnail: string;
   };
 
   images: {

@@ -19,6 +19,7 @@ export function mapProduct(p: WooStoreProduct): Product {
     mainImage: {
       src: image?.src ?? "/product-placeholder.png",
       alt: image?.alt ?? p.name,
+      thumbnail: image?.thumbnail ?? "/product-placeholder.png",
     },
 
     images: p.images?.map((img) => ({
