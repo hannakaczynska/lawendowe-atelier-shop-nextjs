@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import MobileMenu from "@/components/MobileMenu";
+import CartIconWithQuantity from "@/components/elements/CartIconWithQuantity";
 import { setupHeaderVisibility } from "@/lib/utils/scrollHelpers";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { useDisableScroll } from "@/hooks/useDisableScroll";
@@ -103,9 +104,7 @@ export default function ShopHeader() {
                     />
                   </Link>
                 )}
-                <Link href="/shop/cart">
-                  <img className="h-[32px]" src="/grey-cart.svg" alt="Cart" />
-                </Link>
+                <CartIconWithQuantity />
               </nav>
               <button
                 className="md:hidden h-[32px] pt-[1px]"
