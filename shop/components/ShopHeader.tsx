@@ -14,7 +14,11 @@ export default function ShopHeader() {
   const { authenticated } = useUser();
   const isMobile = useIsMobile();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [miniCartOpen, setMiniCartOpen] = useState(false);
   const [headerVisible, setHeaderVisible] = useState(true);
+
+  const disableScroll = (mobileMenuOpen || miniCartOpen) && isMobile;
+  useDisableScroll(disableScroll);
 
   // Setup scroll listener for header visibility — re-runs when isMobile changes
   useEffect(() => {
@@ -41,8 +45,6 @@ export default function ShopHeader() {
     return () => window.removeEventListener("resize", handleResize);
   }, [mobileMenuOpen]);
 
-  useDisableScroll(mobileMenuOpen);
-
   return (
     <>
       <header
@@ -54,7 +56,16 @@ export default function ShopHeader() {
         </div>
         <div className="bg-white w-full">
           <div className="relative max-w-[500px] w-full md:max-w-[1500px] mx-auto px-4 flex items-center justify-between">
-            <img className="w-[100px] h-auto" src="/logo.svg" alt="Logo" />
+            <Link
+              href="/"
+              className="cursor-pointer"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setMiniCartOpen(false);
+              }}
+            >
+              <img className="w-[100px] h-auto" src="/logo.svg" alt="Logo" />
+            </Link>
             <nav className="hidden md:flex gap-6">
               <Link
                 className={`text-xl ${pathname === "/" ? "font-bold" : ""} hover:text-[var(--grey)]`}
@@ -104,11 +115,19 @@ export default function ShopHeader() {
                     />
                   </Link>
                 )}
-                <CartIconWithQuantity />
+                <div onClick={() => setMobileMenuOpen(false)}>
+                  <CartIconWithQuantity
+                    miniCartOpen={miniCartOpen}
+                    setMiniCartOpen={setMiniCartOpen}
+                  />
+                </div>
               </nav>
               <button
-                className="md:hidden h-[32px] pt-[1px]"
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="md:hidden h-[32px] pt-[1px] cursor-pointer"
+                onClick={() => {
+                  setMobileMenuOpen(!mobileMenuOpen);
+                  setMiniCartOpen(false);
+                }}
               >
                 <img
                   className="h-full text-[var(--third-color)] fill-gray-500"

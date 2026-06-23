@@ -72,7 +72,7 @@ export default function CartPage() {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => decreaseQuantity(item.product.id)}
-                        className="text-xl cursor-pointer"
+                        className="cursor-pointer text-xl w-7 h-7 flex items-center justify-center rounded-md border border-[var(--secondary-color-light)] hover:bg-[var(--secondary-color-light)] transition-colors duration-300"
                       >
                         -
                       </button>
@@ -81,7 +81,7 @@ export default function CartPage() {
 
                       <button
                         onClick={() => increaseQuantity(item.product.id)}
-                        className="text-xl cursor-pointer"
+                        className="cursor-pointer text-xl w-7 h-7 flex items-center justify-center rounded-md bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
                       >
                         +
                       </button>
@@ -106,6 +106,13 @@ export default function CartPage() {
               </div>
             </div>
           ))}
+
+          <Link
+            href="/shop"
+            className="cursor-pointer w-full text-center py-3 rounded-md bg-[var(--secondary-color-light)] font-semibold hover:bg-[var(--secondary-color)] hover:text-white transition-colors duration-300"
+          >
+            ← Kontynuuj zakupy
+          </Link>
 
           {/* Clear the cart */}
           <button
@@ -141,7 +148,7 @@ export default function CartPage() {
 
               <Link
                 href="/shop/checkout"
-                className="cursor-pointer font-bold py-4 px-6 rounded-4xl bg-[var(--secondary-color)] hover:text-white hover:bg-[var(--primary-color)] transition-colors duration-300 mx-auto block text-center"
+                className="cursor-pointer font-bold py-3 rounded-md w-full bg-[var(--secondary-color)] hover:text-white hover:bg-[var(--primary-color)] transition-colors duration-300 mx-auto block text-center"
               >
                 Przejdź do zamówienia
               </Link>

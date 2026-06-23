@@ -50,7 +50,9 @@ export default function SiteHeader() {
       >
         <div className="bg-white w-full">
           <div className="relative max-w-[500px] w-full md:max-w-[1500px] mx-auto px-4 flex items-center justify-between">
-            <img className="w-[100px] h-auto" src="/logo.svg" alt="Logo" />
+            <Link href="/" className="cursor-pointer">
+              <img className="w-[100px] h-auto" src="/logo.svg" alt="Logo" />
+            </Link>
             <nav className="hidden md:flex gap-6">
               <Link
                 className={`text-xl ${pathname === "/" ? "font-bold" : ""} hover:text-[var(--grey)]`}
@@ -98,7 +100,7 @@ export default function SiteHeader() {
                 </Link>
               )}
               <button
-                className="md:hidden h-[32px] pt-[1px]"
+                className="md:hidden h-[32px] pt-[1px] cursor-pointer"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 <img
