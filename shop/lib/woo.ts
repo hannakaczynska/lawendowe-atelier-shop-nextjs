@@ -6,6 +6,10 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 console.log("appUrl", appUrl);
 
 export async function getProducts(): Promise<Product[]> {
+  console.log("========== GET PRODUCTS ==========");
+  console.log("appUrl:", appUrl);
+  console.log("VERCEL_URL:", process.env.VERCEL_URL);
+  console.log("NODE_ENV:", process.env.NODE_ENV);
   try {
     const res = await fetch(`${appUrl}/api/products`, {
       cache: "no-store",
