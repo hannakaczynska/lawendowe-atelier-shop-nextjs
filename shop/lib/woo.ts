@@ -7,7 +7,7 @@ console.log("appUrl", appUrl);
 
 export async function getProducts(): Promise<Product[]> {
   try {
-    const res = await fetch('/api/products', {
+    const res = await fetch(`${appUrl}/api/products`, {
       cache: "no-store",
     });
 

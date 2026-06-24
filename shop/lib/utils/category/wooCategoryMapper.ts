@@ -14,7 +14,7 @@ export async function getCategoryMap(): Promise<{ categoryMap: Record<string, nu
   }
 
   // Fetch categories from WooCommerce API
-  const res = await fetch('/api/categories?per_page=100', {
+  const res = await fetch(`${APP_URL}/api/categories?per_page=100`, {
     cache: "no-store",
   });
 
