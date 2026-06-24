@@ -2,7 +2,7 @@ import { WooStoreProduct } from "@/types/woo";
 import { Product } from "@/types/product";
 import { mapProduct } from "@/lib/wooProductMapper";
 import { getCategoryMap } from "@/lib/utils/category/wooCategoryMapper";
-const appUrl = "http://localhost:3000";
+const appUrl = process.env.NEXT_PUBLIC_APP_URL;
 
 export async function getProducts(): Promise<Product[]> {
   try {
