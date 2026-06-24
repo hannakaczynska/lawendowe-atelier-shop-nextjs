@@ -2,6 +2,8 @@
 
 import { useSearchParams } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default function VerifyEmailPage() {
   const searchParams = useSearchParams();
   const email = searchParams?.get("email") ?? "";
