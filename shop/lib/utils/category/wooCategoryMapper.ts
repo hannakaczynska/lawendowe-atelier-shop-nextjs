@@ -19,7 +19,7 @@ export async function getCategoryMap(): Promise<{ categoryMap: Record<string, nu
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch categories");
+    throw new Error(`Failed to fetch categories: ${res.status} ${res.statusText} ${APP_URL}/api/categories?per_page=100`);
   }
 
   const categories = await res.json();
