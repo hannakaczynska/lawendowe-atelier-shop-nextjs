@@ -16,7 +16,7 @@ export async function getProducts(): Promise<Product[]> {
     const res = await fetch(
       `${BASE_URL}/wp-json/wc/v3/products?consumer_key=${CK}&consumer_secret=${CS}`,
       {
-        cache: "no-store",
+        next: { revalidate: 120 },
       },
     );
 
