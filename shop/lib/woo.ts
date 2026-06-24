@@ -3,6 +3,7 @@ import { Product } from "@/types/product";
 import { mapProduct } from "@/lib/wooProductMapper";
 import { getCategoryMap } from "@/lib/utils/category/wooCategoryMapper";
 const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+console.log("appUrl", appUrl);
 
 export async function getProducts(): Promise<Product[]> {
   try {
@@ -11,7 +12,9 @@ export async function getProducts(): Promise<Product[]> {
     });
 
     if (!res.ok) {
-      throw new Error("Failed to fetch products");
+      console.error("❌ /api/products returned:", res.status, await res.text());
+      return [];
+      // throw new Error("Failed to fetch products");
     }
 
     const data: WooStoreProduct[] = await res.json();
@@ -41,7 +44,6 @@ export async function getProduct(slug: string): Promise<Product> {
     throw error;
   }
 }
-
 
 export async function getProductsByCategorySlugs(slugs: string[]) {
   const { categoryMap: map } = await getCategoryMap();
