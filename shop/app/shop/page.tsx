@@ -2,7 +2,7 @@ import ProductList from "@/components/shop/product/ProductList";
 import SidePanel from "@/components/shop/category/SidePanel/SidePanel";
 import CategoryNavigation from "@/components/shop/category/CategoryNavigation";
 import MobilePanel from "@/components/shop/category/MobilePanel";
-import { getProducts } from "@/lib/woo";
+import { getProducts } from "@/lib/woo/getProducts";
 
 
 export default async function Shop() {
