@@ -14,13 +14,15 @@ export async function getCategoryMap(): Promise<{ categoryMap: Record<string, nu
   }
 
   // Fetch categories from WooCommerce API
-  const res = await fetch(`${APP_URL}/api/categories?per_page=100`, {
+  const res = await fetch('/api/categories?per_page=100', {
     cache: "no-store",
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch categories: ${res.status} ${res.statusText} ${APP_URL}/api/categories?per_page=100`);
+    throw new Error("Failed to fetch categories");
   }
+
+ console.warn("Fetching categories from WooCommerce API..."); 
 
   const categories = await res.json();
 
