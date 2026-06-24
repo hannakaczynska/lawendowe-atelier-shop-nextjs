@@ -17,7 +17,7 @@ export async function getCategories() {
   try {
     const res = await fetch(
       `${BASE_URL}/wp-json/wc/v3/products/categories?${params}`,
-      { cache: "no-store" }
+      { next: { revalidate: 300 } }
     );
 
     if (!res.ok) {
