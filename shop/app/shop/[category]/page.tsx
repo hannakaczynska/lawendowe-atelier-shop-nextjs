@@ -2,7 +2,7 @@ import ProductList from "@/components/shop/product/ProductList";
 import SidePanel from "@/components/shop/category/SidePanel/SidePanel";
 import MobilePanel from "@/components/shop/category/MobilePanel";
 import CategoryNavigation from "@/components/shop/category/CategoryNavigation";
-import { getProductsByCategorySlugs } from "@/lib/woo";
+import { getProductsByCategory } from "@/lib/woo/getProductsByCategory";
 
 export default async function CategoryPage({
   params,
@@ -13,7 +13,7 @@ export default async function CategoryPage({
   const decoded = decodeURIComponent(category);
   const slugs = decoded.split(",").filter(Boolean);
 
-  const products = await getProductsByCategorySlugs(slugs);
+  const products = await getProductsByCategory(slugs);
 
     return (
     <>
