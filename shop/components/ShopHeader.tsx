@@ -146,7 +146,7 @@ export default function ShopHeader() {
             className="fixed inset-0 z-40 bg-black/10 md:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed top-[100px] right-0 w-1/3 min-w-[250px] z-50 md:hidden">
+          <div className="fixed top-[100px] right-0 w-1/3 min-w-[300px] z-50 md:hidden">
             <MobileMenu closeMenu={() => setMobileMenuOpen(false)} />
           </div>
         </>

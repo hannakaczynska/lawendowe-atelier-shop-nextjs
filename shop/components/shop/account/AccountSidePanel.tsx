@@ -3,34 +3,7 @@
 import { useAuthFetch } from "@/hooks/useAuthFetch";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const navItems = [
-  {
-    label: "Moje dane",
-    href: "/shop/account",
-    icon: "/user.svg",
-  },
-  {
-    label: "Moje zamówienia",
-    href: "/shop/account/orders",
-    icon: "/shopping-bag.svg",
-  },
-  {
-    label: "System bonusowy",
-    href: "/shop/account/bonus",
-    icon: "/star.svg",
-  },
-  {
-    label: "Moje opinie",
-    href: "/shop/account/reviews",
-    icon: "/reviews.svg",
-  },
-  {
-    label: "Zmień hasło",
-    href: "/shop/account/password",
-    icon: "/key.svg",
-  },
-];
+import navItems from "@/config/accountNav";
 
 export default function AccountSideNav() {
   const pathname = usePathname();

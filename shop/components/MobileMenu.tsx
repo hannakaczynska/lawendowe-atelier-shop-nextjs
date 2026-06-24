@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import MobileAccountNavigation from "@/components/shop/account/MobileAccoutNavigation";
 
 export default function MobileMenu({ closeMenu }: { closeMenu: () => void }) {
   const pathname = usePathname();
@@ -35,10 +36,7 @@ export default function MobileMenu({ closeMenu }: { closeMenu: () => void }) {
           Kontakt
         </Link>
         <div className="border-t border-[var(--light-grey)] mb-4"></div>
-        <Link href="/" onClick={closeMenu}>
-          {" "}
-          <img className="h-[32px]" src="/user.svg" alt="User" />
-        </Link>
+        <MobileAccountNavigation closeMenu={closeMenu} />
       </nav>
     </div>
   );
