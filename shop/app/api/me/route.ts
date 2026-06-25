@@ -38,6 +38,7 @@ export async function GET(req: Request) {
       { status: 200 },
     );
   } catch (err) {
+    console.error("api/me:", err);
     return NextResponse.json(
       { authenticated: false, user: null },
       { status: 401 },

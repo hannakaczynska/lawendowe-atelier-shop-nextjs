@@ -24,7 +24,8 @@ export function ShopCategoryProvider({
 export function useShopCategory(): ShopCategoryContextValue {
   const context = useContext(ShopCategoryContext);
   if (!context) {
-    throw new Error("useShopCategory must be used within ShopCategoryProvider");
+   console.error("useShopCategory must be used within ShopCategoryProvider");
+   return { categoryTree: [], firstLevelSlugs: [] };
   }
   return context;
 }

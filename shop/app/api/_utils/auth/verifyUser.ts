@@ -10,7 +10,6 @@ export async function verifyUserToken(req: Request) {
       .find((c) => c.startsWith("auth_token="))
       ?.split("=")[1] ?? null;
 
-
   if (!token) {
     console.log("No token found in cookies.");
     return { ok: false, token: null };
@@ -21,13 +20,17 @@ export async function verifyUserToken(req: Request) {
     {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
-    }
+    },
   );
 
-   const validateData = await validateRes.json();
+  if (!validateRes.ok) {
+    console.log("Token validation failed.");
+    return { ok: false, token: null };
+  }
 
+  const validateData = await validateRes.json();
 
-  if (!validateRes.ok || validateData?.data?.status !== 200) {
+  if (validateData?.data?.status !== 200) {
     return { ok: false, token: null };
   }
 
