@@ -1,11 +1,9 @@
-import CheckoutForm from "@/components/shop/checkout/CheckoutForm";
-import  CheckoutSummary  from "@/components/shop/checkout/CheckoutSummary";
+import { CheckoutWrapper } from "@/components/shop/checkout/CheckoutWrapper";
 export default function CheckoutPage() {
   return (
-    <div>
+    <div className="flex max-w-[1500px] mx-auto px-4 py-1 my-6 md:py-8 mt-[100px]">
       <h2>Zamówienie</h2>
-      <CheckoutForm />
-      <CheckoutSummary />
+      <CheckoutWrapper />
     </div>
   );
 }

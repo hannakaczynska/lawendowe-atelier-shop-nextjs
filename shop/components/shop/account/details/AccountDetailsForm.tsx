@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { accountSchema } from "@/schemas/accountSchema";
+import { AccountSchema } from "@/schemas/accountSchema";
 
 import { useAuthFetch } from "@/hooks/useAuthFetch";
 
@@ -131,7 +132,7 @@ export default function AccountPage() {
 
       <AccountBillingAddress register={register} errors={errors} />
 
-      <AccountShippingAddress
+      <AccountShippingAddress<AccountSchema>
         register={register}
         errors={errors}
         shippingDisabled={shippingDisabled}

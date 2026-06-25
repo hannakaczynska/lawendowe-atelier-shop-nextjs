@@ -87,7 +87,7 @@ export default function MiniCart({ closeMiniCart }: { closeMiniCart: () => void 
           Przejdź do koszyka
         </Link>
         <Link
-          href="/checkout"
+          href="/shop/checkout"
           onClick={closeMiniCart}
           className="mt-2 w-full text-center py-2 rounded-md bg-[var(--secondary-color)] font-semibold hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
         >

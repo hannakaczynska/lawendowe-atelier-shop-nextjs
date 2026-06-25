@@ -1,15 +1,18 @@
 "use client";
 import { AccountProps } from "@/schemas/accountSchema";
+import { FieldErrors, UseFormRegister, FieldValues } from "react-hook-form";
 
-interface ShippingAddressProps extends AccountProps {
+interface ShippingAddressProps<T extends FieldValues> { 
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
   shippingDisabled: boolean | undefined;
 }
 
-export function AccountShippingAddress({
+export function AccountShippingAddress<T extends FieldValues>({
   register,
   errors,
   shippingDisabled,
-}: ShippingAddressProps) {
+}: ShippingAddressProps<T>) {
   return (
     <section className="mb-10 w-full">
       <h2 className="text-xl font-semibold mb-4">Adres dostawy</h2>
@@ -18,7 +21,7 @@ export function AccountShippingAddress({
         <input
           type="checkbox"
           className="accent-[var(--in-stock)]"
-          {...register("shippingSameAsBilling")}
+          {...register("shippingSameAsBilling" as any)}
         />
         <span className="text-sm">Taki sam jak kupującego</span>
       </label>
@@ -35,12 +38,12 @@ export function AccountShippingAddress({
         }`}
         id="shippingFirstName"
         disabled={shippingDisabled}
-        {...register("shippingFirstName")}
+        {...register("shippingFirstName" as any)}
       />
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingFirstName ? "opacity-100" : "opacity-0"}`}
       >
-        {errors.shippingFirstName?.message || " "}
+        {(errors as any).shippingFirstName?.message || " "}
       </p>
 
       <label
@@ -55,12 +58,12 @@ export function AccountShippingAddress({
         }`}
         id="shippingLastName"
         disabled={shippingDisabled}
-        {...register("shippingLastName")}
+        {...register("shippingLastName" as any)}
       />
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingLastName ? "opacity-100" : "opacity-0"}`}
       >
-        {errors.shippingLastName?.message || " "}
+        {(errors as any).shippingLastName?.message || " "}
       </p>
 
       <label htmlFor="shippingPhone" className="text-[var(--grey)] block mb-1">
@@ -73,12 +76,12 @@ export function AccountShippingAddress({
         id="shippingPhone"
         placeholder="123 456 789"
         disabled={shippingDisabled}
-        {...register("shippingPhone")}
+        {...register("shippingPhone" as any)}
       />
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingPhone ? "opacity-100" : "opacity-0"}`}
       >
-        {errors.shippingPhone?.message || " "}
+        {(errors as any).shippingPhone?.message || " "}
       </p>
 
       <label htmlFor="shippingStreet" className="text-[var(--grey)] block mb-1">
@@ -90,12 +93,12 @@ export function AccountShippingAddress({
         }`}
         id="shippingStreet"
         disabled={shippingDisabled}
-        {...register("shippingStreet")}
+        {...register("shippingStreet" as any)}
       />
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingStreet ? "opacity-100" : "opacity-0"}`}
       >
-        {errors.shippingStreet?.message || " "}
+        {(errors as any).shippingStreet?.message || " "}
       </p>
 
       <label htmlFor="shippingFlat" className="text-[var(--grey)] block mb-1">
@@ -107,12 +110,12 @@ export function AccountShippingAddress({
         }`}
         id="shippingFlat"
         disabled={shippingDisabled}
-        {...register("shippingFlat")}
+        {...register("shippingFlat" as any)}
       />
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingFlat ? "opacity-100" : "opacity-0"}`}
       >
-        {errors.shippingFlat?.message || " "}
+        {(errors as any).shippingFlat?.message || " "}
       </p>
 
       <label htmlFor="shippingCity" className="text-[var(--grey)] block mb-1">
@@ -124,12 +127,12 @@ export function AccountShippingAddress({
         }`}
         id="shippingCity"
         disabled={shippingDisabled}
-        {...register("shippingCity")}
+        {...register("shippingCity" as any)}
       />
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingCity ? "opacity-100" : "opacity-0"}`}
       >
-        {errors.shippingCity?.message || " "}
+        {(errors as any).shippingCity?.message || " "}
       </p>
 
       <label
@@ -145,12 +148,12 @@ export function AccountShippingAddress({
         id="shippingPostcode"
         placeholder="00-000"
         disabled={shippingDisabled}
-        {...register("shippingPostcode")}
+        {...register("shippingPostcode" as any)}
       />
       <p
         className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingPostcode ? "opacity-100" : "opacity-0"}`}
       >
-        {errors.shippingPostcode?.message || " "}
+        {(errors as any).shippingPostcode?.message || " "}
       </p>
     </section>
   );
