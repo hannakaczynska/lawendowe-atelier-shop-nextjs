@@ -4,9 +4,11 @@ import { useCart } from "@/store/cart";
 import AddToCartButton from "../../elements/AddToCartButton";
 import type { Product } from "@/types/product";
 import { formatPrice } from "@/lib/utils/formatPrice";
+import { handleIncreaseQuantity } from "@/lib/utils/handleIncreaseQuantity";
 
 export default function ProductList({ products }: { products: Product[] }) {
   const { items, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
+
   return (
     <ul className="grid grid-cols-[repeat(auto-fill,minmax(250px,350px))] justify-center gap-6">
       {products.map((product) => {
@@ -52,8 +54,11 @@ export default function ProductList({ products }: { products: Product[] }) {
                   </span>
 
                   <button
-                    onClick={() => increaseQuantity(product.id)}
-                    className="w-8 h-8 cursor-pointer flex items-center justify-center rounded-md bg-[var(--secondary-color)] text-lg font-bold hover:text-white hover:bg-[var(--primary-color)] transition-colors duration-300"
+                    onClick={() => {
+                      handleIncreaseQuantity(product.id, product.quantity, quantity, increaseQuantity);
+                    }}
+                    className="w-8 h-8 cursor-pointer flex items-center justify-center rounded-md bg-[var(--secondary-color)] text-lg font-bold hover:text-white hover:bg-[var(--primary-color)] transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:bg-[var(--secondary-color)] disabled:hover:text-black"
+                    disabled={quantity >= product.quantity}
                   >
                     +
                   </button>

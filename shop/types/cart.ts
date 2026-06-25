@@ -8,7 +8,7 @@ export type CartItem = {
 export type CartStore = {
   items: CartItem[];
   addToCart: (product: Product) => void;
-  increaseQuantity: (id: number) => void;
+  increaseQuantity: (id: number, quantity: number) => void;
   decreaseQuantity: (id: number) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;

@@ -3,6 +3,7 @@
 import { useCart, useCartTotal } from "@/store/cart";
 import { formatPrice } from "@/lib/utils/formatPrice";
 import Link from "next/link";
+import { handleIncreaseQuantity } from "@/lib/utils/handleIncreaseQuantity";
 
 export default function MiniCart({ closeMiniCart }: { closeMiniCart: () => void }) {
   const { items, increaseQuantity, decreaseQuantity, removeFromCart } =
@@ -55,8 +56,9 @@ export default function MiniCart({ closeMiniCart }: { closeMiniCart: () => void 
             <span className="min-w-[20px] text-center">{quantity}</span>
 
             <button
-              onClick={() => increaseQuantity(product.id)}
-              className="cursor-pointer w-5 h-5 md:w-7 md:h-7 flex items-center justify-center rounded-md bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
+              onClick={() => handleIncreaseQuantity(product.id, product.quantity, quantity, increaseQuantity)}
+              className="cursor-pointer w-5 h-5 md:w-7 md:h-7 flex items-center justify-center rounded-md bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:bg-[var(--secondary-color)] disabled:hover:text-black"
+              disabled={quantity >= product.quantity}
             >
               +
             </button>

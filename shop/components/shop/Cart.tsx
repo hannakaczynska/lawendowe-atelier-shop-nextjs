@@ -3,6 +3,7 @@
 import { useCart, useCartTotal } from "@/store/cart";
 import { formatPrice } from "@/lib/utils/formatPrice";
 import Link from "next/link";
+import { handleIncreaseQuantity } from "@/lib/utils/handleIncreaseQuantity";
 
 export default function CartPage() {
   const items = useCart((state) => state.items);
@@ -80,8 +81,16 @@ export default function CartPage() {
                       <span className="font-medium">{item.quantity}</span>
 
                       <button
-                        onClick={() => increaseQuantity(item.product.id)}
-                        className="cursor-pointer text-xl w-7 h-7 flex items-center justify-center rounded-md bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
+                        onClick={() =>
+                          handleIncreaseQuantity(
+                            item.product.id,
+                            item.product.quantity,
+                            item.quantity,
+                            increaseQuantity
+                          )
+                        }
+                        className="cursor-pointer text-xl w-7 h-7 flex items-center justify-center rounded-md bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:hover:bg-[var(--secondary-color)] disabled:hover:text-black"
+                        disabled={item.quantity >= item.product.quantity}
                       >
                         +
                       </button>
