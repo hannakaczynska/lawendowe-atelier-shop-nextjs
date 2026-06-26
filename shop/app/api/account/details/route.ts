@@ -33,7 +33,7 @@ export async function GET(req: Request) {
     const wcUser = await wcRes.json();
     console.log("Pobrane dane użytkownika z WooCommerce:", wcUser);
 
-    // 4. Merge both
+      // 4. Merge both
     return NextResponse.json(
       {
         id: wpUser.id,

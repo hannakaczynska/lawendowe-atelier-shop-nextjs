@@ -1,17 +1,17 @@
-import type {AccountFormData} from "@/types/account";
+import type { AccountFormData } from "@/types/account";
 import { WooAccountDetails } from "@/types/woo";
 
 export function mapWooToForm(data: WooAccountDetails): AccountFormData {
   return {
     firstName: data.firstName ?? "",
-    lastName: data.lastName ?? "" as string,
-    email: data.email ?? "" as string,
+    lastName: data.lastName ?? ("" as string),
+    email: data.email ?? ("" as string),
 
     billingFirstName: data.billing?.first_name ?? "",
     billingLastName: data.billing?.last_name ?? "",
     billingPhone: data.billing?.phone ?? "",
     billingStreet: data.billing?.address_1 ?? "",
-    billingFlat: data.billing?.address_2 ?? "", 
+    billingFlat: data.billing?.address_2 ?? "",
     billingCity: data.billing?.city ?? "",
     billingPostcode: data.billing?.postcode ?? "",
 
@@ -61,5 +61,11 @@ export function mapFormToWoo(data: AccountFormData) {
           city: data.shippingCity,
           postcode: data.shippingPostcode,
         },
+    meta_data: [
+      {
+        key: "shipping_same_as_billing",
+        value: data.shippingSameAsBilling ? "1" : "0",
+      },
+    ],
   };
 }
