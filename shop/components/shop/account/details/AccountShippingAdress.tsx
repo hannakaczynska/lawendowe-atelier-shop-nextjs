@@ -41,7 +41,7 @@ export function AccountShippingAddress<T extends FieldValues>({
         {...register("shippingFirstName" as any)}
       />
       <p
-        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingFirstName ? "opacity-100" : "opacity-0"}`}
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingFirstName && !shippingDisabled ? "opacity-100" : "opacity-0"}`}
       >
         {(errors as any).shippingFirstName?.message || " "}
       </p>
@@ -61,7 +61,7 @@ export function AccountShippingAddress<T extends FieldValues>({
         {...register("shippingLastName" as any)}
       />
       <p
-        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingLastName ? "opacity-100" : "opacity-0"}`}
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingLastName && !shippingDisabled ? "opacity-100" : "opacity-0"}`}
       >
         {(errors as any).shippingLastName?.message || " "}
       </p>
@@ -79,7 +79,7 @@ export function AccountShippingAddress<T extends FieldValues>({
         {...register("shippingPhone" as any)}
       />
       <p
-        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingPhone ? "opacity-100" : "opacity-0"}`}
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingPhone && !shippingDisabled ? "opacity-100" : "opacity-0"}`}
       >
         {(errors as any).shippingPhone?.message || " "}
       </p>
@@ -96,7 +96,7 @@ export function AccountShippingAddress<T extends FieldValues>({
         {...register("shippingStreet" as any)}
       />
       <p
-        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingStreet ? "opacity-100" : "opacity-0"}`}
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingStreet && !shippingDisabled ? "opacity-100" : "opacity-0"}`}
       >
         {(errors as any).shippingStreet?.message || " "}
       </p>
@@ -113,7 +113,7 @@ export function AccountShippingAddress<T extends FieldValues>({
         {...register("shippingFlat" as any)}
       />
       <p
-        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingFlat ? "opacity-100" : "opacity-0"}`}
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingFlat && !shippingDisabled ? "opacity-100" : "opacity-0"}`}
       >
         {(errors as any).shippingFlat?.message || " "}
       </p>
@@ -130,7 +130,7 @@ export function AccountShippingAddress<T extends FieldValues>({
         {...register("shippingCity" as any)}
       />
       <p
-        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingCity ? "opacity-100" : "opacity-0"}`}
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingCity && !shippingDisabled ? "opacity-100" : "opacity-0"}`}
       >
         {(errors as any).shippingCity?.message || " "}
       </p>
@@ -151,7 +151,7 @@ export function AccountShippingAddress<T extends FieldValues>({
         {...register("shippingPostcode" as any)}
       />
       <p
-        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingPostcode ? "opacity-100" : "opacity-0"}`}
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.shippingPostcode && !shippingDisabled ? "opacity-100" : "opacity-0"}`}
       >
         {(errors as any).shippingPostcode?.message || " "}
       </p>

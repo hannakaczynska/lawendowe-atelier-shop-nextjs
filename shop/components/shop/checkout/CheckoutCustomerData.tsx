@@ -7,13 +7,30 @@ import { CustomerProps } from "@/schemas/customerSchema";
 export function CheckoutCustomerData({
   register,
   errors,
+  trigger,
   setStep,
 }: {
   register: CustomerProps["register"];
   errors: CustomerProps["errors"];
+  trigger: CustomerProps["trigger"];
   setStep: (step: Step) => void;
 }) {
   const { authenticated } = useUser();
+
+  const handleNext = async () => {
+  const valid = await trigger([
+    "billingFirstName",
+    "billingLastName",
+    "email",
+    "billingPhone",
+    "billingStreet",
+    "billingCity",
+    "billingPostcode",
+  ]);
+
+  if (valid) setStep(2);
+};
+
 
   return (
     <section className="mb-10">
@@ -111,7 +128,7 @@ export function CheckoutCustomerData({
 
         <button
           type="button"
-          onClick={() => setStep(2)}
+          onClick={handleNext}
           className="cursor-pointer mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
         >
           Dalej →

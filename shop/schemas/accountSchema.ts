@@ -9,7 +9,7 @@ export interface AccountProps {
 }
 
 export const accountSchema = z.object({
-  // Dane konta (WordPress)
+  // Account data (WordPress)
   firstName: z
     .string()
     .min(2, "Imię musi mieć co najmniej 2 znaki")

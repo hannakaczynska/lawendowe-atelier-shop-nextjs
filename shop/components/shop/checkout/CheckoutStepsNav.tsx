@@ -10,7 +10,7 @@ export function CheckoutStepsNav({
   return (
     <div className="flex justify-between mb-8 text-sm font-medium">
       <button
-        className={`pb-2 border-b-2 ${
+        className={`pb-2 cursor-pointer border-b-2 ${
           step === 1 ? "border-[var(--primary-color)]" : "border-transparent"
         }`}
         onClick={() => setStep(1)}
@@ -19,7 +19,7 @@ export function CheckoutStepsNav({
       </button>
 
       <button
-        className={`pb-2 border-b-2 ${
+        className={`pb-2 cursor-pointer border-b-2 ${
           step === 2 ? "border-[var(--primary-color)]" : "border-transparent"
         }`}
         onClick={() => setStep(2)}
@@ -28,7 +28,7 @@ export function CheckoutStepsNav({
       </button>
 
       <button
-        className={`pb-2 border-b-2 ${
+        className={`pb-2 cursor-pointer border-b-2 ${
           step === 3 ? "border-[var(--primary-color)]" : "border-transparent"
         }`}
         onClick={() => setStep(3)}

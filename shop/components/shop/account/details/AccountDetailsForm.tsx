@@ -37,6 +37,8 @@ export default function AccountPage() {
     formState: { errors, isSubmitting },
   } = useForm<AccountFormData>({
     resolver: zodResolver(accountSchema),
+    mode: "onBlur",
+    reValidateMode: "onChange",
     defaultValues: createDefaultValues(),
   });
 

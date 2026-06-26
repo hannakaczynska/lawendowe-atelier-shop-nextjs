@@ -1,14 +1,15 @@
 "use client";
 
 import type { Step } from "./CheckoutWrapper";
-import { PaymentProps } from "@/schemas/paymentSchema";
+import { CheckoutProps } from "@/schemas/checkoutSchema";
 
 export default function CheckoutPayment({
   register,
   errors,
   setStep,
+  trigger,
   onSubmit,
-}: PaymentProps & {
+}: CheckoutProps & {
   setStep: (step: Step) => void;
   onSubmit: () => void;
 }) {
@@ -16,7 +17,6 @@ export default function CheckoutPayment({
     <section className="mb-10">
       <h2 className="text-xl font-semibold mb-4">Płatność</h2>
 
-      {/* METODY PŁATNOŚCI */}
       <div className="space-y-4 mb-6">
         <label className="flex items-center gap-3 cursor-pointer">
           <input
@@ -47,11 +47,10 @@ export default function CheckoutPayment({
           />
           <span>Gotówka przy odbiorze</span>
         </label>
+        <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
+          {errors.paymentMethod?.message ? "Wybierz metodę płatności" : " "}
+        </p>
       </div>
-
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.paymentMethod?.message || " "}
-      </p>
 
       {/* PRZYCISKI NAWIGACJI */}
       <div className="flex gap-6 justify-center mt-6">

@@ -1,18 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import { AccountShippingAddress } from "@/components/shop/account/details/AccountShippingAdress";
 import { Step } from "./CheckoutWrapper";
-import { ShippingProps, ShippingSchema } from "@/schemas/shippingSchema";
+import { CheckoutProps, CheckoutSchema } from "@/schemas/checkoutSchema";
+import { useUser } from "@/context/UserContext";
 
 export default function CheckoutAddressDelivery({
   register,
   errors,
+  trigger,
   watch,
   setValue,
   setStep,
-}: {
-  register: ShippingProps["register"];
-  errors: ShippingProps["errors"];
+}: CheckoutProps & {
   watch: any;
   setValue: any;
   setStep: (step: Step) => void;
@@ -22,34 +23,65 @@ export default function CheckoutAddressDelivery({
 
   // shipping disabled jeśli odbiór osobisty
   const shippingDisabled = deliveryMethod === "pickup";
+  const { authenticated } = useUser();
 
-  // kopiowanie billing → shipping gdy checkbox aktywny
-  const billingFields = watch([
-    "billingFirstName",
-    "billingLastName",
-    "billingPhone",
-    "billingStreet",
-    "billingFlat",
-    "billingCity",
-    "billingPostcode",
-  ]);
+  const billingFirstName = watch("billingFirstName");
+  const billingLastName = watch("billingLastName");
+  const billingPhone = watch("billingPhone");
+  const billingStreet = watch("billingStreet");
+  const billingFlat = watch("billingFlat");
+  const billingCity = watch("billingCity");
+  const billingPostcode = watch("billingPostcode");
 
-  // automatyczne kopiowanie billing → shipping
-  if (shippingSameAsBilling && !shippingDisabled) {
-    setValue("shippingFirstName", billingFields[0]);
-    setValue("shippingLastName", billingFields[1]);
-    setValue("shippingPhone", billingFields[2]);
-    setValue("shippingStreet", billingFields[3]);
-    setValue("shippingFlat", billingFields[4]);
-    setValue("shippingCity", billingFields[5]);
-    setValue("shippingPostcode", billingFields[6]);
-  }
+  useEffect(() => {
+    if (shippingSameAsBilling && !shippingDisabled) {
+      setValue("shippingFirstName", billingFirstName);
+      setValue("shippingLastName", billingLastName);
+      setValue("shippingPhone", billingPhone);
+      setValue("shippingStreet", billingStreet);
+      setValue("shippingFlat", billingFlat);
+      setValue("shippingCity", billingCity);
+      setValue("shippingPostcode", billingPostcode);
+    }
+
+    if (!shippingSameAsBilling && !authenticated) {
+      setValue("shippingFirstName", "");
+      setValue("shippingLastName", "");
+      setValue("shippingPhone", "");
+      setValue("shippingStreet", "");
+      setValue("shippingFlat", "");
+      setValue("shippingCity", "");
+      setValue("shippingPostcode", "");
+    }
+  }, [shippingSameAsBilling]);
+
+  const handleNext = async () => {
+    const fieldsToValidate: (keyof CheckoutSchema)[] = ["deliveryMethod"];
+
+    // jeśli dostawa lokalna → walidujemy shipping
+    if (watch("deliveryMethod") === "local") {
+      fieldsToValidate.push(
+        "shippingFirstName",
+        "shippingLastName",
+        "shippingPhone",
+        "shippingStreet",
+        "shippingCity",
+        "shippingPostcode",
+      );
+    }
+
+    const valid = await trigger(fieldsToValidate);
+
+    if (valid) {
+      setStep(3);
+    }
+  };
 
   return (
     <section className="mb-10">
       <h2 className="text-xl font-semibold mb-4">Dostawa</h2>
 
-      {/* WYBÓR METODY DOSTAWY */}
+      {/* choose delivery method */}
       <div className="mb-6 space-y-3">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
@@ -68,17 +100,16 @@ export default function CheckoutAddressDelivery({
             {...register("deliveryMethod")}
             className="accent-[var(--in-stock)]"
           />
-          <span>Dostawa lokalna (10 zł)</span>
+          <span>Dostawa lokalna (5 zł)</span>
         </label>
+        <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
+          {errors.deliveryMethod?.message ? "Wybierz metodę dostawy" : " "}
+        </p>
       </div>
 
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.deliveryMethod?.message || " "}
-      </p>
-
-      {/* ADRES DOSTAWY */}
+      {/* shipping address */}
       {deliveryMethod === "local" && (
-        <AccountShippingAddress<ShippingSchema>
+        <AccountShippingAddress<CheckoutSchema>
           register={register}
           errors={errors}
           shippingDisabled={shippingSameAsBilling}
@@ -92,7 +123,10 @@ export default function CheckoutAddressDelivery({
       <div className="flex gap-6 justify-center">
         <button
           type="button"
-          onClick={() => setStep(2)}
+          onClick={() => {
+            setStep(1);
+            console.log("step 2");
+          }}
           className="cursor-pointer mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color-light)] hover:text-white hover:bg-[var(--secondary-color)] transition-colors duration-300"
         >
           ← Wróć
@@ -100,7 +134,7 @@ export default function CheckoutAddressDelivery({
 
         <button
           type="button"
-          onClick={() => setStep(3)}
+          onClick={handleNext}
           className="cursor-pointer mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
         >
           Dalej →

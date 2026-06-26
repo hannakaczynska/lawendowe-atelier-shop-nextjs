@@ -27,25 +27,35 @@ export function CheckoutWrapper() {
     watch,
     setValue,
     reset,
+    trigger,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(checkoutSchema),
-    defaultValues: {
-      email: "",
-      billingFirstName: "",
-      billingLastName: "",
-      billingPhone: "",
-      billingStreet: "",
-      billingFlat: "",
-      billingCity: "",
-      billingPostcode: "",
-      deliveryMethod: "pickup",
-    },
+    mode: "onBlur",
+    reValidateMode: "onChange",
   });
 
   const authFetch = useAuthFetch();
 
+  // Save form data to sessionStorage whenever it changes
   useEffect(() => {
+    const subscription = watch((value) => {
+      sessionStorage.setItem("checkout-data", JSON.stringify(value));
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  // Load user data from API if authenticated and no saved data in sessionStorage
+  useEffect(() => {
+    const saved = sessionStorage.getItem("checkout-data");
+
+    if (saved) {
+      reset(JSON.parse(saved));
+      setInitialLoad(false);
+      return;
+    }
+
     if (!authenticated || !userId) {
       setInitialLoad(false);
       return;
@@ -61,7 +71,6 @@ export function CheckoutWrapper() {
         }
 
         const data = await res.json();
-
         const formData = mapWooToForm(data);
 
         reset(formData);
@@ -71,8 +80,9 @@ export function CheckoutWrapper() {
         setInitialLoad(false);
       }
     }
+
     loadUser();
-  }, [authenticated, userId]);
+  }, [authenticated, userId, reset]);
 
   const onSubmit = (data) => {
     console.log("FINAL CHECKOUT DATA:", data);
@@ -81,13 +91,14 @@ export function CheckoutWrapper() {
   return (
     <div className="flex flex-col md:flex-row gap-10 max-w-[1100px] mx-auto py-10 px-4">
       {/* LEWA STRONA */}
-      <div className="flex-1 max-w-[600px] mx-auto">
+      <form className="flex-1 max-w-[600px] mx-auto">
         <CheckoutStepsNav step={step} setStep={setStep} />
 
         {step === 1 && (
           <CheckoutCustomerData
             register={register}
             errors={errors}
+            trigger={trigger}
             setStep={setStep}
           />
         )}
@@ -97,6 +108,7 @@ export function CheckoutWrapper() {
             register={register}
             errors={errors}
             setStep={setStep}
+            trigger={trigger}
             watch={watch}
             setValue={setValue}
           />
@@ -106,11 +118,12 @@ export function CheckoutWrapper() {
           <CheckoutPayment
             register={register}
             errors={errors}
+            trigger={trigger}
             setStep={setStep}
             onSubmit={handleSubmit(onSubmit)}
           />
         )}
-      </div>
+      </form>
 
       {/* PRAWA STRONA */}
       <div className="w-full md:w-[350px]">
