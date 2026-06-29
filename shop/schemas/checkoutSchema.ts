@@ -6,13 +6,12 @@ export type CheckoutSchema = z.infer<typeof checkoutSchema>;
 export interface CheckoutProps {
   register: UseFormRegister<CheckoutSchema>;
   errors: FieldErrors<CheckoutSchema>;
-
   trigger: (fields?: (keyof CheckoutSchema)[]) => Promise<boolean>;
 }
 
 export const checkoutSchema = z.object({
   // Customer data
-  email: z
+  billingEmail: z
     .string()
     .min(1, "Email jest wymagany")
     .max(254, "Email jest za długi")
@@ -39,6 +38,7 @@ export const checkoutSchema = z.object({
   billingPostcode: z
     .string()
     .regex(/^\d{2}-\d{3}$/, "Kod pocztowy musi być w formacie 00-000"),
+  saveBilling: z.boolean().optional(),
 
   // Shipping data
   deliveryMethod: z.enum(["pickup", "local"]).refine((val) => !!val, {
@@ -67,7 +67,8 @@ export const checkoutSchema = z.object({
   shippingPostcode: z
     .string()
     .regex(/^\d{2}-\d{3}$/, "Kod pocztowy musi być w formacie 00-000"),
+    saveShipping: z.boolean().optional(),
 
-    //payment data
-        paymentMethod: z.enum(["blik", "card", "transfer"]),
+  //payment data
+  paymentMethod: z.enum(["blik", "card", "transfer"]),
 });

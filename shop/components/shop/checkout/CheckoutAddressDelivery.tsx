@@ -5,6 +5,9 @@ import { AccountShippingAddress } from "@/components/shop/account/details/Accoun
 import { Step } from "./CheckoutWrapper";
 import { CheckoutProps, CheckoutSchema } from "@/schemas/checkoutSchema";
 import { useUser } from "@/context/UserContext";
+import { useAccountInitialData } from "@/store/checkout";
+import { InitialDataState } from "@/types/checkout";
+import { useAuthFetch } from "@/hooks/useAuthFetch";
 
 export default function CheckoutAddressDelivery({
   register,
@@ -12,10 +15,12 @@ export default function CheckoutAddressDelivery({
   trigger,
   watch,
   setValue,
+  getValues,
   setStep,
 }: CheckoutProps & {
   watch: any;
   setValue: any;
+  getValues: any;
   setStep: (step: Step) => void;
 }) {
   const deliveryMethod = watch("deliveryMethod");
@@ -24,6 +29,8 @@ export default function CheckoutAddressDelivery({
   // shipping disabled jeśli odbiór osobisty
   const shippingDisabled = deliveryMethod === "pickup";
   const { authenticated } = useUser();
+  const isLocalDelivery = deliveryMethod === "local";
+  const saveShipping = getValues("saveShipping");
 
   const billingFirstName = watch("billingFirstName");
   const billingLastName = watch("billingLastName");
@@ -32,6 +39,27 @@ export default function CheckoutAddressDelivery({
   const billingFlat = watch("billingFlat");
   const billingCity = watch("billingCity");
   const billingPostcode = watch("billingPostcode");
+
+  const values = watch();
+  const initial = useAccountInitialData();
+  const authFetch = useAuthFetch();
+
+  const compareShipping = (
+    values: CheckoutSchema,
+    initial: InitialDataState,
+  ) => {
+    return (
+      values.shippingFirstName !== initial.shippingFirstName ||
+      values.shippingLastName !== initial.shippingLastName ||
+      values.shippingPhone !== initial.shippingPhone ||
+      values.shippingStreet !== initial.shippingStreet ||
+      values.shippingFlat !== initial.shippingFlat ||
+      values.shippingCity !== initial.shippingCity ||
+      values.shippingPostcode !== initial.shippingPostcode
+    );
+  };
+
+  const shippingChanged = compareShipping(values, initial);
 
   useEffect(() => {
     if (shippingSameAsBilling && !shippingDisabled) {
@@ -59,7 +87,7 @@ export default function CheckoutAddressDelivery({
     const fieldsToValidate: (keyof CheckoutSchema)[] = ["deliveryMethod"];
 
     // jeśli dostawa lokalna → walidujemy shipping
-    if (watch("deliveryMethod") === "local") {
+    if (isLocalDelivery) {
       fieldsToValidate.push(
         "shippingFirstName",
         "shippingLastName",
@@ -71,6 +99,36 @@ export default function CheckoutAddressDelivery({
     }
 
     const valid = await trigger(fieldsToValidate);
+
+    if (valid && authenticated && saveShipping && shippingChanged) {
+      const {
+        saveBilling,
+        saveShipping,
+        paymentMethod,
+        deliveryMethod,
+        shippingSameAsBilling,
+        ...rest
+      } = values;
+      const currentForm = {
+        ...rest,
+        billingFirstName: "",
+        billingLastName: "",
+        billingPhone: "",
+        billingStreet: "",
+        billingFlat: "",
+        billingCity: "",
+        billingPostcode: "",
+      };
+
+      const res = await authFetch("/api/account/update", {
+        method: "POST",
+        body: JSON.stringify(currentForm),
+      });
+      //change initial data in store (Zustand) to current form data
+
+      console.log("Saving shipping address to account...", currentForm);
+      console.log("Response from /api/account/update:", res);
+    }
 
     if (valid) {
       setStep(3);
@@ -116,9 +174,18 @@ export default function CheckoutAddressDelivery({
         />
       )}
 
-      <button type="button" className="cursor-pointer">
-        Zapisz zmiany na później
-      </button>
+      {isLocalDelivery && authenticated && shippingChanged && (
+        <label className="flex items-center gap-2 mb-4 cursor-pointer">
+          <input
+            type="checkbox"
+            {...register("saveShipping")}
+            className="accent-[var(--in-stock)]"
+          />
+          <span className="text-sm">
+            Zapisz ten adres dostawy na moim koncie
+          </span>
+        </label>
+      )}
 
       <div className="flex gap-6 justify-center">
         <button

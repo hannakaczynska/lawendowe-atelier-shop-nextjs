@@ -40,6 +40,11 @@ export const accountSchema = z.object({
   billingPhone: z
     .string()
     .regex(/^[0-9]{9}$/, "Numer telefonu musi mieć 9 cyfr"),
+  billingEmail: z
+    .string()
+    .min(1, "Email jest wymagany")
+    .max(254, "Email jest za długi")
+    .email("Wpisz poprawny email"),
   billingStreet: z.string().min(1, "Ulica lub numer jest wymagana"),
   billingFlat: z.string().optional(),
   billingCity: z
@@ -75,4 +80,3 @@ export const accountSchema = z.object({
     .string()
     .regex(/^\d{2}-\d{3}$/, "Kod pocztowy musi być w formacie 00-000"),
 });
-

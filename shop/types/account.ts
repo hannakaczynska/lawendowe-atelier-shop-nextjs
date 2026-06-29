@@ -8,6 +8,7 @@ export type BillingFields = {
   billingFirstName: string;
   billingLastName: string;
   billingPhone: string;
+  billingEmail: string;
   billingStreet: string;
   billingFlat?: string;
   billingCity: string;

@@ -1,5 +1,4 @@
 "use client";
-import { AccountProps } from "@/schemas/accountSchema";
 import { FieldErrors, UseFormRegister, FieldValues } from "react-hook-form";
 
 interface ShippingAddressProps<T extends FieldValues> { 

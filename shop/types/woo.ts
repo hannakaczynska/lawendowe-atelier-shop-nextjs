@@ -66,6 +66,7 @@ export type WooAccountDetails = {
     first_name?: string;
     last_name?: string;
     phone?: string;
+    email?: string;
     address_1?: string;
     address_2?: string;
     city?: string;

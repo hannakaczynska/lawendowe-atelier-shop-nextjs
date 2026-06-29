@@ -1,36 +1,92 @@
 "use client";
 
 import { useUser } from "@/context/UserContext";
-import type {Step} from "./CheckoutWrapper";
-import { CustomerProps } from "@/schemas/customerSchema";
+import type { Step } from "./CheckoutWrapper";
+import { CheckoutProps } from "@/schemas/checkoutSchema";
+import { useAccountInitialData } from "@/store/checkout";
+import { InitialDataState } from "@/types/checkout";
+import { CheckoutSchema } from "@/schemas/checkoutSchema";
+import { useAuthFetch } from "@/hooks/useAuthFetch";
 
 export function CheckoutCustomerData({
   register,
   errors,
   trigger,
+  getValues,
+  watch,
   setStep,
 }: {
-  register: CustomerProps["register"];
-  errors: CustomerProps["errors"];
-  trigger: CustomerProps["trigger"];
+  register: CheckoutProps["register"];
+  errors: CheckoutProps["errors"];
+  trigger: CheckoutProps["trigger"];
+  getValues: any;
+  watch: any;
   setStep: (step: Step) => void;
 }) {
   const { authenticated } = useUser();
+  const saveBilling = getValues("saveBilling");
+
+  const values = watch();
+  const initial = useAccountInitialData();
+  const authFetch = useAuthFetch();
+
+  const compareBilling = (
+    values: CheckoutSchema,
+    initial: InitialDataState,
+  ) => {
+    return (
+      values.billingFirstName !== initial.billingFirstName ||
+      values.billingLastName !== initial.billingLastName ||
+      values.billingPhone !== initial.billingPhone ||
+      values.billingStreet !== initial.billingStreet ||
+      values.billingFlat !== initial.billingFlat ||
+      values.billingCity !== initial.billingCity ||
+      values.billingPostcode !== initial.billingPostcode
+    );
+  };
+
+  const billingChanged = compareBilling(values, initial);
 
   const handleNext = async () => {
-  const valid = await trigger([
-    "billingFirstName",
-    "billingLastName",
-    "email",
-    "billingPhone",
-    "billingStreet",
-    "billingCity",
-    "billingPostcode",
-  ]);
+    const valid = await trigger([
+      "billingFirstName",
+      "billingLastName",
+      "billingEmail",
+      "billingPhone",
+      "billingStreet",
+      "billingCity",
+      "billingPostcode",
+    ]);
 
-  if (valid) setStep(2);
-};
+    if (valid && authenticated && saveBilling && billingChanged) {
+      const {
+        saveBilling,
+        saveShipping,
+        paymentMethod,
+        deliveryMethod,
+        shippingSameAsBilling,
+        ...rest
+      } = values;
+      const currentForm = {
+        ...rest,
+        shippingFirstName: "",
+        shippingLastName: "",
+        shippingPhone: "",
+        shippingStreet: "",
+        shippingFlat: "",
+        shippingCity: "",
+        shippingPostcode: "",
+      };
+      const res = await authFetch("/api/account/update", {
+        method: "POST",
+        body: JSON.stringify(currentForm),
+      });
+      console.log("Saving billing address to account...", currentForm);
+      console.log("Response from /api/account/update:", res);
+    }
 
+    if (valid) setStep(2);
+  };
 
   return (
     <section className="mb-10">
@@ -64,10 +120,10 @@ export function CheckoutCustomerData({
       <label className="text-[var(--grey)] block mb-1">Email *</label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("email")}
+        {...register("billingEmail")}
       />
       <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.email?.message || " "}
+        {errors.billingEmail?.message || " "}
       </p>
 
       <label className="text-[var(--grey)] block mb-1">Telefon *</label>
@@ -115,7 +171,18 @@ export function CheckoutCustomerData({
         {errors.billingPostcode?.message || " "}
       </p>
 
-      <button type="button" className="cursor-pointer">Zapisz zmiany na później</button>
+      {authenticated && billingChanged && (
+        <label className="flex items-center gap-2 mt-10 mb-4 cursor-pointer">
+          <input
+            type="checkbox"
+            {...register("saveBilling")}
+            className="accent-[var(--in-stock)]"
+          />
+          <span className="text-sm">
+            Zapisz ten adres rozliczeniowy na moim koncie
+          </span>
+        </label>
+      )}
 
       <div className="flex gap-6 justify-center">
         <button

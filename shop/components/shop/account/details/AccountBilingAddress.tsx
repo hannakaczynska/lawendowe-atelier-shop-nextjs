@@ -9,7 +9,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
       <label
         htmlFor="billingFirstName"
         className="text-[var(--grey)] block mb-1"
-      >Imię *</label>
+      >
+        Imię *
+      </label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
         id="billingFirstName"
@@ -24,7 +26,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
       <label
         htmlFor="billingLastName"
         className="text-[var(--grey)] block mb-1"
-      >Nazwisko *</label>
+      >
+        Nazwisko *
+      </label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
         id="billingLastName"
@@ -36,10 +40,23 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingLastName?.message || " "}
       </p>
 
-      <label
-        htmlFor="billingPhone"
-        className="text-[var(--grey)] block mb-1"
-      >Telefon *</label>
+      <label htmlFor="billingEmail" className="text-[var(--grey)] block mb-1">
+        Email *
+      </label>
+      <input
+        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
+        id="billingEmail"
+        {...register("billingEmail")}
+      />
+      <p
+        className={`text-xs text-[var(--out-of-stock)] h-[18px] md:h-[20px] my-1 md:mb-2 ${errors.billingEmail ? "opacity-100" : "opacity-0"}`}
+      >
+        {errors.billingEmail?.message || " "}
+      </p>
+
+      <label htmlFor="billingPhone" className="text-[var(--grey)] block mb-1">
+        Telefon *
+      </label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
         id="billingPhone"
@@ -52,10 +69,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingPhone?.message || " "}
       </p>
 
-      <label
-        htmlFor="billingStreet"
-        className="text-[var(--grey)] block mb-1"
-      >Ulica i/lub numer *</label>
+      <label htmlFor="billingStreet" className="text-[var(--grey)] block mb-1">
+        Ulica i/lub numer *
+      </label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
         id="billingStreet"
@@ -67,10 +83,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingStreet?.message || " "}
       </p>
 
-      <label
-        htmlFor="billingFlat"
-        className="text-[var(--grey)] block mb-1"
-      >Mieszkanie / Apartament</label>
+      <label htmlFor="billingFlat" className="text-[var(--grey)] block mb-1">
+        Mieszkanie / Apartament
+      </label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
         id="billingFlat"
@@ -82,10 +97,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
         {errors.billingFlat?.message || " "}
       </p>
 
-      <label
-        htmlFor="billingCity"
-        className="text-[var(--grey)] block mb-1"
-      >Miasto *</label>
+      <label htmlFor="billingCity" className="text-[var(--grey)] block mb-1">
+        Miasto *
+      </label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
         id="billingCity"
@@ -100,7 +114,9 @@ export function AccountBillingAddress({ register, errors }: AccountProps) {
       <label
         htmlFor="billingPostcode"
         className="text-[var(--grey)] block mb-1"
-      >Kod pocztowy *</label>
+      >
+        Kod pocztowy *
+      </label>
       <input
         className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
         id="billingPostcode"

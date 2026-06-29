@@ -10,6 +10,7 @@ export function mapWooToForm(data: WooAccountDetails): AccountFormData {
     billingFirstName: data.billing?.first_name ?? "",
     billingLastName: data.billing?.last_name ?? "",
     billingPhone: data.billing?.phone ?? "",
+    billingEmail: data.billing?.email ?? "",
     billingStreet: data.billing?.address_1 ?? "",
     billingFlat: data.billing?.address_2 ?? "",
     billingCity: data.billing?.city ?? "",
@@ -36,36 +37,32 @@ export function mapFormToWoo(data: AccountFormData) {
       first_name: data.billingFirstName,
       last_name: data.billingLastName,
       phone: data.billingPhone,
+      email: data.billingEmail,
       address_1: data.billingStreet,
       address_2: data.billingFlat,
       city: data.billingCity,
       postcode: data.billingPostcode,
     },
+    shipping: {
+      first_name: data.shippingFirstName,
+      last_name: data.shippingLastName,
+      phone: data.shippingPhone,
+      address_1: data.shippingStreet,
+      address_2: data.shippingFlat,
+      city: data.shippingCity,
+      postcode: data.shippingPostcode,
+    },
+  };
+}
 
-    shipping: data.shippingSameAsBilling
-      ? {
-          first_name: data.billingFirstName,
-          last_name: data.billingLastName,
-          phone: data.billingPhone,
-          address_1: data.billingStreet,
-          address_2: data.billingFlat,
-          city: data.billingCity,
-          postcode: data.billingPostcode,
-        }
-      : {
-          first_name: data.shippingFirstName,
-          last_name: data.shippingLastName,
-          phone: data.shippingPhone,
-          address_1: data.shippingStreet,
-          address_2: data.shippingFlat,
-          city: data.shippingCity,
-          postcode: data.shippingPostcode,
-        },
-    meta_data: [
-      {
-        key: "shipping_same_as_billing",
-        value: data.shippingSameAsBilling ? "1" : "0",
-      },
-    ],
+export function mapFields(prefix: "billing" | "shipping", form: AccountFormData) {
+  return {
+    first_name: form[`${prefix}FirstName`],
+    last_name: form[`${prefix}LastName`],
+    phone: form[`${prefix}Phone`],
+    address_1: form[`${prefix}Street`],
+    address_2: form[`${prefix}Flat`],
+    city: form[`${prefix}City`],
+    postcode: form[`${prefix}Postcode`],
   };
 }

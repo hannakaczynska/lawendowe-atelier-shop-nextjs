@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { mapWooToForm } from "@/lib/wooAccountMapper";
 import { useAuthFetch } from "@/hooks/useAuthFetch";
+import { useAccountInitialData } from "@/store/checkout";
 
 import { checkoutSchema } from "@/schemas/checkoutSchema";
 import { CheckoutStepsNav } from "./CheckoutStepsNav";
@@ -26,6 +27,7 @@ export function CheckoutWrapper() {
     handleSubmit,
     watch,
     setValue,
+    getValues,
     reset,
     trigger,
     formState: { errors },
@@ -33,9 +35,15 @@ export function CheckoutWrapper() {
     resolver: zodResolver(checkoutSchema),
     mode: "onBlur",
     reValidateMode: "onChange",
+    defaultValues: {
+      deliveryMethod: "pickup",
+      saveBilling: false,
+      saveShipping: false,
+    },
   });
 
   const authFetch = useAuthFetch();
+  const { setInitialData } = useAccountInitialData();
 
   // Save form data to sessionStorage whenever it changes
   useEffect(() => {
@@ -71,9 +79,12 @@ export function CheckoutWrapper() {
         }
 
         const data = await res.json();
+        console.log("Fetched user data:", data);
         const formData = mapWooToForm(data);
+        console.log("Mapped form data:", formData);
 
         reset(formData);
+        setInitialData(formData);
         setInitialLoad(false);
       } catch (err) {
         console.error("Błąd:", err);
@@ -99,6 +110,8 @@ export function CheckoutWrapper() {
             register={register}
             errors={errors}
             trigger={trigger}
+            getValues={getValues}
+            watch={watch}
             setStep={setStep}
           />
         )}
@@ -109,6 +122,7 @@ export function CheckoutWrapper() {
             errors={errors}
             setStep={setStep}
             trigger={trigger}
+            getValues={getValues}
             watch={watch}
             setValue={setValue}
           />

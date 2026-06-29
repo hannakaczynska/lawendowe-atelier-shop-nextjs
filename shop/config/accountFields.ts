@@ -43,3 +43,13 @@ export const allFields = [
 ] as const;
 
 export type FieldName = typeof allFields[number];
+
+export const wooFields = [
+  "first_name",
+  "last_name",
+  "phone",
+  "address_1",
+  "address_2",
+  "city",
+  "postcode",
+] as const;
