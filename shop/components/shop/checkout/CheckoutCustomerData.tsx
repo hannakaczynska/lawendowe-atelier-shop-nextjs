@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useUser } from "@/context/UserContext";
 import type { Step } from "./CheckoutWrapper";
 import { CheckoutProps } from "@/schemas/checkoutSchema";
@@ -7,6 +8,7 @@ import { useAccountInitialData } from "@/store/checkout";
 import { InitialDataState } from "@/types/checkout";
 import { CheckoutSchema } from "@/schemas/checkoutSchema";
 import { useAuthFetch } from "@/hooks/useAuthFetch";
+import { useState } from "react";
 
 export function CheckoutCustomerData({
   register,
@@ -24,7 +26,9 @@ export function CheckoutCustomerData({
   setStep: (step: Step) => void;
 }) {
   const { authenticated } = useUser();
+  const { setInitialData } = useAccountInitialData();
   const saveBilling = getValues("saveBilling");
+  const [saveBillingData, setSaveBillingData] = useState(false);
 
   const values = watch();
   const initial = useAccountInitialData();
@@ -59,6 +63,7 @@ export function CheckoutCustomerData({
     ]);
 
     if (valid && authenticated && saveBilling && billingChanged) {
+      setSaveBillingData(true);
       const {
         saveBilling,
         saveShipping,
@@ -81,8 +86,14 @@ export function CheckoutCustomerData({
         method: "POST",
         body: JSON.stringify(currentForm),
       });
-      console.log("Saving billing address to account...", currentForm);
-      console.log("Response from /api/account/update:", res);
+
+      if (!res.ok) {
+        toast.error("Wystąpił błąd podczas aktualizacji danych");
+      } else {
+        const data = await res.json();
+        setInitialData(data.updated);
+        toast.success("Dane rozliczeniowe zostały zapisane na koncie");
+      }
     }
 
     if (valid) setStep(2);
@@ -196,9 +207,10 @@ export function CheckoutCustomerData({
         <button
           type="button"
           onClick={handleNext}
-          className="cursor-pointer mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
+          className={`${saveBillingData ? "cursor-not-allowed" : "cursor-pointer"} mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300`}
+          disabled={saveBillingData}
         >
-          Dalej →
+          {saveBillingData ? "Zapisuję dane..." : "Dalej →"}
         </button>
       </div>
     </section>

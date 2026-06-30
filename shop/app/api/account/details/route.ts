@@ -38,8 +38,8 @@ export async function GET(req: Request) {
       {
         id: wpUser.id,
         email: wpUser.email,
-        firstName: wpUser.first_name,
-        lastName: wpUser.last_name,
+        first_name: wpUser.first_name,
+        last_name: wpUser.last_name,
         shippingSameAsBilling: wpUser.meta.shipping_same_as_billing,
 
         billing: wcUser.billing,

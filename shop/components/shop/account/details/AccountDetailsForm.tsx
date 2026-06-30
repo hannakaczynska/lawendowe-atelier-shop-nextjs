@@ -101,6 +101,7 @@ export default function AccountPage() {
   }, [success]);
 
   const onSubmit = async (data: AccountFormData) => {
+
     const res = await authFetch("/api/account/update", {
       method: "POST",
       body: JSON.stringify(data),

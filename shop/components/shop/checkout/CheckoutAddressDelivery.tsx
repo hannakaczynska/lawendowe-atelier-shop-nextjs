@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AccountShippingAddress } from "@/components/shop/account/details/AccountShippingAdress";
 import { Step } from "./CheckoutWrapper";
 import { CheckoutProps, CheckoutSchema } from "@/schemas/checkoutSchema";
@@ -8,6 +8,7 @@ import { useUser } from "@/context/UserContext";
 import { useAccountInitialData } from "@/store/checkout";
 import { InitialDataState } from "@/types/checkout";
 import { useAuthFetch } from "@/hooks/useAuthFetch";
+import { toast } from "sonner";
 
 export default function CheckoutAddressDelivery({
   register,
@@ -29,8 +30,11 @@ export default function CheckoutAddressDelivery({
   // shipping disabled jeśli odbiór osobisty
   const shippingDisabled = deliveryMethod === "pickup";
   const { authenticated } = useUser();
+  const { setInitialData } = useAccountInitialData();
   const isLocalDelivery = deliveryMethod === "local";
   const saveShipping = getValues("saveShipping");
+
+  const [saveShippingData, setSaveShippingData] = useState(false);
 
   const billingFirstName = watch("billingFirstName");
   const billingLastName = watch("billingLastName");
@@ -101,6 +105,7 @@ export default function CheckoutAddressDelivery({
     const valid = await trigger(fieldsToValidate);
 
     if (valid && authenticated && saveShipping && shippingChanged) {
+      setSaveShippingData(true);
       const {
         saveBilling,
         saveShipping,
@@ -124,12 +129,15 @@ export default function CheckoutAddressDelivery({
         method: "POST",
         body: JSON.stringify(currentForm),
       });
-      //change initial data in store (Zustand) to current form data
 
-      console.log("Saving shipping address to account...", currentForm);
-      console.log("Response from /api/account/update:", res);
+      if (!res.ok) {
+        toast.error("Wystąpił błąd podczas aktualizacji danych");
+      } else {
+        const data = await res.json();
+        setInitialData(data.updated);
+        toast.success("Dane dostawy zostały zapisane na koncie");
+      }
     }
-
     if (valid) {
       setStep(3);
     }
@@ -202,9 +210,10 @@ export default function CheckoutAddressDelivery({
         <button
           type="button"
           onClick={handleNext}
-          className="cursor-pointer mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
+          className={`${saveShippingData ? "cursor-not-allowed" : "cursor-pointer"} mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300`}
+          disabled={saveShippingData}
         >
-          Dalej →
+          {saveShippingData ? "Zapisuję dane..." : "Dalej →"}
         </button>
       </div>
     </section>

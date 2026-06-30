@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifyUserToken } from "@/app/api/_utils/auth/verifyUser";
-import { mapFormToWoo, mapFields} from "@/lib/wooAccountMapper";
+import { mapFormToWoo, mapWooToForm, mapFields} from "@/lib/wooAccountMapper";
 import { AccountFormData } from "@/types/account";
 import {
   billingFields,
@@ -70,6 +70,7 @@ export async function POST(req: Request) {
     const isAccountMode = billingChanged && shippingChanged;
 
     let payload;
+    let shippingSameAsBilling;
 
     if (!isAccountMode) {
       const finalBilling = billingChanged
@@ -85,7 +86,7 @@ export async function POST(req: Request) {
           }
         : wcUser.shipping;
 
-      const shippingSameAsBilling = wooFields.every(
+      shippingSameAsBilling = wooFields.every(
         (field) => finalBilling[field] === finalShipping[field],
       );
 
@@ -104,7 +105,7 @@ export async function POST(req: Request) {
       };
     } else {
       const finalData = mapFormToWoo(currentForm);
-      const shippingSameAsBilling = wooFields.every(
+      shippingSameAsBilling = wooFields.every(
         (field) => finalData.billing[field] === finalData.shipping[field],
       );
 
@@ -123,7 +124,6 @@ export async function POST(req: Request) {
       };
     }
 
-    console.log("Payload to send to WooCommerce:", payload);
     const wooRes = await fetch(
       `${BASE_URL}/wp-json/wc/v3/customers/${wpUser.id}`,
       {
@@ -146,7 +146,9 @@ export async function POST(req: Request) {
 
     const updated = await wooRes.json();
 
-    return NextResponse.json({ success: true, updated });
+    const formattedResponse = mapWooToForm(updated, shippingSameAsBilling);
+
+    return NextResponse.json({ success: true, updated: formattedResponse }, { status: 200 });
   } catch (err) {
     console.error("Update error:", err);
     return NextResponse.json(

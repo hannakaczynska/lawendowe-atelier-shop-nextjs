@@ -43,7 +43,7 @@ export function CheckoutWrapper() {
   });
 
   const authFetch = useAuthFetch();
-  const { setInitialData } = useAccountInitialData();
+  const { setInitialData, clearInitialData } = useAccountInitialData();
 
   // Save form data to sessionStorage whenever it changes
   useEffect(() => {
@@ -79,9 +79,7 @@ export function CheckoutWrapper() {
         }
 
         const data = await res.json();
-        console.log("Fetched user data:", data);
         const formData = mapWooToForm(data);
-        console.log("Mapped form data:", formData);
 
         reset(formData);
         setInitialData(formData);
@@ -95,13 +93,20 @@ export function CheckoutWrapper() {
     loadUser();
   }, [authenticated, userId, reset]);
 
-  const onSubmit = (data) => {
+  useEffect(() => {
+    return () => {
+      sessionStorage.removeItem("checkout-data");
+      clearInitialData();
+    };
+  }, []);
+
+  const onSubmit = (data: any) => {
     console.log("FINAL CHECKOUT DATA:", data);
   };
 
   return (
     <div className="flex flex-col md:flex-row gap-10 max-w-[1100px] mx-auto py-10 px-4">
-      {/* LEWA STRONA */}
+      {/* LEFT SIDE */}
       <form className="flex-1 max-w-[600px] mx-auto">
         <CheckoutStepsNav step={step} setStep={setStep} />
 
@@ -139,7 +144,7 @@ export function CheckoutWrapper() {
         )}
       </form>
 
-      {/* PRAWA STRONA */}
+      {/* RIGHT SIDE */}
       <div className="w-full md:w-[350px]">
         <CheckoutSummary />
       </div>

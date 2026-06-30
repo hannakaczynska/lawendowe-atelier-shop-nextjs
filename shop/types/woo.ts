@@ -58,8 +58,8 @@ export type WooStoreProduct = {
 };
 
 export type WooAccountDetails = {
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
   email?: string;
 
   billing?: {
