@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AccountShippingAddress } from "@/components/shop/account/details/AccountShippingAdress";
 import { Step } from "./CheckoutWrapper";
 import { CheckoutProps, CheckoutSchema } from "@/schemas/checkoutSchema";
@@ -27,7 +27,6 @@ export default function CheckoutAddressDelivery({
   const deliveryMethod = watch("deliveryMethod");
   const shippingSameAsBilling = watch("shippingSameAsBilling");
 
-  // shipping disabled jeśli odbiór osobisty
   const shippingDisabled = deliveryMethod === "pickup";
   const { authenticated } = useUser();
   const { setInitialData } = useAccountInitialData();
@@ -64,9 +63,13 @@ export default function CheckoutAddressDelivery({
   };
 
   const shippingChanged = compareShipping(values, initial);
+  const prevSameAsBilling = useRef(shippingSameAsBilling);
 
   useEffect(() => {
-    if (shippingSameAsBilling && !shippingDisabled) {
+    const prev = prevSameAsBilling.current;
+    const current = shippingSameAsBilling;
+
+    if (!prev && current && !shippingDisabled) {
       setValue("shippingFirstName", billingFirstName);
       setValue("shippingLastName", billingLastName);
       setValue("shippingPhone", billingPhone);
@@ -76,7 +79,7 @@ export default function CheckoutAddressDelivery({
       setValue("shippingPostcode", billingPostcode);
     }
 
-    if (!shippingSameAsBilling && !authenticated) {
+    if (prev && !current) {
       setValue("shippingFirstName", "");
       setValue("shippingLastName", "");
       setValue("shippingPhone", "");
@@ -85,6 +88,7 @@ export default function CheckoutAddressDelivery({
       setValue("shippingCity", "");
       setValue("shippingPostcode", "");
     }
+    prevSameAsBilling.current = current;
   }, [shippingSameAsBilling]);
 
   const handleNext = async () => {

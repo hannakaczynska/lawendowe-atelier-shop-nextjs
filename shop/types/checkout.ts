@@ -1,8 +1,14 @@
 export interface InitialDataState {
+  // USER
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  
   // BILLING
   billingFirstName: string | null;
   billingLastName: string | null;
   billingPhone: string | null;
+  billingEmail: string | null;
   billingStreet: string | null;
   billingFlat: string | null;
   billingCity: string | null;

@@ -1,14 +1,20 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import {InitialDataState} from "@/types/checkout";
+import { InitialDataState } from "@/types/checkout";
 
 export const useAccountInitialData = create<InitialDataState>()(
   persist(
     (set) => ({
+      //USER
+      firstName: null,
+      lastName: null,
+      email: null,
+
       // BILLING
       billingFirstName: null,
       billingLastName: null,
       billingPhone: null,
+      billingEmail: null,
       billingStreet: null,
       billingFlat: null,
       billingCity: null,
@@ -32,9 +38,14 @@ export const useAccountInitialData = create<InitialDataState>()(
       // CLEAR
       clearInitialData: () =>
         set({
+          firstName: null,
+          lastName: null,
+          email: null,
+
           billingFirstName: null,
           billingLastName: null,
           billingPhone: null,
+          billingEmail: null,
           billingStreet: null,
           billingFlat: null,
           billingCity: null,
@@ -53,6 +64,6 @@ export const useAccountInitialData = create<InitialDataState>()(
     }),
     {
       name: "account-initial-data",
-    }
-  )
+    },
+  ),
 );

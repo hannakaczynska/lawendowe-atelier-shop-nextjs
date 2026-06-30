@@ -9,6 +9,7 @@ import { InitialDataState } from "@/types/checkout";
 import { CheckoutSchema } from "@/schemas/checkoutSchema";
 import { useAuthFetch } from "@/hooks/useAuthFetch";
 import { useState } from "react";
+import Link from "next/link";
 
 export function CheckoutCustomerData({
   register,
@@ -105,8 +106,8 @@ export function CheckoutCustomerData({
 
       {!authenticated && (
         <div className="flex gap-4 mb-4 text-sm">
-          <button className="underline cursor-pointer">Zaloguj się</button>
-          <button className="underline cursor-pointer">Załóż konto</button>
+          <Link href="/shop/login" className="underline text-[var(--primary-color)] cursor-pointer">Zaloguj się</Link>
+          <Link href="/shop/register" className="underline text-[var(--secondary-color)] cursor-pointer">Załóż konto</Link>
         </div>
       )}
 

@@ -54,6 +54,12 @@ export function CheckoutWrapper() {
     return () => subscription.unsubscribe();
   }, [watch]);
 
+  useEffect(() => {
+    if (!authenticated) {
+      reset({});
+    }
+  }, [authenticated]);
+
   // Load user data from API if authenticated and no saved data in sessionStorage
   useEffect(() => {
     const saved = sessionStorage.getItem("checkout-data");
