@@ -14,8 +14,9 @@ import CheckoutAddressDelivery from "./CheckoutAddressDelivery";
 import CheckoutPayment from "./CheckoutPayment";
 import CheckoutSummary from "./CheckoutSummary";
 import { useUser } from "@/context/UserContext";
+import CheckoutTotal from "./CheckoutTotal";
 
-export type Step = 1 | 2 | 3;
+export type Step = 1 | 2 | 3 | 4;
 
 export function CheckoutWrapper() {
   const { authenticated, userId } = useUser();
@@ -106,54 +107,66 @@ export function CheckoutWrapper() {
     };
   }, []);
 
-  const onSubmit = (data: any) => {
-    console.log("FINAL CHECKOUT DATA:", data);
+  const onSubmit = () => {
+    setStep(4);
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-10 max-w-[1100px] mx-auto py-10 px-4">
-      {/* LEFT SIDE */}
-      <form className="flex-1 max-w-[600px] mx-auto">
-        <CheckoutStepsNav step={step} setStep={setStep} />
+    <div className="flex flex-col gap-4 w-full mx-auto px-4 lg:px-10 ">
+      <CheckoutStepsNav step={step} />
 
-        {step === 1 && (
-          <CheckoutCustomerData
-            register={register}
-            errors={errors}
-            trigger={trigger}
-            getValues={getValues}
-            watch={watch}
-            setStep={setStep}
-          />
+      <div className="flex-1 flex flex-col md:flex-row space-between md:gap-20 lg:gap-10 xl:gap-20">
+        {/* LEFT SIDE */}
+        <form className="w-full max-w-[500px] md:max-w-none flex-1 shrink-1 mx-auto">
+          {step === 1 && (
+            <CheckoutCustomerData
+              register={register}
+              errors={errors}
+              trigger={trigger}
+              getValues={getValues}
+              watch={watch}
+              setStep={setStep}
+            />
+          )}
+
+          {step === 2 && (
+            <CheckoutAddressDelivery
+              register={register}
+              errors={errors}
+              setStep={setStep}
+              trigger={trigger}
+              getValues={getValues}
+              watch={watch}
+              setValue={setValue}
+            />
+          )}
+
+          {step === 3 && (
+            <CheckoutPayment
+              register={register}
+              errors={errors}
+              trigger={trigger}
+              setStep={setStep}
+              onSubmit={handleSubmit(onSubmit)}
+            />
+          )}
+        </form>
+
+        {/* RIGHT SIDE */}
+        {step !== 4 && (
+          <div className="w-full max-w-[500px] sm:min-w-[300px] md:max-w-[300px] lg:max-w-[300px] xl:max-w-[350px] mx-auto mt-12">
+            <CheckoutTotal step={step} watch={watch} />
+          </div>
         )}
-
-        {step === 2 && (
-          <CheckoutAddressDelivery
-            register={register}
-            errors={errors}
-            setStep={setStep}
-            trigger={trigger}
-            getValues={getValues}
-            watch={watch}
-            setValue={setValue}
-          />
-        )}
-
-        {step === 3 && (
-          <CheckoutPayment
-            register={register}
-            errors={errors}
-            trigger={trigger}
-            setStep={setStep}
-            onSubmit={handleSubmit(onSubmit)}
-          />
-        )}
-      </form>
-
-      {/* RIGHT SIDE */}
-      <div className="w-full md:w-[350px]">
-        <CheckoutSummary />
       </div>
+
+      {/* summary */}
+      {step === 4 && (
+        <div className="w-full ">
+          <CheckoutSummary />
+        </div>
+      )}
+
     </div>
   );
 }

@@ -1,40 +1,45 @@
 import type { Step } from "./CheckoutWrapper";
+import {useIsMobile} from "@/hooks/useIsMobile";
 
 export function CheckoutStepsNav({
   step,
-  setStep,
 }: {
   step: Step;
-  setStep: (step: Step) => void;
 }) {
+
+  const isMobile = useIsMobile();
   return (
-    <div className="flex justify-between mb-8 text-sm font-medium">
-      <button
-        className={`pb-2 cursor-pointer border-b-2 ${
-          step === 1 ? "border-[var(--primary-color)]" : "border-transparent"
+    <div className="flex justify-between h-8 mb-4 text-sm font-medium">
+      <span
+        className={`flex-1 text-center pt-[5px] pb-[6px] ${
+          step === 1 ? "bg-[var(--secondary-color-light)] font-semibold" : ""
         }`}
-        onClick={() => setStep(1)}
       >
-        Dane zamawiającego
-      </button>
+       {isMobile ? "1" : "Dane zamawiającego"}
+      </span>
 
-      <button
-        className={`pb-2 cursor-pointer border-b-2 ${
-          step === 2 ? "border-[var(--primary-color)]" : "border-transparent"
+      <span
+        className={`flex-1 text-center pt-[5px] pb-[6px] ${
+          step === 2 ? "bg-[var(--secondary-color-light)] font-semibold" : ""
         }`}
-        onClick={() => setStep(2)}
       >
-        Adres i dostawa
-      </button>
+        {isMobile ? "2" : "Adres i dostawa"}
+      </span>
 
-      <button
-        className={`pb-2 cursor-pointer border-b-2 ${
-          step === 3 ? "border-[var(--primary-color)]" : "border-transparent"
+      <span
+        className={`flex-1 text-center pt-[5px] pb-[6px] ${
+          step === 3 ? "bg-[var(--secondary-color-light)] font-semibold" : ""
         }`}
-        onClick={() => setStep(3)}
       >
-        Płatność
-      </button>
+        {isMobile ? "3" : "Wybór płatności"}
+      </span>
+      <span
+        className={`flex-1 text-center pt-[5px] pb-[6px] ${
+          step === 4 ? "bg-[var(--secondary-color-light)] font-semibold" : ""
+        }`}
+      >
+        {isMobile ? "4" : "Podsumowanie"}
+      </span>
     </div>
   );
 }

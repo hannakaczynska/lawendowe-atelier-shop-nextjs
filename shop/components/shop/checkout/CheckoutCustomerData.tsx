@@ -10,6 +10,7 @@ import { CheckoutSchema } from "@/schemas/checkoutSchema";
 import { useAuthFetch } from "@/hooks/useAuthFetch";
 import { useState } from "react";
 import Link from "next/link";
+import FormTextInput from "@/components/elements/FormTextInput";
 
 export function CheckoutCustomerData({
   register,
@@ -101,90 +102,82 @@ export function CheckoutCustomerData({
   };
 
   return (
-    <section className="mb-10">
+    <section className="md:relative mb-10">
       <h2 className="text-xl font-semibold mb-4">Dane zamawiającego</h2>
 
       {!authenticated && (
         <div className="flex gap-4 mb-4 text-sm">
-          <Link href="/shop/login" className="underline text-[var(--primary-color)] cursor-pointer">Zaloguj się</Link>
-          <Link href="/shop/register" className="underline text-[var(--secondary-color)] cursor-pointer">Załóż konto</Link>
+          <Link
+            href="/shop/login"
+            className="underline text-[var(--primary-color)] cursor-pointer"
+          >
+            Zaloguj się
+          </Link>
+          <Link
+            href="/shop/register"
+            className="underline text-[var(--secondary-color)] cursor-pointer"
+          >
+            Załóż konto
+          </Link>
         </div>
       )}
-
-      <label className="text-[var(--grey)] block mb-1">Imię *</label>
-      <input
-        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("billingFirstName")}
-      />
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.billingFirstName?.message || " "}
-      </p>
-
-      <label className="text-[var(--grey)] block mb-1">Nazwisko *</label>
-      <input
-        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("billingLastName")}
-      />
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.billingLastName?.message || " "}
-      </p>
-
-      <label className="text-[var(--grey)] block mb-1">Email *</label>
-      <input
-        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("billingEmail")}
-      />
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.billingEmail?.message || " "}
-      </p>
-
-      <label className="text-[var(--grey)] block mb-1">Telefon *</label>
-      <input
-        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("billingPhone")}
-      />
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.billingPhone?.message || " "}
-      </p>
-
-      <label className="text-[var(--grey)] block mb-1">Ulica i numer *</label>
-      <input
-        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("billingStreet")}
-      />
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.billingStreet?.message || " "}
-      </p>
-
-      <label className="text-[var(--grey)] block mb-1">Numer mieszkania</label>
-      <input
-        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("billingFlat")}
-      />
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.billingFlat?.message || " "}
-      </p>
-
-      <label className="text-[var(--grey)] block mb-1">Miasto *</label>
-      <input
-        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("billingCity")}
-      />
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.billingCity?.message || " "}
-      </p>
-
-      <label className="text-[var(--grey)] block mb-1">Kod pocztowy *</label>
-      <input
-        className="p-2 pl-3 w-full border border-[var(--light-grey)] rounded-md"
-        {...register("billingPostcode")}
-      />
-      <p className="text-xs text-[var(--out-of-stock)] h-[18px] my-1">
-        {errors.billingPostcode?.message || " "}
-      </p>
+      <div className="w-full lg:flex lg:gap-10 lg:px-8 xl:gap-20 xl:px-10">
+        <div className="flex-1">
+          <FormTextInput
+            label="Imię *"
+            id="billingFirstName"
+            register={register}
+            error={errors.billingFirstName}
+          />
+          <FormTextInput
+            label="Nazwisko *"
+            id="billingLastName"
+            register={register}
+            error={errors.billingLastName}
+          />
+          <FormTextInput
+            label="Email *"
+            id="billingEmail"
+            register={register}
+            error={errors.billingEmail}
+          />
+          <FormTextInput
+            label="Telefon *"
+            id="billingPhone"
+            register={register}
+            error={errors.billingPhone}
+          />
+        </div>
+        <div className="flex-1">
+          <FormTextInput
+            label="Ulica i numer *"
+            id="billingStreet"
+            register={register}
+            error={errors.billingStreet}
+          />
+          <FormTextInput
+            label="Numer mieszkania"
+            id="billingFlat"
+            register={register}
+            error={errors.billingFlat}
+          />
+          <FormTextInput
+            label="Miasto *"
+            id="billingCity"
+            register={register}
+            error={errors.billingCity}
+          />
+          <FormTextInput
+            label="Kod pocztowy *"
+            id="billingPostcode"
+            register={register}
+            error={errors.billingPostcode}
+          />
+        </div>
+      </div>
 
       {authenticated && billingChanged && (
-        <label className="flex items-center gap-2 mt-10 mb-4 cursor-pointer">
+        <label className="flex lg:px-8 xl:px-10 items-center gap-2 mt-10 mb-4 cursor-pointer">
           <input
             type="checkbox"
             {...register("saveBilling")}
@@ -196,11 +189,11 @@ export function CheckoutCustomerData({
         </label>
       )}
 
-      <div className="flex gap-6 justify-center">
+      <div className="flex md:absolute bottom-[-72px] lg:static md:w-screen lg:w-full gap-6 justify-center">
         <button
           type="button"
           onClick={() => setStep(1)}
-          className="cursor-pointer mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color-light)] hover:text-white hover:bg-[var(--secondary-color)] transition-colors duration-300"
+          className="cursor-pointer text-sm md:text-base mt-4 w-[150px] md:w-[200px] lg:w-[250px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color-light)] hover:text-white hover:bg-[var(--secondary-color)] transition-colors duration-300"
         >
           ← Wróć
         </button>
@@ -208,7 +201,7 @@ export function CheckoutCustomerData({
         <button
           type="button"
           onClick={handleNext}
-          className={`${saveBillingData ? "cursor-not-allowed" : "cursor-pointer"} mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300`}
+          className={`${saveBillingData ? "cursor-not-allowed" : "cursor-pointer"} text-sm md:text-base mt-4 w-[150px] md:w-[200px] lg:w-[250px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300`}
           disabled={saveBillingData}
         >
           {saveBillingData ? "Zapisuję dane..." : "Dalej →"}

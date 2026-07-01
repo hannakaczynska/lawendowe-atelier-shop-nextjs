@@ -148,7 +148,7 @@ export default function CheckoutAddressDelivery({
   };
 
   return (
-    <section className="mb-10">
+    <section className="md:relative mb-10">
       <h2 className="text-xl font-semibold mb-4">Dostawa</h2>
 
       {/* choose delivery method */}
@@ -187,7 +187,7 @@ export default function CheckoutAddressDelivery({
       )}
 
       {isLocalDelivery && authenticated && shippingChanged && (
-        <label className="flex items-center gap-2 mb-4 cursor-pointer">
+        <label className="flex  lg:px-8 xl:px-10 items-center gap-2 mb-4 cursor-pointer">
           <input
             type="checkbox"
             {...register("saveShipping")}
@@ -199,14 +199,14 @@ export default function CheckoutAddressDelivery({
         </label>
       )}
 
-      <div className="flex gap-6 justify-center">
+      <div  className="flex md:absolute bottom-[-72px] lg:static md:w-screen lg:w-full gap-6 justify-center">
         <button
           type="button"
           onClick={() => {
             setStep(1);
             console.log("step 2");
           }}
-          className="cursor-pointer mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color-light)] hover:text-white hover:bg-[var(--secondary-color)] transition-colors duration-300"
+          className="cursor-pointer text-sm md:text-base mt-4 w-[150px] md:w-[200px] lg:w-[250px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color-light)] hover:bg-[var(--secondary-color)] hover:text-white transition-colors duration-300"
         >
           ← Wróć
         </button>
@@ -214,7 +214,7 @@ export default function CheckoutAddressDelivery({
         <button
           type="button"
           onClick={handleNext}
-          className={`${saveShippingData ? "cursor-not-allowed" : "cursor-pointer"} mt-4 w-[200px] md:w-[300px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300`}
+          className={`${saveShippingData ? "cursor-not-allowed" : "cursor-pointer"} text-sm md:text-base mt-4 w-[150px] md:w-[200px] lg:w-[250px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300`}
           disabled={saveShippingData}
         >
           {saveShippingData ? "Zapisuję dane..." : "Dalej →"}

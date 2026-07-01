@@ -52,12 +52,12 @@ export default function CheckoutPayment({
         </p>
       </div>
 
-      {/* PRZYCISKI NAWIGACJI */}
+      {/* navigation buttons */}
       <div className="flex gap-6 justify-center mt-6">
         <button
           type="button"
           onClick={() => setStep(2)}
-          className="cursor-pointer w-[200px] md:w-[300px] font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color-light)] hover:text-white hover:bg-[var(--secondary-color)] transition-colors duration-300"
+          className="cursor-pointer text-sm md:text-base mt-4 w-[150px] md:w-[200px] lg:w-[250px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color-light)] hover:bg-[var(--secondary-color)] hover:text-white transition-colors duration-300"
         >
           ← Wróć
         </button>
@@ -65,9 +65,9 @@ export default function CheckoutPayment({
         <button
           type="button"
           onClick={onSubmit}
-          className="cursor-pointer w-[200px] md:w-[300px] font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
+          className="text-sm md:text-base mt-4 w-[150px] md:w-[200px] lg:w-[250px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
         >
-          Złóż zamówienie →
+          Dalej →
         </button>
       </div>
     </section>
