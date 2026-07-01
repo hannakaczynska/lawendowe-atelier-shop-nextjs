@@ -65,7 +65,7 @@ export function CheckoutWrapper() {
   useEffect(() => {
     const saved = sessionStorage.getItem("checkout-data");
 
-    if (saved) {
+    if (saved !== null && saved !== "undefined" && saved !== "{}") {
       reset(JSON.parse(saved));
       setInitialLoad(false);
       return;
@@ -162,11 +162,10 @@ export function CheckoutWrapper() {
 
       {/* summary */}
       {step === 4 && (
-        <div className="w-full ">
-          <CheckoutSummary />
+        <div className="w-full max-w-[500px] md:max-w-none mx-auto">
+          <CheckoutSummary watch={watch} setStep={setStep} />
         </div>
       )}
-
     </div>
   );
 }

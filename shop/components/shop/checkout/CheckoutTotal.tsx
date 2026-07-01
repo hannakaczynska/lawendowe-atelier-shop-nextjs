@@ -29,10 +29,10 @@ export default function CheckoutTotal({
 
   // DELIVERY COST
   const shippingCost =
-    deliveryMethod === "local" ? 15 : deliveryMethod === "courier" ? 20 : 0;
+    deliveryMethod === "local" ? 5 : 0;
 
   // PAYMENT FEE (optional)
-  const paymentFee = paymentMethod === "cod" ? 5 : 0;
+  const paymentFee = 0;
 
   // FINAL TOTAL
   const finalTotal = cartTotal + shippingCost + paymentFee;

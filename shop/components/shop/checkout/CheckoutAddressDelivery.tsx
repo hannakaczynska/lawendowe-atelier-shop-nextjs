@@ -152,7 +152,7 @@ export default function CheckoutAddressDelivery({
       <h2 className="text-xl font-semibold mb-4">Dostawa</h2>
 
       {/* choose delivery method */}
-      <div className="mb-6 space-y-3">
+      <div className="mb-6 space-y-3 lg:px-8 xl:px-10">
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="radio"

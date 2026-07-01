@@ -17,7 +17,7 @@ export default function CheckoutPayment({
     <section className="mb-10">
       <h2 className="text-xl font-semibold mb-4">Płatność</h2>
 
-      <div className="space-y-4 mb-6">
+      <div className="space-y-4 mb-6 lg:px-8 xl:px-10">
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="radio"
@@ -65,7 +65,7 @@ export default function CheckoutPayment({
         <button
           type="button"
           onClick={onSubmit}
-          className="text-sm md:text-base mt-4 w-[150px] md:w-[200px] lg:w-[250px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
+          className="cursor-pointer text-sm md:text-base mt-4 w-[150px] md:w-[200px] lg:w-[250px] mx-auto font-bold py-3 px-4 md:py-4 md:px-6 rounded-4xl bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
         >
           Dalej →
         </button>
