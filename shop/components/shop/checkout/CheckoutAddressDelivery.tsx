@@ -5,6 +5,7 @@ import { AccountShippingAddress } from "@/components/shop/account/details/Accoun
 import { Step } from "./CheckoutWrapper";
 import { CheckoutProps, CheckoutSchema } from "@/schemas/checkoutSchema";
 import { useUser } from "@/context/UserContext";
+import {useDelivery} from "@/context/DeliveryContext";
 import { useAccountInitialData } from "@/store/checkout";
 import { InitialDataState } from "@/types/checkout";
 import { useAuthFetch } from "@/hooks/useAuthFetch";
@@ -29,6 +30,8 @@ export default function CheckoutAddressDelivery({
 
   const shippingDisabled = deliveryMethod === "pickup";
   const { authenticated } = useUser();
+  const { delivery } = useDelivery();
+  console.log("Delivery context:", delivery);
   const { setInitialData } = useAccountInitialData();
   const isLocalDelivery = deliveryMethod === "local";
   const saveShipping = getValues("saveShipping");

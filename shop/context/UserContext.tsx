@@ -26,7 +26,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       }
 
       const data = await res.json();
-      console.log("User info response:", data);
       setAuthenticated(data.authenticated);
       setUserId(data.userId ?? null);
     } catch (error) {
