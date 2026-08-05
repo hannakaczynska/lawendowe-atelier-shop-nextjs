@@ -5,6 +5,12 @@ const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
 
 export async function POST(req: Request) {
   try {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === "true") {
+      return NextResponse.json(
+        { message: "Wersja demonstracyjna — logowanie jest wyłączone." },
+        { status: 403 },
+      );
+    }
     
     const body = await req.json();
 
