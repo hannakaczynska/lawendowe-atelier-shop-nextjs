@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { subscribeToBrevo } from "@/app/api/_utils/brevo/brevoSubscribe";
 
 const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
 const resend = new Resend(process.env.RESEND_API_KEY);
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
 
 export async function POST(req: Request) {
   try {
@@ -39,27 +39,30 @@ export async function POST(req: Request) {
         subject: "Pytanie od klienta",
         text: body.message,
       });
+
+      return NextResponse.json({
+        ok: true,
+        message: "Wiadomość została wysłana",
+      });
     }
 
     if (body.topic === "notify") {
-      const newContact = {
-        email: body.email,
-        attributes: {
-          FNAME: body.name,
-        },
-        listIds: [4],
-      };
+      const res = await subscribeToBrevo(body.email, body.name, [4]);
 
-      console.log("New contact to add:", newContact);
+      if (!res.ok) {
+        return NextResponse.json(
+          { message: "Nie udało się zapisać do listy" },
+          { status: 500 },
+        );
+      }
+      return NextResponse.json({
+        ok: true,
+        message: "Zapisano do listy powiadomień",
+      });
     }
-
-    return NextResponse.json({
-      ok: true,
-      message: "Wiadomość została wysłana",
-    });
   } catch (error) {
     return NextResponse.json(
-      { message: "Wystąpił błąd podczas wysyłania wiadomości" },
+      { message: "Wystąpił błąd po stronie serwera" },
       { status: 500 },
     );
   }
