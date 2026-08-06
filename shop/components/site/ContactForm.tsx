@@ -36,7 +36,25 @@ export default function ContactForm({
     setServerError(null);
     setSuccess(null);
     console.log("Contact form submitted:", data);
-    // tutaj wyślesz dane do API (np. przez Resend)
+
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const json = await res.json();
+
+    if (!res.ok) {
+      setServerError(
+        json.message || "Wystąpił błąd podczas wysyłania wiadomości",
+      );
+      captchaRef.current?.resetCaptcha();
+      setValue("hcaptcha", "");
+      return;
+    }
+
+    setSuccess(json.message || "Wiadomość została wysłana");
   };
 
   return (
