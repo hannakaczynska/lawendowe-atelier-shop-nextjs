@@ -25,6 +25,7 @@ export async function POST(req: Request) {
     const verifyData = await verifyRes.json();
 
     if (!verifyData.success) {
+      console.error("hCaptcha verification failed:", verifyData);
       return NextResponse.json(
         { message: "Niepoprawna weryfikacja hCaptcha" },
         { status: 400 },
@@ -32,6 +33,7 @@ export async function POST(req: Request) {
     }
 
     if (body.topic === "question") {
+      //Resend try catch (seperate endpoint)
       await resend.emails.send({
         from: "Lawendowe Atelier <no-reply@mail.lawendoweatelier.pl>",
         to: "hannakacz13@gmail.com",
@@ -40,6 +42,12 @@ export async function POST(req: Request) {
         text: body.message,
       });
 
+      if (body.shopNotify) {
+        const res = await subscribeToBrevo(body.email, body.name, [4]);
+        if (!res.ok) {
+          console.error("Failed to subscribe to Brevo:", res.error);
+        }
+      }
       return NextResponse.json({
         ok: true,
         message: "Wiadomość została wysłana",

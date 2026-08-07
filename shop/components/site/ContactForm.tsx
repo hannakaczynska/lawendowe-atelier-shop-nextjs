@@ -107,7 +107,7 @@ export default function ContactForm({
       </label>
       <select
         id="topic"
-        className="p-2 pl-3 border border-[var(--light-grey)] rounded-md"
+        className="p-2 pl-3 pr-10 cursor-pointer appearance-none border border-[var(--light-grey)] bg-no-repeat bg-[right_0.75rem_center]  rounded-md" style={{ backgroundImage: "url('/caret-down-black.svg')" }}
         {...register("topic")}
       >
         <option value="question">Mam pytanie</option>
@@ -151,12 +151,22 @@ export default function ContactForm({
         {errors.hcaptcha?.message || " "}
       </p>
 
-      <label className="flex items-start gap-2 text-sm mt-2">
+      {selectedTopic === "question" && (
+        <label className="flex items-center gap-2 text-sm mt-1 cursor-pointer">
+          <input
+            type="checkbox"
+            className="accent-[var(--in-stock)] cursor-pointer"
+            {...register("shopNotify")}
+          />
+          <span>Powiadom mnie kiedy sklep ruszy (opcjonalnie)</span>
+        </label>
+      )}
+
+      <label className="flex items-center gap-2 text-sm mt-2 cursor-pointer">
         <input
           type="checkbox"
-          {...register("rodo", {
-            required: "Musisz wyrazić zgodę na przetwarzanie danych",
-          })}
+          className="accent-[var(--in-stock)] cursor-pointer"
+          {...register("rodo")}
         />
         <span>
           Wyrażam zgodę na przetwarzanie danych w celu kontaktu lub
