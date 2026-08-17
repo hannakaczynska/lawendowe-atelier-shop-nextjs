@@ -1,32 +1,17 @@
 import { NextResponse } from "next/server";
+import { verifyHcaptcha } from "@/app/api/_utils/hcaptcha/verifyHcaptcha";
 
 const BASE_URL = process.env.WOOCOMMERCE_URL;
-const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
 
 export async function POST(req: Request) {
   try {
     
     const body = await req.json();
 
-    if (!body.hcaptcha) {
+    const hcaptcha = await verifyHcaptcha(body.hcaptcha);
+    if (!hcaptcha.ok) {
       return NextResponse.json(
-        { message: "Brak tokenu hCaptcha" },
-        { status: 400 },
-      );
-    }
-
-    // verify hCaptcha response
-    const verifyRes = await fetch("https://hcaptcha.com/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `secret=${HCAPTCHA_SECRET}&response=${body.hcaptcha}`,
-    });
-
-    const verifyData = await verifyRes.json();
-
-    if (!verifyData.success) {
-      return NextResponse.json(
-        { message: "Niepoprawna weryfikacja hCaptcha" },
+        { message: hcaptcha.message || "Niepoprawna weryfikacja hCaptcha" },
         { status: 400 },
       );
     }

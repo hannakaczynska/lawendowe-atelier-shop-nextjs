@@ -1,33 +1,18 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { subscribeToBrevo } from "@/app/api/_utils/brevo/brevoSubscribe";
+import { verifyHcaptcha } from "@/app/api/_utils/hcaptcha/verifyHcaptcha";
 
-const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    if (!body.hcaptcha) {
+    const hcaptcha = await verifyHcaptcha(body.hcaptcha);
+    if (!hcaptcha.ok) {
       return NextResponse.json(
-        { message: "Brak tokenu hCaptcha" },
-        { status: 400 },
-      );
-    }
-
-    const verifyRes = await fetch("https://hcaptcha.com/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `secret=${HCAPTCHA_SECRET}&response=${body.hcaptcha}`,
-    });
-
-    const verifyData = await verifyRes.json();
-
-    if (!verifyData.success) {
-      console.error("hCaptcha verification failed:", verifyData);
-      return NextResponse.json(
-        { message: "Niepoprawna weryfikacja hCaptcha" },
+        { message: hcaptcha.message || "Niepoprawna weryfikacja hCaptcha" },
         { status: 400 },
       );
     }
@@ -55,6 +40,7 @@ export async function POST(req: Request) {
     }
 
     if (body.topic === "notify") {
+      //[4] is the ID of the Brevo list for notifications
       const res = await subscribeToBrevo(body.email, body.name, [4]);
 
       if (!res.ok) {

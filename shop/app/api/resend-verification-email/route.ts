@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-
+import { verifyHcaptcha } from "@/app/api/_utils/hcaptcha/verifyHcaptcha";
 const resend = new Resend(process.env.RESEND_API_KEY);
 const BASE_URL = process.env.WOOCOMMERCE_URL;
 const WP_ADMIN_USER = process.env.WP_ADMIN_USER;
 const WP_ADMIN_PASS = process.env.WP_ADMIN_PASSWORD;
-const HCAPTCHA_SECRET = process.env.HCAPTCHA_SECRET_KEY;
+
 
 export async function POST(req: Request) {
   const { email, hcaptcha } = await req.json();
@@ -17,28 +17,13 @@ export async function POST(req: Request) {
     );
   }
 
-  if (!hcaptcha) {
+  const hcaptchaVerification = await verifyHcaptcha(hcaptcha);
+  if (!hcaptchaVerification.ok) {
     return NextResponse.json(
-      { success: false, message: "Brak tokenu hCaptcha" },
+      { message: hcaptchaVerification.message || "Niepoprawna weryfikacja hCaptcha" },
       { status: 400 }
     );
   }
-
-    // verify hCaptcha response
-    const verifyRes = await fetch("https://hcaptcha.com/siteverify", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `secret=${HCAPTCHA_SECRET}&response=${hcaptcha}`,
-    });
-  
-    const verifyData = await verifyRes.json();
-  
-    if (!verifyData.success) {
-      return NextResponse.json(
-        { message: "Niepoprawna weryfikacja hCaptcha" },
-        { status: 400 },
-      );
-    }
 
   // fetch admin token
   const tokenRes = await fetch(`${BASE_URL}/wp-json/jwt-auth/v1/token`, {
