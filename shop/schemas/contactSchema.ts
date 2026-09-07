@@ -11,7 +11,9 @@ const contactSchemaBase = z.object({
     .min(1, "Email jest wymagany")
     .max(254, "Email jest za długi")
     .email("Wpisz poprawny email"),
-  hcaptcha: z.string().min(1, "Potwierdź, że jesteś człowiekiem"),
+  hcaptcha: z.string({
+    error: "Potwierdź, że jesteś człowiekiem",
+  }).min(1, "Potwierdź, że jesteś człowiekiem"),
   shopNotify: z.boolean().optional(),
   rodo: z.boolean().refine((val) => val === true, {
     message: "Musisz wyrazić zgodę na przetwarzanie danych",

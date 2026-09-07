@@ -8,7 +8,7 @@ export default function ContactData({}) {
           <div>
             <h3 className="text-lg font-medium mb-1 sr-only">Adres</h3>
             <p className="text-[var(--dark-grey)] leading-relaxed">
-              Lawendowe Atelier
+              Lawendowe Atelje
               <br />
               Stary Grodków
               <br />

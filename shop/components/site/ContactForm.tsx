@@ -32,6 +32,12 @@ export default function ContactForm({
 
   const selectedTopic = watch("topic");
 
+  useEffect(() => {
+    if (!success) return;
+    const t = setTimeout(() => setSuccess(null), 3000);
+    return () => clearTimeout(t);
+  }, [success]);
+
   const onSubmit = async (data: ContactSchema) => {
     setServerError(null);
     setSuccess(null);
@@ -55,6 +61,14 @@ export default function ContactForm({
     }
 
     setSuccess(json.message || "Wiadomość została wysłana");
+
+    captchaRef.current?.resetCaptcha();
+    setValue("hcaptcha", "");
+    setValue("name", "");
+    setValue("email", "");
+    setValue("message", "");
+    setValue("rodo", false);
+    setValue("shopNotify", false);
   };
 
   return (
