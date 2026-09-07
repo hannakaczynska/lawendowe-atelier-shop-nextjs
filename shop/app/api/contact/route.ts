@@ -1,15 +1,37 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 import { subscribeToBrevo } from "@/app/api/_utils/brevo/brevoSubscribe";
 import { verifyHcaptcha } from "@/app/api/_utils/hcaptcha/verifyHcaptcha";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendContactEmail } from "@/app/api/_utils/resend/sendContactEmail";
+import { contactSchema } from "@/schemas/contactSchema";
+import { rateLimit } from "@/app/api/_utils/security/rateLimit";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    
+    const ip = req.headers.get("x-forwarded-for") || "unknown";
+    if (!rateLimit(ip)) {
+      return NextResponse.json(
+        { message: "Zbyt wiele prób, spróbuj ponownie za chwilę" },
+        { status: 429 },
+      );
+    }
 
-    const hcaptcha = await verifyHcaptcha(body.hcaptcha);
+    //validate body with zod
+    const result = contactSchema.safeParse(body);
+
+    if (!result.success) {
+      return NextResponse.json(
+        {
+          message: "Nieprawidłowe dane formularza",
+        },
+        { status: 400 },
+      );
+    }
+
+    const data = result.data;
+
+    const hcaptcha = await verifyHcaptcha(data.hcaptcha);
     if (!hcaptcha.ok) {
       return NextResponse.json(
         { message: hcaptcha.message || "Niepoprawna weryfikacja hCaptcha" },
@@ -17,18 +39,22 @@ export async function POST(req: Request) {
       );
     }
 
-    if (body.topic === "question") {
-      //Resend try catch (seperate endpoint)
-      await resend.emails.send({
-        from: "Lawendowe Atelier <no-reply@mail.lawendoweatelier.pl>",
-        to: "hannakacz13@gmail.com",
-        replyTo: body.email,
-        subject: "Pytanie od klienta",
-        text: body.message,
+    if (data.topic === "question") {
+      const emailRes = await sendContactEmail({
+        email: data.email,
+        message: data.message,
       });
 
-      if (body.shopNotify) {
-        const res = await subscribeToBrevo(body.email, body.name, [4]);
+      if (!emailRes.ok) {
+        return NextResponse.json(
+          { message: "Nie udało się wysłać wiadomości" },
+          { status: 500 },
+        );
+      }
+
+      if (data.shopNotify) {
+        //[4] is the ID of the Brevo list for notifications
+        const res = await subscribeToBrevo(data.email, data.name, [4]);
         if (!res.ok) {
           console.error("Failed to subscribe to Brevo:", res.error);
         }
@@ -39,9 +65,9 @@ export async function POST(req: Request) {
       });
     }
 
-    if (body.topic === "notify") {
+    if (data.topic === "notify") {
       //[4] is the ID of the Brevo list for notifications
-      const res = await subscribeToBrevo(body.email, body.name, [4]);
+      const res = await subscribeToBrevo(data.email, data.name, [4]);
 
       if (!res.ok) {
         return NextResponse.json(
@@ -54,7 +80,13 @@ export async function POST(req: Request) {
         message: "Zapisano do listy powiadomień",
       });
     }
+
+    return NextResponse.json(
+      { message: "Nieprawidłowy temat formularza" },
+      { status: 400 },
+    );
   } catch (error) {
+    console.error("Contact API error:", error);
     return NextResponse.json(
       { message: "Wystąpił błąd po stronie serwera" },
       { status: 500 },
